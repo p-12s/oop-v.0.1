@@ -59,7 +59,14 @@ void CopyFileWithReplace(std::istream& input, std::ostream& output,
 
 	while (std::getline(input, line))
 	{
-		output << ReplaceString(line, searchString, replacementString) << "\n";
+		if (searchString.empty())
+		{
+			output << line << "\n";
+		}
+		else
+		{
+			output << ReplaceString(line, searchString, replacementString) << "\n";
+		}		
 	}
 }
 
@@ -72,25 +79,34 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	if (any_of(&argv[1], &argv[2], [](char* arg) {
+		return strlen(arg) == 0;
+	}))
+	{
+		cout << "Arguments <input file>, <output file> must be non empty!";
+		return 1;
+	}
+
 	ifstream inputFile(argv[1]);	
-	/*if (!inputFile.is_open())
+	if (!inputFile.is_open())
 	{
 		cout << "Failed to open " << argv[1] << " for reading" << endl;
 		return 1;
-	}*/
+	}
 
 	ofstream outputFile(argv[2]);
-	/*if (!outputFile.is_open())
+	if (!outputFile.is_open())
 	{
 		cout << "Failed to open " << argv[2] << " for writing" << endl;
 		return 1;
-	}*/
+	}
+
+
+
 
 	string searchStr = argv[3];
 	string replaceStr = argv[4];
 	CopyFileWithReplace(inputFile, outputFile, searchStr, replaceStr);
-
-
 
 	inputFile.close();
 	outputFile.flush();
