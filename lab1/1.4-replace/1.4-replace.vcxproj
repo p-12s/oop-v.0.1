@@ -139,7 +139,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="test-data\empty-lines-out.txt" />
+    <Text Include="test-data\empty-lines.txt" />
+    <Text Include="test-data\empty.txt" />
+    <Text Include="test-data\file-with-number-out.txt" />
+    <Text Include="test-data\file-with-number.txt" />
+    <Text Include="test-data\file-without-dog.txt" />
+    <Text Include="test-data\fox-multiline-out.txt" />
+    <Text Include="test-data\fox-multiline.txt" />
+    <Text Include="test-data\fox-multiply-out.txt" />
+    <Text Include="test-data\fox-multiply.txt" />
+    <Text Include="test-data\fox-only-out.txt" />
+    <Text Include="test-data\fox-only.txt" />
     <Text Include="test-data\fox-replace-dog-with-cat.txt" />
+    <Text Include="test-data\fox-replace-dog-with-empty-string.txt" />
     <Text Include="test-data\fox.txt" />
   </ItemGroup>
   <ItemGroup>
