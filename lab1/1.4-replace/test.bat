@@ -1,82 +1,82 @@
-rem %1 - çíà÷åíèå ïåðâîãî àðãóìåíòà êîìàíäíîé ñòðîêè bat-ôàéëà (êàêîé îí åñòü)
-rem %~1 - çíà÷åíèå ïåðâîãî àðãóìåíòà êîìàíäíîé ñòðîêè bat-ôàéëà ñ óäàëåíèåì îáðàìëÿþùèõ êàâû÷åê (åñëè îíè áûëè)
+rem %1 - Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ð°Ñ€Ð³ÑƒÐ¼ÐµÐ½Ñ‚Ð° ÐºÐ¾Ð¼Ð°Ð½Ð´Ð½Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸ bat-Ñ„Ð°Ð¹Ð»Ð° (ÐºÐ°ÐºÐ¾Ð¹ Ð¾Ð½ ÐµÑÑ‚ÑŒ)
+rem %~1 - Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ð°Ñ€Ð³ÑƒÐ¼ÐµÐ½Ñ‚Ð° ÐºÐ¾Ð¼Ð°Ð½Ð´Ð½Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸ bat-Ñ„Ð°Ð¹Ð»Ð° Ñ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸ÐµÐ¼ Ð¾Ð±Ñ€Ð°Ð¼Ð»ÑÑŽÑ‰Ð¸Ñ… ÐºÐ°Ð²Ñ‹Ñ‡ÐµÐº (ÐµÑÐ»Ð¸ Ð¾Ð½Ð¸ Ð±Ñ‹Ð»Ð¸)
 
-rem Ïåðåìåííàÿ PROGRAM áóäåò õðàíèòü ïåðâûé àðãóìåíò êîìàíäíîé ñòðîêè çàêëþ÷¸ííûé â êàâû÷êè
+rem ÐŸÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ PROGRAM Ð±ÑƒÐ´ÐµÑ‚ Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ÑŒ Ð¿ÐµÑ€Ð²Ñ‹Ð¹ Ð°Ñ€Ð³ÑƒÐ¼ÐµÐ½Ñ‚ ÐºÐ¾Ð¼Ð°Ð½Ð´Ð½Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð·Ð°ÐºÐ»ÑŽÑ‡Ñ‘Ð½Ð½Ñ‹Ð¹ Ð² ÐºÐ°Ð²Ñ‹Ñ‡ÐºÐ¸
 set PROGRAM="%~1"
 
-rem Ïðè çàïóñêå áåç ïàðàìåòðîâ îæèäàåòñÿ íåíóëåâîé êîä âîçâðàòà
+rem ÐŸÑ€Ð¸ Ð·Ð°Ð¿ÑƒÑÐºÐµ Ð±ÐµÐ· Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð² Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²Ð¾Ð¹ ÐºÐ¾Ð´ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð°
 %PROGRAM% >nul
 if NOT ERRORLEVEL 1 goto err
 
-rem Ïðè çàïóñêå ñ ïðàâèëüíûìè ïàðàìåòðàìè îæèäàåòñÿ íóëåâîé êîä âîçâðàòà
+rem ÐŸÑ€Ð¸ Ð·Ð°Ð¿ÑƒÑÐºÐµ Ñ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¼Ð¸ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°Ð¼Ð¸ Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð½ÑƒÐ»ÐµÐ²Ð¾Ð¹ ÐºÐ¾Ð´ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð°
 %PROGRAM% test-data\fox.txt "%TEMP%\fox.txt" "bird" "cat"
 if ERRORLEVEL 1 goto err
 
-rem Ïðè ïóñòîì ïàðàìåòðå âõîäíîãî ôàéëà îæèäàåòñÿ íåíóëåâîé êîä âîçâðàòà
+rem ÐŸÑ€Ð¸ Ð¿ÑƒÑÑ‚Ð¾Ð¼ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ðµ Ð²Ñ…Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ñ„Ð°Ð¹Ð»Ð° Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²Ð¾Ð¹ ÐºÐ¾Ð´ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð°
 %PROGRAM% "" "%TEMP%\fox.txt" "dog" "cat" >nul
 if NOT ERRORLEVEL 1 goto err
 
-rem Ïðè ïóñòîì ïàðàìåòðå âÛõîäíîãî ôàéëà îæèäàåòñÿ íåíóëåâîé êîä âîçâðàòà
+rem ÐŸÑ€Ð¸ Ð¿ÑƒÑÑ‚Ð¾Ð¼ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ðµ Ð²Ð«Ñ…Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ñ„Ð°Ð¹Ð»Ð° Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²Ð¾Ð¹ ÐºÐ¾Ð´ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð°
 %PROGRAM% "test-data\fox.txt" "" "dog" "cat" >nul
 if NOT ERRORLEVEL 1 goto err
 
-rem Ïðè íåñóùåñòâóþùåì âõîäíîì ôàéëå îæèäàåòñÿ íåíóëåâîé êîä âîçâðàòà
+rem ÐŸÑ€Ð¸ Ð½ÐµÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÑŽÑ‰ÐµÐ¼ Ð²Ñ…Ð¾Ð´Ð½Ð¾Ð¼ Ñ„Ð°Ð¹Ð»Ðµ Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²Ð¾Ð¹ ÐºÐ¾Ð´ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð°
 %PROGRAM% "test-data\nonexistent-file.txt" "%TEMP%\fox.txt" "dog" "cat"
 if NOT ERRORLEVEL 1 goto err
 
-rem Ïðè íåâîçìîæíîñòè çàïèñè â âûõîäíîé ôàéë îæèäàåòñÿ íåíóëåâîé êîä âîçâðàòà
+rem ÐŸÑ€Ð¸ Ð½ÐµÐ²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ÑÑ‚Ð¸ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð² Ð²Ñ‹Ñ…Ð¾Ð´Ð½Ð¾Ð¹ Ñ„Ð°Ð¹Ð» Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²Ð¾Ð¹ ÐºÐ¾Ð´ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð°
 %PROGRAM% "test-data\fox.txt" %PROGRAM% "dog" "cat"
 if NOT ERRORLEVEL 1 goto err
 
-rem Ïðè çàïóñêå ñ ïóñòîé ñòðîêîé äëÿ ïîèñêà çàìåíà íå ïðîèçâîäèòñÿ
+rem ÐŸÑ€Ð¸ Ð·Ð°Ð¿ÑƒÑÐºÐµ Ñ Ð¿ÑƒÑÑ‚Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¾Ð¹ Ð´Ð»Ñ Ð¿Ð¾Ð¸ÑÐºÐ° Ð·Ð°Ð¼ÐµÐ½Ð° Ð½Ðµ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÑÑ
 %PROGRAM% "test-data\fox.txt" "%TEMP%\fox.txt" "" "cat"
 if ERRORLEVEL 1 goto err
 fc.exe "%TEMP%\fox.txt" "test-data\fox.txt" >nul
 if ERRORLEVEL 1 goto err
 
-rem Çàìåíà íà ïóñòóþ ñòðîêó îáðàáàòûâàåòñÿ êîððåêòíî
+rem Ð—Ð°Ð¼ÐµÐ½Ð° Ð½Ð° Ð¿ÑƒÑÑ‚ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾
 %PROGRAM% "test-data\fox.txt" "%TEMP%\fox.txt" "dog" "" >nul
 if ERRORLEVEL 1 goto err
 fc.exe  "%TEMP%\fox.txt" "test-data\fox-replace-dog-with-empty-string.txt" >nul
 if ERRORLEVEL 1 goto err
 
-rem Ïóñòîå ñîäåðæèìîå âõîäíîãî ôàéëà îáðàáàòûâàåòñÿ êîððåêòíî
+rem ÐŸÑƒÑÑ‚Ð¾Ðµ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ðµ Ð²Ñ…Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ñ„Ð°Ð¹Ð»Ð° Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾
 %PROGRAM% "test-data\empty.txt" "%TEMP%\empty.txt" "dog" "cat" >nul
 if ERRORLEVEL 1 goto err
 fc.exe  "%TEMP%\empty.txt" "test-data\empty.txt" >nul
 if ERRORLEVEL 1 goto err
 
-rem Ïóñòûå ñòðîêè âî âõîäíîì ôàéëå îáðàáàòûâàþòñÿ êîððåêòíî
+rem ÐŸÑƒÑÑ‚Ñ‹Ðµ ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð²Ð¾ Ð²Ñ…Ð¾Ð´Ð½Ð¾Ð¼ Ñ„Ð°Ð¹Ð»Ðµ Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÑŽÑ‚ÑÑ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾
 %PROGRAM% "test-data\empty-lines.txt" "%TEMP%\empty-lines.txt" "dog" "cat" >nul
 if ERRORLEVEL 1 goto err
 fc.exe  "%TEMP%\empty-lines.txt" "test-data\empty-lines-out.txt" >nul
 if ERRORLEVEL 1 goto err
 
-rem Ôàéë áåç èñêîìîé ñòðîêè îáðàáàòûâàåòñÿ êîððåêòíî
+rem Ð¤Ð°Ð¹Ð» Ð±ÐµÐ· Ð¸ÑÐºÐ¾Ð¼Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾
 %PROGRAM% "test-data\file-without-dog.txt" "%TEMP%\file-without-dog.txt" "dog" "cat" >nul
 if ERRORLEVEL 1 goto err
 fc.exe  "%TEMP%\file-without-dog.txt" "test-data\file-without-dog.txt" >nul
 if ERRORLEVEL 1 goto err
 
-rem Ôàéë, ñîñòîÿùèé èç îäíîé, èñêîìîé ïîäñòðîêè îáðàáàòûâàåòñÿ êîððåêòíî
+rem Ð¤Ð°Ð¹Ð», ÑÐ¾ÑÑ‚Ð¾ÑÑ‰Ð¸Ð¹ Ð¸Ð· Ð¾Ð´Ð½Ð¾Ð¹, Ð¸ÑÐºÐ¾Ð¼Ð¾Ð¹ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾
 %PROGRAM% "test-data\fox-only.txt" "%TEMP%\fox-only.txt" "fox" "sun" >nul
 if ERRORLEVEL 1 goto err
 fc.exe  "%TEMP%\fox-only.txt" "test-data\fox-only-out.txt" >nul
 if ERRORLEVEL 1 goto err
 
-rem Îæèäàåòñÿ çàìåíà dog íà cat ñ îäíèì âõîæäåíèåì â ñòðîêå
+rem ÐžÐ¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð·Ð°Ð¼ÐµÐ½Ð° dog Ð½Ð° cat Ñ Ð¾Ð´Ð½Ð¸Ð¼ Ð²Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸ÐµÐ¼ Ð² ÑÑ‚Ñ€Ð¾ÐºÐµ
 %PROGRAM% "test-data\fox.txt" "%TEMP%\fox.txt" "dog" "cat"
 if ERRORLEVEL 1 goto err
 fc.exe "%TEMP%\fox.txt" "test-data\fox-replace-dog-with-cat.txt" >nul
 if ERRORLEVEL 1 goto err
 
-rem Ìíîãîêðàòíûå âõîæåíèÿ èñêîìîé ñòðîêè îáðàáàòûâàåòñÿ êîððåêòíî
+rem ÐœÐ½Ð¾Ð³Ð¾ÐºÑ€Ð°Ñ‚Ð½Ñ‹Ðµ Ð²Ñ…Ð¾Ð¶ÐµÐ½Ð¸Ñ Ð¸ÑÐºÐ¾Ð¼Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾
 %PROGRAM% "test-data\fox-multiply.txt" "%TEMP%\fox-multiply.txt" "fox" "foxfox" >nul
 if ERRORLEVEL 1 goto err
 fc.exe  "%TEMP%\fox-multiply.txt" "test-data\fox-multiply-out.txt" >nul
 if ERRORLEVEL 1 goto err
 
-rem Çàìåíà ïîäñòðîêè «1231234» âíóòðè òåêñòà «12312312345» îáðàáàòûâàåòñÿ êîððåêòíî
+rem Ð—Ð°Ð¼ÐµÐ½Ð° Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Â«1231234Â» Ð²Ð½ÑƒÑ‚Ñ€Ð¸ Ñ‚ÐµÐºÑÑ‚Ð° Â«12312312345Â» Ð¾Ð±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾
 %PROGRAM% "test-data\file-with-number.txt" "%TEMP%\file-with-number.txt" "1231234" "fox" >nul
 if ERRORLEVEL 1 goto err
 fc.exe  "%TEMP%\file-with-number.txt" "test-data\file-with-number-out.txt" >nul
