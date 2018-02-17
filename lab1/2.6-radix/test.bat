@@ -7,3 +7,23 @@ set PROGRAM="%~1"
 rem ѕри запуске без параметров ожидаетс€ ненулевой код возврата
 %PROGRAM% >nul
 if NOT ERRORLEVEL 1 goto err
+
+rem ѕри запуске с правильными параметрами ожидаетс€ нулевой код возврата
+%PROGRAM%  "16" "10" "1F"
+if ERRORLEVEL 1 goto err
+
+rem ѕри пустых входных параметрах ожидаетс€ ненулевой код возврата
+rem %PROGRAM% "" "" "" >nul
+rem if NOT ERRORLEVEL 1 goto err
+
+rem ѕри пустых входных параметрах ожидаетс€ ненулевой код возврата
+
+
+
+
+echo OK
+exit 0
+
+:err
+echo Program testing failed
+exit 1

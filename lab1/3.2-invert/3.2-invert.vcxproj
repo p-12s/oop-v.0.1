@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{E37D3ACA-74C9-4018-B964-BBC8C0779D13}</ProjectGuid>
+    <ProjectGuid>{3A67E308-36E2-448C-9BDC-A784E8B91E4C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My14replace</RootNamespace>
+    <RootNamespace>My32invert</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,10 +70,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,12 +82,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -96,12 +96,12 @@
       <Command>test.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,32 +147,25 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="2x2.txt" />
+    <Text Include="2x4.txt" />
+    <Text Include="3x2.txt" />
+    <Text Include="3x3-with-wrong-symbols.txt" />
+    <Text Include="3x3-with-zero-determinant.txt" />
+    <Text Include="3x3.txt" />
+    <Text Include="3x4.txt" />
+    <Text Include="empty.txt" />
     <Text Include="ReadMe.txt" />
-    <Text Include="test-data\empty-lines-out.txt" />
-    <Text Include="test-data\empty-lines.txt" />
-    <Text Include="test-data\empty.txt" />
-    <Text Include="test-data\file-with-number-out.txt" />
-    <Text Include="test-data\file-with-number.txt" />
-    <Text Include="test-data\file-without-dog.txt" />
-    <Text Include="test-data\fox-multiline-out.txt" />
-    <Text Include="test-data\fox-multiline.txt" />
-    <Text Include="test-data\fox-multiply-out.txt" />
-    <Text Include="test-data\fox-multiply.txt" />
-    <Text Include="test-data\fox-only-out.txt" />
-    <Text Include="test-data\fox-only.txt" />
-    <Text Include="test-data\fox-replace-dog-with-cat.txt" />
-    <Text Include="test-data\fox-replace-dog-with-empty-string.txt" />
-    <Text Include="test-data\fox.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="1.4-replace.cpp" />
+    <ClCompile Include="3.2-invert.cpp" />
     <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>

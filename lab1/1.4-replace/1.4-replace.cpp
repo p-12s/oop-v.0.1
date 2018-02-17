@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 	inputFile.close();
 	outputFile.flush();
 	outputFile.close();
-	
+
     return 0;
 }
 
