@@ -11,22 +11,22 @@ namespace constants
 }
 
 /*
-Разработайте приложение invert.exe, выполняющее инвертирование матрицы 3*3, 
-т.е. нахождение обратной матрицы 
-и выводящее коэффициенты результирующей матрицы в стандартный поток вывода. 
+Р Р°Р·СЂР°Р±РѕС‚Р°Р№С‚Рµ РїСЂРёР»РѕР¶РµРЅРёРµ invert.exe, РІС‹РїРѕР»РЅСЏСЋС‰РµРµ РёРЅРІРµСЂС‚РёСЂРѕРІР°РЅРёРµ РјР°С‚СЂРёС†С‹ 3*3, 
+С‚.Рµ. РЅР°С…РѕР¶РґРµРЅРёРµ РѕР±СЂР°С‚РЅРѕР№ РјР°С‚СЂРёС†С‹ 
+Рё РІС‹РІРѕРґСЏС‰РµРµ РєРѕСЌС„С„РёС†РёРµРЅС‚С‹ СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РµР№ РјР°С‚СЂРёС†С‹ РІ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РїРѕС‚РѕРє РІС‹РІРѕРґР°. 
 
-+ Формат командной строки приложения:
++ Р¤РѕСЂРјР°С‚ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё РїСЂРёР»РѕР¶РµРЅРёСЏ:
 + invert.exe <matrix file1>
 
-+ Коэффициенты входной матрицы заданы во входном текстовом файле
-+ (смотрите файл matrix.txt в качестве иллюстрации)  в трех строках по 3 элемента.
++ РљРѕСЌС„С„РёС†РёРµРЅС‚С‹ РІС…РѕРґРЅРѕР№ РјР°С‚СЂРёС†С‹ Р·Р°РґР°РЅС‹ РІРѕ РІС…РѕРґРЅРѕРј С‚РµРєСЃС‚РѕРІРѕРј С„Р°Р№Р»Рµ
++ (СЃРјРѕС‚СЂРёС‚Рµ С„Р°Р№Р» matrix.txt РІ РєР°С‡РµСЃС‚РІРµ РёР»Р»СЋСЃС‚СЂР°С†РёРё)  РІ С‚СЂРµС… СЃС‚СЂРѕРєР°С… РїРѕ 3 СЌР»РµРјРµРЅС‚Р°.
 
-+ Коэффициенты результирующей матрицы выводятся с точностью до 3 знаков после запятой.
++ РљРѕСЌС„С„РёС†РёРµРЅС‚С‹ СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РµР№ РјР°С‚СЂРёС†С‹ РІС‹РІРѕРґСЏС‚СЃСЏ СЃ С‚РѕС‡РЅРѕСЃС‚СЊСЋ РґРѕ 3 Р·РЅР°РєРѕРІ РїРѕСЃР»Рµ Р·Р°РїСЏС‚РѕР№.
 
-+ Используйте двухмерные массивы для хранения коэффициентов матриц.
++ РСЃРїРѕР»СЊР·СѓР№С‚Рµ РґРІСѓС…РјРµСЂРЅС‹Рµ РјР°СЃСЃРёРІС‹ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РјР°С‚СЂРёС†.
 
-В комплекте с программой должны обязательно поставляться файлы, 
-позволяющие проверить ее работу в автоматическом режиме.
+Р’ РєРѕРјРїР»РµРєС‚Рµ СЃ РїСЂРѕРіСЂР°РјРјРѕР№ РґРѕР»Р¶РЅС‹ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РїРѕСЃС‚Р°РІР»СЏС‚СЊСЃСЏ С„Р°Р№Р»С‹, 
+РїРѕР·РІРѕР»СЏСЋС‰РёРµ РїСЂРѕРІРµСЂРёС‚СЊ РµРµ СЂР°Р±РѕС‚Сѓ РІ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРј СЂРµР¶РёРјРµ.
  */
 
 typedef float(matrix)[constants::MATRIX_SIZE][constants::MATRIX_SIZE];
@@ -104,37 +104,81 @@ float Get3x3MatrixDetermanant(const matrix& mx)
 		(mx[0][2] * mx[1][1] * mx[2][0]);
 }
 
-float GetAlgebraicComplementFor3x3Matrix(const matrix& mx, const int rowIndex, const int colIndex)
+void SetOppositeIndicesForMatrix3x3(const int& index, int& oppositeIndex1, int& oppositeIndex2)
 {
-	float a, b, c, d;
+	switch (index)
+	{
+	case 0:
+		oppositeIndex1 = 1;
+		oppositeIndex2 = 2;
+		break;
+	case 1:
+		oppositeIndex1 = 0;
+		oppositeIndex2 = 2;
+		break;
+	case 2:
+		oppositeIndex1 = 0;
+		oppositeIndex2 = 1;
+		break;
+	default:
+		throw exception("The cells of the matrix must have indices from 0 to 2");
+	}
+}
+
+void TransposeMatrix3x3(matrix& mx)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = i; j < 3; j++)
+		{
+			swap(mx[i][j], mx[j][i]);
+		}
+	}
+}
+
+void GetAdjointMatrix3x3(const matrix& mx, matrix& algebraicComplementsOfMatrix)
+{
+	int oppRow1, oppRow2, oppCol1, oppCol2;
 	for (int i = 0; i < constants::MATRIX_SIZE; i++)
 	{
-		if (i != rowIndex)
+		for (int j = 0; j < constants::MATRIX_SIZE; j++)
 		{
-			for (int j = 0; j < constants::MATRIX_SIZE; j++)
-			{
-				if (j != colIndex)
-				{
-					// не понимаю следующие шаги по решению. как будет короче?
-				}
-			}
+			SetOppositeIndicesForMatrix3x3(i, oppRow1, oppRow2);
+			SetOppositeIndicesForMatrix3x3(j, oppCol1, oppCol2);
+			algebraicComplementsOfMatrix[i][j] = pow((-1), (i + j)) * 
+				((mx[oppRow1][oppCol1] * mx[oppRow2][oppCol2]) - 
+				(mx[oppRow2][oppCol1] * mx[oppRow1][oppCol2]));
 		}		
+	}
+}
+
+void DivideMatrix3x3ByDeterminant(matrix& invertedMatrix, const float& determinant)
+{
+	for (int i = 0; i < constants::MATRIX_SIZE; i++)
+	{
+		for (int j = 0; j < constants::MATRIX_SIZE; j++)
+		{
+			invertedMatrix[i][j] /= determinant;
+		}
 	}
 }
 
 void InvertMatrix(const matrix& sourceMatrix, matrix& invertedMatrix)
 {
-	// определитель
+	// определитель = 0 - инвертированная м. не сущ.
 	float determinant = Get3x3MatrixDetermanant(sourceMatrix);
-	cout << determinant << endl;
 	if (determinant == 0)
 	{
 		throw exception("The inverse matrix does not exist, because the determinant = 0");
 	}
-	// алгебраические дополнения для союзной матрицы
-	// союзная матрица
-	// транспонированная союзная матрица
-	// делим транспонированную на определитель
+	// транспонирую
+	TransposeMatrix3x3(invertedMatrix);
+	// нахожу матрицу алгебраических дополнений (кофакторов)
+	GetAdjointMatrix3x3(sourceMatrix, invertedMatrix);
+	// нашел присоединенную матрицу adj
+
+	// делим каждый элем присоед. матрицы на определитель
+	DivideMatrix3x3ByDeterminant(invertedMatrix, determinant);
 }
 
 int main(int argc, char* argv[])
@@ -169,7 +213,8 @@ int main(int argc, char* argv[])
 		matrix invertedMatrix;
 		InvertMatrix(sourceMatrix, invertedMatrix);
 
-		//PrintMatrix(sourceMatrix);
+		PrintMatrix(sourceMatrix);
+		PrintMatrix(invertedMatrix);
 	}
 	catch (exception const& error)
 	{
