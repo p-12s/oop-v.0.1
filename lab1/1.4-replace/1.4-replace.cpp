@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	if (any_of(&argv[1], &argv[2], [](char* arg) {
+	if (any_of(&argv[1], &argv[3], [](char* arg) {
 		return strlen(arg) == 0;
 	}))
 	{
