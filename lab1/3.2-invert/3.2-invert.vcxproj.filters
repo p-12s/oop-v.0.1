@@ -43,6 +43,12 @@
     <Text Include="3x3-with-zero-determinant.txt">
       <Filter>test-data</Filter>
     </Text>
+    <Text Include="test-data\3x3-result.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\3x3-unit.txt">
+      <Filter>test-data</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

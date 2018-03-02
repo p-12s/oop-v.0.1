@@ -10,25 +10,6 @@ namespace constants
 	const unsigned FIELD_DISPLAY_WIDTH = 8;
 }
 
-/*
-Разработайте приложение invert.exe, выполняющее инвертирование матрицы 3*3, 
-т.е. нахождение обратной матрицы 
-и выводящее коэффициенты результирующей матрицы в стандартный поток вывода. 
-
-+ Формат командной строки приложения:
-+ invert.exe <matrix file1>
-
-+ Коэффициенты входной матрицы заданы во входном текстовом файле
-+ (смотрите файл matrix.txt в качестве иллюстрации)  в трех строках по 3 элемента.
-
-+ Коэффициенты результирующей матрицы выводятся с точностью до 3 знаков после запятой.
-
-+ Используйте двухмерные массивы для хранения коэффициентов матриц.
-
-В комплекте с программой должны обязательно поставляться файлы, 
-позволяющие проверить ее работу в автоматическом режиме.
- */
-
 typedef float(matrix)[constants::MATRIX_SIZE][constants::MATRIX_SIZE];
 
 float ReadFloatNumberFromString(const string& str)
@@ -45,7 +26,7 @@ float ReadFloatNumberFromString(const string& str)
 	return number;
 }
 
-void ReadMatrix(istream& input, matrix& sourceMatrix)
+void ReadMatrix3x3(istream& input, matrix& sourceMatrix)
 {
 	
 	string matrixRowString, numberString;
@@ -81,7 +62,7 @@ void ReadMatrix(istream& input, matrix& sourceMatrix)
 	}
 }
 
-void PrintMatrix(const matrix& sourceMatrix)
+void PrintMatrix3x3(const matrix& sourceMatrix)
 {
 	cout << fixed << setprecision(constants::FLOAT_PRECISION);
 	for (int i = 0; i < constants::MATRIX_SIZE; i++)
@@ -163,21 +144,18 @@ void DivideMatrix3x3ByDeterminant(matrix& invertedMatrix, const float& determina
 	}
 }
 
-void InvertMatrix(const matrix& sourceMatrix, matrix& invertedMatrix)
+void InvertMatrix3x3(const matrix& sourceMatrix, matrix& invertedMatrix)
 {
-	// ������������ = 0 - ��������������� �. �� ���.
 	float determinant = Get3x3MatrixDetermanant(sourceMatrix);
 	if (determinant == 0)
 	{
 		throw exception("The inverse matrix does not exist, because the determinant = 0");
 	}
-	// ������������
+	
 	TransposeMatrix3x3(invertedMatrix);
-	// ������ ������� �������������� ���������� (����������)
-	GetAdjointMatrix3x3(sourceMatrix, invertedMatrix);
-	// ����� �������������� ������� adj
+	
+	GetAdjointMatrix3x3(sourceMatrix, invertedMatrix); // matrix of algebraic complements (adjoint matrix)
 
-	// ����� ������ ���� �������. ������� �� ������������
 	DivideMatrix3x3ByDeterminant(invertedMatrix, determinant);
 }
 
@@ -186,7 +164,7 @@ int main(int argc, char* argv[])
 	if (argc != 2)
 	{
 		cout << "Invalid arguments count\n"
-			<< "Usage: invert.exe <matrix file1>\n";
+			<< "Usage: invert.exe <matrix file>\n";
 		return 1;
 	}
 	
@@ -208,13 +186,12 @@ int main(int argc, char* argv[])
 	try
 	{
 		matrix sourceMatrix;
-		ReadMatrix(inputFile, sourceMatrix);
+		ReadMatrix3x3(inputFile, sourceMatrix);
 
 		matrix invertedMatrix;
-		InvertMatrix(sourceMatrix, invertedMatrix);
+		InvertMatrix3x3(sourceMatrix, invertedMatrix);
 
-		PrintMatrix(sourceMatrix);
-		PrintMatrix(invertedMatrix);
+		PrintMatrix3x3(invertedMatrix);
 	}
 	catch (exception const& error)
 	{
@@ -222,9 +199,5 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-
-
-
     return 0;
 }
-

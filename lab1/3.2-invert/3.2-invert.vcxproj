@@ -156,6 +156,8 @@
     <Text Include="3x4.txt" />
     <Text Include="empty.txt" />
     <Text Include="ReadMe.txt" />
+    <Text Include="test-data\3x3-result.txt" />
+    <Text Include="test-data\3x3-unit.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

@@ -27,14 +27,24 @@ if NOT ERRORLEVEL 1 goto err
 if NOT ERRORLEVEL 1 goto err
 
 rem Для невалидных символов в матрице ожидается ненулевой код возврата
-%PROGRAM% "test\3x3-with-wrong-symbols.txt" >nul
+%PROGRAM% "test-data\3x3-with-wrong-symbols.txt" >nul
 if NOT ERRORLEVEL 1 goto err
 
 rem Для матрицы 3x3 с нулевым детерминантом ожидается ненулевой код возврата
-%PROGRAM% "test\3x3-with-zero-determinant.txt" >nul
+%PROGRAM% "test-data\3x3-with-zero-determinant.txt" >nul
 if NOT ERRORLEVEL 1 goto err
 
 rem Коэффициенты результирующей матрицы выводятся с точностью до 3 знаков после запятой
+%PROGRAM% "test-data\3x3.txt" >%TEMP%\3x3-result.txt
+if ERRORLEVEL 1 goto err
+fc.exe "%TEMP%\3x3-result.txt" "test-data\3x3-result.txt" >nul
+if ERRORLEVEL 1 goto err
+
+rem Коэффициенты результирующей единичной матрицы выводятся с точностью до 3 знаков после запятой
+%PROGRAM% "test-data\3x3-unit.txt" >%TEMP%\3x3-unit-result.txt
+if ERRORLEVEL 1 goto err
+fc.exe "%TEMP%\3x3-unit-result.txt" "test-data\3x3-unit-result.txt" >nul
+if ERRORLEVEL 1 goto err
 
 echo OK
 exit 0
