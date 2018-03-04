@@ -27,12 +27,12 @@ std::string ReplaceString(const std::string& subject,
 	return result;
 }
 
-void CopyFileWithReplace(std::istream& input, std::ostream& output,
-	const std::string& searchString, const std::string& replacementString)
+void CopyFileWithReplace(istream& input, ostream& output,
+	const string& searchString, const string& replacementString)
 {
-	std::string line;
+	string line;
 
-	while (std::getline(input, line))
+	while (getline(input, line))
 	{
 		if (!searchString.empty())
 		{
@@ -45,7 +45,8 @@ void CopyFileWithReplace(std::istream& input, std::ostream& output,
 	}
 }
 
-bool IsStringInFileReplaced(string inputName, string outputName, string searchStr, string replaceStr)
+bool IsStringInFileReplaced(const string& inputName, const string& outputName,
+	const string& searchStr, const string& replacementStr)
 {
 	ifstream inputFile(inputName);
 	if (!inputFile.is_open())
@@ -60,7 +61,7 @@ bool IsStringInFileReplaced(string inputName, string outputName, string searchSt
 		return false;
 	}
 
-	CopyFileWithReplace(inputFile, outputFile, searchStr, replaceStr);
+	CopyFileWithReplace(inputFile, outputFile, searchStr, replacementStr);
 
 	if (!outputFile.flush())
 	{
