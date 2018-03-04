@@ -16,6 +16,10 @@ rem При несуществующем входном файле ожидает
 %PROGRAM% "test-data\nonexistent-file.txt"
 if NOT ERRORLEVEL 1 goto err
 
+rem При пустом входном файле ожидается ненулевой код возврата
+%PROGRAM% "test-data\empty.txt"
+if NOT ERRORLEVEL 1 goto err
+
 rem Для матриц меньшей/большей размерности ожидается ненулевой код возврата
 %PROGRAM% "test-data\2x2.txt" >nul
 if NOT ERRORLEVEL 1 goto err
@@ -38,6 +42,12 @@ rem Коэффициенты результирующей матрицы выв�
 %PROGRAM% "test-data\3x3.txt" >%TEMP%\3x3-result.txt
 if ERRORLEVEL 1 goto err
 fc.exe "%TEMP%\3x3-result.txt" "test-data\3x3-result.txt" >nul
+if ERRORLEVEL 1 goto err
+
+rem Коэффициенты результирующей матрицы выводятся с точностью до 3 знаков после запятой
+%PROGRAM% "test-data\3x3-easy.txt" >%TEMP%\3x3-easy-result.txt
+if ERRORLEVEL 1 goto err
+fc.exe "%TEMP%\3x3-easy-result.txt" "test-data\3x3-easy-result.txt" >nul
 if ERRORLEVEL 1 goto err
 
 rem Коэффициенты результирующей единичной матрицы выводятся с точностью до 3 знаков после запятой

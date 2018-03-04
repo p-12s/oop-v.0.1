@@ -25,9 +25,6 @@
     <Text Include="2x4.txt">
       <Filter>test-data</Filter>
     </Text>
-    <Text Include="3x3.txt">
-      <Filter>test-data</Filter>
-    </Text>
     <Text Include="2x2.txt">
       <Filter>test-data</Filter>
     </Text>
@@ -47,6 +44,15 @@
       <Filter>test-data</Filter>
     </Text>
     <Text Include="test-data\3x3-unit.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="3x3.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\3x3-easy.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\3x3-easy-result.txt">
       <Filter>test-data</Filter>
     </Text>
   </ItemGroup>
