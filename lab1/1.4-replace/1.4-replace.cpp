@@ -5,6 +5,9 @@ using namespace std;
 std::string ReplaceString(const std::string& subject,
 	const std::string& searchString, const std::string& replacementString)
 {
+	if (subject.empty() || searchString.empty())
+		return subject;
+
 	size_t pos = 0;
 	std::string result;
 	while (pos < subject.length())
@@ -42,6 +45,31 @@ void CopyFileWithReplace(std::istream& input, std::ostream& output,
 	}
 }
 
+bool IsStringInFileReplaced(string inputName, string outputName, string searchStr, string replaceStr)
+{
+	ifstream inputFile(inputName);
+	if (!inputFile.is_open())
+	{
+		cout << "Failed to open " << inputName << " for reading" << endl;
+		return false;
+	}
+	ofstream outputFile(outputName);
+	if (!outputFile.is_open())
+	{
+		cout << "Failed to open " << outputName << " for writing" << endl;
+		return false;
+	}
+
+	CopyFileWithReplace(inputFile, outputFile, searchStr, replaceStr);
+
+	if (!outputFile.flush())
+	{
+		cout << "Failed to save data on disk\n";
+		return false;
+	}
+	return true;
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc != 5)
@@ -59,26 +87,10 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	ifstream inputFile(argv[1]);	
-	if (!inputFile.is_open())
+	if (!IsStringInFileReplaced(argv[1], argv[2], argv[3], argv[4]))
 	{
-		cout << "Failed to open " << argv[1] << " for reading" << endl;
 		return 1;
 	}
-	ofstream outputFile(argv[2]);
-	if (!outputFile.is_open())
-	{
-		cout << "Failed to open " << argv[2] << " for writing" << endl;
-		return 1;
-	}
-
-	string searchStr = argv[3];
-	string replaceStr = argv[4];
-	CopyFileWithReplace(inputFile, outputFile, searchStr, replaceStr);
-
-	inputFile.close();
-	outputFile.flush();
-	outputFile.close();
 
     return 0;
 }
