@@ -150,11 +150,12 @@ void GetAdjointMatrix3x3(const matrix& mx, matrix& algebraicComplementsOfMatrix)
 		{
 			SetOppositeIndicesForMatrix3x3(i, oppRow1, oppRow2);
 			SetOppositeIndicesForMatrix3x3(j, oppCol1, oppCol2);
-			algebraicComplementsOfMatrix[i][j] = pow((-1), (i + j)) * 
-				((mx[oppRow1][oppCol1] * mx[oppRow2][oppCol2]) - 
-				(mx[oppRow2][oppCol1] * mx[oppRow1][oppCol2]));
-		}		
-	}
+                        algebraicComplementsOfMatrix[i][j] =
+                            pow((-1), (i + j)) *
+                            ((mx[oppRow1][oppCol1] * mx[oppRow2][oppCol2]) -
+                             (mx[oppRow2][oppCol1] * mx[oppRow1][oppCol2]));
+                }
+        }
 }
 
 void DivideMatrix3x3ByDeterminant(matrix& invertedMatrix, const float& determinant)
