@@ -13,7 +13,7 @@ void PrintVector(const vector<double>& numbers)
 
 int main()
 {
-	// Требуется разделить элементы массива на половину максимального элемента
+	// РўСЂРµР±СѓРµС‚СЃВ¤ СЂР°Р·РґРµР»РёС‚СЊ СЌР»РµРјРµРЅС‚С‹ РјР°СЃСЃРёРІР° РЅР° РїРѕР»РѕРІРёРЅСѓ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 	vector <double> numbers(istream_iterator<double>(cin), (istream_iterator<double>()));
 	ProcessVector(numbers);
 	SortVector(numbers);

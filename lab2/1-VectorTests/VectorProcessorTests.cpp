@@ -14,12 +14,12 @@ bool VerifyProcessVectory(vector<double> originalVector, vector<double> expected
 	return VectorsAreEqual(originalVector, expectedResult);
 }
 
-// 4. Требуется разделить элементы массива на половину максимального элемента
+// 4. РўСЂРµР±СѓРµС‚СЃСЏ СЂР°Р·РґРµР»РёС‚СЊ СЌР»РµРјРµРЅС‚С‹ РјР°СЃСЃРёРІР° РЅР° РїРѕР»РѕРІРёРЅСѓ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 
-// Функция ProcessVector
+// Р¤СѓРЅРєС†РёСЏ ProcessVector
 BOOST_AUTO_TEST_SUITE(ProcessVector_function)
 
-	// Создает пустой вектор из пустого вектора
+	// РЎРѕР·РґР°РµС‚ РїСѓСЃС‚РѕР№ РІРµРєС‚РѕСЂ РёР· РїСѓСЃС‚РѕРіРѕ РІРµРєС‚РѕСЂР°
 	BOOST_AUTO_TEST_CASE(dont_change_empty_vector)
 	{
 		vector<double> emptyVector;
@@ -27,13 +27,13 @@ BOOST_AUTO_TEST_SUITE(ProcessVector_function)
 		BOOST_CHECK(emptyVector.empty());
 	}
 
-	// Не меняет вектор максимальное значение max=0
+	// РќРµ РјРµРЅСЏРµС‚ РІРµРєС‚РѕСЂ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ max=0
 	BOOST_AUTO_TEST_CASE(does_not_divide_vector_in_which_maximum_element_this_zero)
 	{
 		BOOST_CHECK(VerifyProcessVectory({ -11.0, -2.0, 0.0 }, { -11.0, -2.0, 0.0 }));
 	}
 
-	// Делит элменты вектора на половину максимального значения
+	// Р”РµР»РёС‚ СЌР»РјРµРЅС‚С‹ РІРµРєС‚РѕСЂР° РЅР° РїРѕР»РѕРІРёРЅСѓ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ
 	BOOST_AUTO_TEST_CASE(dividing_every_vectors_element_by_half_max_element)
 	{
 		BOOST_CHECK(VerifyProcessVectory({ -7.0, 4.0, 2.0 }, { -3.5, 2.0, 1.0 }));

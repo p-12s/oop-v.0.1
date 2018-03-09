@@ -19,7 +19,7 @@ void SortVector(vector<double>& numbers)
 
 void ProcessVector(vector<double> & numbers)
 {
-	// Требуется разделить элементы массива на половину максимального элемента
+	// РўСЂРµР±СѓРµС‚СЃВ¤ СЂР°Р·РґРµР»РёС‚СЊ СЌР»РµРјРµРЅС‚С‹ РјР°СЃСЃРёРІР° РЅР° РїРѕР»РѕРІРёРЅСѓ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 	if (!numbers.empty())
 	{
 		double maxVal = GetVectorsMaxVal(numbers);
