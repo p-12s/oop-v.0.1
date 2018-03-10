@@ -7,57 +7,52 @@ namespace constants
 	const char PERMISSIBLE_CHARS_IN_SYSTEMS_OF_NUMBERS[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 }
 
-/*
-Разработайте программу radix.exe, выполняющую перевод чисел из одной произвольной системы счисления 
-в другую произвольную и запись результата в стандартный поток вывода. 
-
-Под произвольной системой счисления понимается система с основанием от 2 до 36. 
-
-Системы счисления с 11-ричной до 36-ричной должны использовать заглавные буквы латинского алфавита 
-от A до Z для представления разрядов с 1010 до 3510. 
-
-Формат командной строки приложения:
-radix.exe <source notation> <destination notation> <value>
-
-Например, следующим способом программа должна осуществлять перевод шестнадцатеричного числа 1F в его десятичное представление:
-radix.exe 16 10 1F
-
-В конце строки, выводимой в стандартный поток вывода должен располагаться код \n.
-
-Программа должна быть способна осуществлять перевод как положительных, так и отрицательных чисел, а также нуля.
-
-Особое внимание уделите переводу максимальных и минимальных целых чисел на данной платформе (они должны преобразовываться корректно).
-
-Программа должна корректно обрабатывать ошибки
-
-Внимание, для перевода строкового представления в числовое и числового в строковое
-в произвольных системах счисления должны быть разработаны функции:
-int StringToInt(const string& str, int radix, bool & wasError);
-и
-std::string IntToString(int n, int radix, bool & wasError);
-
-В случае ошибок (некорректные значения входных параметров, переполнение при переводе строки в число) 
-данные функции должны изменять состояние булевой переменной wasError.
-
-В случае обнаружения ошибки программа должна вывести соответствующее сообщение и корректно завершить свою работу.
-
-В комплекте с программой должны обязательно поставляться файлы, позволяющие проверить ее работу в автоматическом режиме.
-*/
-
-#include <typeinfo>
-
-int StringToInt(const string& str, int radix, bool& wasError)
+int StringToInt(const string& input, const int radix, bool& wasError)
 {
+	// отслеживать переполнение int
+	int result = 0;
+	
+	// вектор для удобного прохождения по строке с пом. transform
+	//stringstream stringToIntStream;
+	//stringToIntStream.str(input);
+	//vector<char> data(input.begin(), input.end());
+
+	// create map from chars
+	// проверка - возвращаемое число не дб больше итогового разряда
+	map<char, int> charsMap = {
+		{ 'A', 11 },
+		{ 'B', 12 }
+	};
+
+	unsigned int digit = input.size() - 1;
+	for (auto &ch : input)
+	{
+		cout << ch << "* " << digit << "  " << charsMap[ch] << "\n";
+		--digit;
+	}
+	
+
+	//copy(data.begin(), data.end(), ostream_iterator<char>(cout, ", "));
+
+	
+
+	//std::transform(myv1.begin(), myv1.end(), myv1.begin(),
+	//	[](double d) -> double { return d * 3; });
+
+	//copy(chars.begin(), chars.end(), ostream_iterator<char>(cout, ", "));
+
+	/*string test = "AAA";
+	for (string::iterator it = test.begin(); it != test.end(); ++it)
+	{
+		cout << *it << '\n';
+	}		
+	cout << '\n';*/
+
+	// затолкнуть в вектор
+
 	// перевод строки 1F в числов в 10-чно системе
-
-	// ��������� �� ���������� ��� ��������
-
-	// ������� ������ � ���������� radix - � ���������� ������� ���������
-
-
-	cout << "std: " << str << ", str len: " << str.length() << endl;
-
-	int decimalNumber = 0;
+	return result;
+	/*int decimalNumber = 0;
 	int strLength = str.length();
 	int degree, code;
 	char symbol;
@@ -75,20 +70,16 @@ int StringToInt(const string& str, int radix, bool& wasError)
 		code = static_cast<int>(str[i]);
 		cout << code << " \n";
 		//cout << "source in degree: " << radix << "^" << degree << "=" << pow(radix, degree) << endl;
-		/*cout << "res: " << static_cast<int>(str[i]) * pow(radix, degree) << endl;
+		//cout << "res: " << static_cast<int>(str[i]) * pow(radix, degree) << endl;
 
 
-		decimalNumber = decimalNumber + static_cast<int>(str[i]) * pow(radix, degree);
-		*/
+		//decimalNumber = decimalNumber + static_cast<int>(str[i]) * pow(radix, degree);
+		
 		
 	}
 
-	//cout << "number: " << decimalNumber << endl;
-	// �������� �� ������������ int
 
-	// �������
-
-	/*try
+	try
 	{
 		// 
 		
@@ -119,8 +110,7 @@ int main(int argc, char* argv[])
 		cout << "Invalid arguments count\n"
 			<< "Usage: radix.exe <source notation> <destination notation> <value>\n";
 		return 1;
-	}
-	
+	}	
 
 	if (any_of(&argv[1], &argv[4], [](char* arg) {
 		return strlen(arg) == 0;
@@ -130,9 +120,10 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	// считать значения	
+
 	int sourceNotation;
 	int destinationNotation;
-	// валидные значения 2-36
 	try
 	{
 		sourceNotation = std::stoi(argv[1]);
@@ -145,18 +136,17 @@ int main(int argc, char* argv[])
 
 	string valueStr = argv[3];
 
+	// проверить на валидность
+	// попробовать перевести в систему счисления
+
 	//ValidityOfStringInRadix(valueStr, destinationNotation);
-	bool wasError = false;
-	
-	StringToInt(valueStr, sourceNotation, wasError);
+	bool wasError = false;	
 
+	int result = StringToInt(valueStr, sourceNotation, wasError);
+	if (wasError)
+		return 1;
 
-
-	// 1F из 16-тиричной в 10-тичную
-
-
-
-
+	//cout << result << endl;
     return 0;
 }
 

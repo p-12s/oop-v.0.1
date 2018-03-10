@@ -13,9 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="test-data">
+      <UniqueIdentifier>{fef8f3fb-8392-4837-b175-39d3cb24b003}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="zero.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="123-4th-to-10th-result-27.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="1010-2th-to-the-same.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="123XYZ-32th-to-the-same.txt">
+      <Filter>test-data</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
