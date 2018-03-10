@@ -10,7 +10,7 @@ namespace constants
 	const unsigned FIELD_DISPLAY_WIDTH = 8;
 }
 
-typedef float(matrix)[constants::MATRIX_SIZE][constants::MATRIX_SIZE];
+typedef double(matrix)[constants::MATRIX_SIZE][constants::MATRIX_SIZE];
 
 float ReadFloatNumberFromString(const string& str)
 {
@@ -36,7 +36,7 @@ void ReadMatrix3x3(istream& input, matrix& sourceMatrix)
 	{
 		if (rowIndex >= constants::MATRIX_SIZE)
 		{
-			throw exception("Matrix must have 3 rows");
+			throw runtime_error("Matrix must have 3 rows");
 		}
 		matrixRowStream.clear();
 		matrixRowStream.str(matrixRowString);
@@ -46,7 +46,7 @@ void ReadMatrix3x3(istream& input, matrix& sourceMatrix)
 		{
 			if (colIndex >= constants::MATRIX_SIZE)
 			{
-				throw exception("Matrix must have 3 columns!");
+				throw runtime_error("Matrix must have 3 columns!");
 			}
 			
 			sourceMatrix[rowIndex][colIndex] = ReadFloatNumberFromString(numberString);
@@ -54,18 +54,18 @@ void ReadMatrix3x3(istream& input, matrix& sourceMatrix)
 		}
 		if (colIndex < constants::MATRIX_SIZE)
 		{
-			throw exception("Matrix must have 3 columns!");
+			throw runtime_error("Matrix must have 3 columns!");
 		}
 		++rowIndex;
 	}	
 
 	if (rowIndex != 3)
 	{
-		throw exception("Matrix must have 3 rows!");
+		throw runtime_error("Matrix must have 3 rows!");
 	}
 }
 
-bool IsMatrixRead(const string& inputName, matrix& matrix)
+bool TryReadMatrix(const string& inputName, matrix& matrix)
 {
 	ifstream inputFile(inputName);
 	if (!inputFile.is_open())
@@ -99,7 +99,7 @@ void PrintMatrix3x3(const matrix& sourceMatrix)
 	}
 }
 
-float Get3x3MatrixDetermanant(const matrix& mx)
+double Get3x3MatrixDetermanant(const matrix& mx)
 {
 	return (mx[0][0] * mx[1][1] * mx[2][2]) + 
 		(mx[0][1] * mx[1][2] * mx[2][0]) + 
@@ -126,7 +126,7 @@ void SetOppositeIndicesForMatrix3x3(const int index, int& oppositeIndex1, int& o
 		oppositeIndex2 = 1;
 		break;
 	default:
-		throw exception("The cells of the matrix must have indices from 0 to 2");
+		throw runtime_error("The cells of the matrix must have indices from 0 to 2");
 	}
 }
 
@@ -158,7 +158,7 @@ void GetAdjointMatrix3x3(const matrix& mx, matrix& algebraicComplementsOfMatrix)
         }
 }
 
-void DivideMatrix3x3ByDeterminant(matrix& invertedMatrix, const float& determinant)
+void DivideMatrix3x3ByDeterminant(matrix& invertedMatrix, const double& determinant)
 {
 	for (int i = 0; i < constants::MATRIX_SIZE; i++)
 	{
@@ -171,10 +171,10 @@ void DivideMatrix3x3ByDeterminant(matrix& invertedMatrix, const float& determina
 
 void InvertMatrix3x3(matrix& sourceMatrix, matrix& invertedMatrix)
 {
-	float determinant = Get3x3MatrixDetermanant(sourceMatrix);
+	double determinant = Get3x3MatrixDetermanant(sourceMatrix);
 	if (determinant == 0)
 	{
-		throw exception("The inverse matrix does not exist, because the determinant = 0");
+		throw runtime_error("The inverse matrix does not exist, because the determinant = 0");
 	}
 	
 	TransposeMatrix3x3(sourceMatrix);
@@ -206,17 +206,9 @@ int main(int argc, char* argv[])
 			<< "Usage: invert.exe <matrix file>\n";
 		return 1;
 	}
-	
-	if (any_of(&argv[1], &argv[2], [](char* arg) {
-		return strlen(arg) == 0;
-	}))
-	{
-		cout << "Arguments <input file> must be non empty!";
-		return 1;
-	}
 
 	matrix sourceMatrix;
-	if (!IsMatrixRead(argv[1], sourceMatrix))
+	if (!TryReadMatrix(argv[1], sourceMatrix))
 		return 1;
 
 	try
