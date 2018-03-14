@@ -4,7 +4,10 @@ using namespace std;
 
 namespace constants
 {
-	const char PERMISSIBLE_CHARS_IN_SYSTEMS_OF_NUMBERS[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const char PERMISSIBLE_CHARS[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const unsigned MIN_RADIX = 2;
+	const unsigned MAX_RADIX = 36;
+	const unsigned START_NUMBER_SYSTEM_WITH_LETTERS = 11;
 }
 
 int StringToInt(const string& input, const int radix, bool& wasError)
@@ -98,17 +101,64 @@ int StringToInt(const string& input, const int radix, bool& wasError)
 	return 1;
 }
 
-/*ValidityOfStringInRadix(valueStr, destinationNotation)
+
+bool IsNotationInAllowableRange(const unsigned a)
+{ 
+	return (a >= constants::MIN_RADIX && a <= constants::MAX_RADIX); 
+};
+
+bool IsCharsInAllowableRange(const char ch, const unsigned radix, const char majorSymbol)
 {
-	
-}*/
+	if (radix < constants::START_NUMBER_SYSTEM_WITH_LETTERS)
+	{
+		return (ch >= '0' && ch <= majorSymbol);
+	}
+	else
+	{
+		return ((ch >= '0' && ch <= '9') ||
+			(toupper(ch) >= 'a' && toupper(ch) <= majorSymbol));
+	}	
+};
+
+void CheckStringForValidateWithRadix(const string& valueStr, const unsigned radix)
+{
+	// ?
+	// -, +
+
+	char majorSymbol = constants::PERMISSIBLE_CHARS[radix - 1];
+
+	for (auto &ch : valueStr)
+	{
+		if (!IsCharsInAllowableRange(ch, radix, majorSymbol))
+		{
+			//throw invalid_argument("Characters in the string are not allowed for this number system");
+			cout << "ch: " << ch << " radix: " << radix << " majorSymbol: " << majorSymbol << "FAIL!!!" << endl;
+		}
+			
+	}
+	cout << "i'm OK" << endl << endl;
+}
+
+int ReadNumberFromString(const string& notation)
+{
+	int  number = 0;
+	try
+	{
+		number = stoi(notation);
+	}
+	catch (exception const&)
+	{
+		throw invalid_argument("Arguments <source notation> <destination notation> <value> must be a numbers!");
+	}
+	return number;
+}
 
 int main(int argc, char* argv[])
 {
 	if (argc != 4)
 	{
 		cout << "Invalid arguments count\n"
-			<< "Usage: radix.exe <source notation> <destination notation> <value>\n";
+			 << "Usage: radix.exe <source notation> <destination notation> <value>\n";
 		return 1;
 	}	
 
@@ -120,31 +170,45 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	// считать значения	
-
-	int sourceNotation;
-	int destinationNotation;
 	try
 	{
-		sourceNotation = std::stoi(argv[1]);
-		destinationNotation = std::stoi(argv[2]);
+		int sourceNotation = ReadNumberFromString(argv[1]);
+		int destinationNotation = ReadNumberFromString(argv[2]);
+
+		if (!IsNotationInAllowableRange(sourceNotation) || 
+			!IsNotationInAllowableRange(destinationNotation))
+		{
+			throw runtime_error("The base of the number systems should be in the range [2, 36]");
+		}
+
+		bool wasError = false;
+		string valueStr = argv[3];
+		
+
+		CheckStringForValidateWithRadix(valueStr, sourceNotation);
+
+		/*if (!IsCharInAllowableRange(valueStr))
+		{
+			throw runtime_error("The base of the number systems should be in the range [2, 36]");
+		}*/
+
+		// проверить на валидность
+		// попробовать перевести в систему счисления
+
+		//ValidityOfStringInRadix(valueStr, destinationNotation);
+
+
+		int result = StringToInt(valueStr, sourceNotation, wasError);
+		if (wasError)
+			return 1;
+
+
 	}
-	catch (const exception& e)
+	catch (const exception& error)
 	{
-		cout << e.what();
-	}
-
-	string valueStr = argv[3];
-
-	// проверить на валидность
-	// попробовать перевести в систему счисления
-
-	//ValidityOfStringInRadix(valueStr, destinationNotation);
-	bool wasError = false;	
-
-	int result = StringToInt(valueStr, sourceNotation, wasError);
-	if (wasError)
+		cout << error.what() << endl;
 		return 1;
+	}
 
 	//cout << result << endl;
     return 0;
