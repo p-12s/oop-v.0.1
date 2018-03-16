@@ -147,9 +147,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="-1010-2th-to-the-same.txt" />
+    <Text Include="10000-2th-to-10th-16.txt" />
     <Text Include="1010-2th-to-the-same.txt" />
     <Text Include="123-4th-to-10th-result-27.txt" />
     <Text Include="123XYZ-32th-to-the-same.txt" />
+    <Text Include="1F-16th-to-the-same.txt" />
     <Text Include="ReadMe.txt" />
     <Text Include="zero.txt" />
   </ItemGroup>

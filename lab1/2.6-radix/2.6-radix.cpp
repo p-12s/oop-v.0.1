@@ -4,7 +4,7 @@ using namespace std;
 
 namespace constants
 {
-	const char PERMISSIBLE_CHARS[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const string PERMISSIBLE_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	const unsigned MIN_RADIX = 2;
 	const unsigned MAX_RADIX = 36;
 	const unsigned START_NUMBER_SYSTEM_WITH_LETTERS = 11;
@@ -12,95 +12,23 @@ namespace constants
 
 int StringToInt(const string& input, const int radix, bool& wasError)
 {
-	// отслеживать переполнение int
 	int result = 0;
-	
-	// вектор для удобного прохождения по строке с пом. transform
-	//stringstream stringToIntStream;
-	//stringToIntStream.str(input);
-	//vector<char> data(input.begin(), input.end());
 
-	// create map from chars
-	// проверка - возвращаемое число не дб больше итогового разряда
-	map<char, int> charsMap = {
-		{ 'A', 11 },
-		{ 'B', 12 }
-	};
 
-	unsigned int digit = input.size() - 1;
-	for (auto &ch : input)
+	cout << input.length() << endl;
+
+	// а если пустая строка?
+	int charPos = 0;
+	size_t inputLen = input.length();
+
+	for (int i = 10; i >= 0; i--)
 	{
-		cout << ch << "* " << digit << "  " << charsMap[ch] << "\n";
-		--digit;
+		cout << i << endl;
 	}
-	
-
-	//copy(data.begin(), data.end(), ostream_iterator<char>(cout, ", "));
 
 	
-
-	//std::transform(myv1.begin(), myv1.end(), myv1.begin(),
-	//	[](double d) -> double { return d * 3; });
-
-	//copy(chars.begin(), chars.end(), ostream_iterator<char>(cout, ", "));
-
-	/*string test = "AAA";
-	for (string::iterator it = test.begin(); it != test.end(); ++it)
-	{
-		cout << *it << '\n';
-	}		
-	cout << '\n';*/
-
-	// затолкнуть в вектор
-
-	// перевод строки 1F в числов в 10-чно системе
 	return result;
-	/*int decimalNumber = 0;
-	int strLength = str.length();
-	int degree, code;
-	char symbol;
-
-	for (size_t i = 0; i < strLength; i++)
-	{
-		degree = strLength - 1 - i;
-
-		cout << i << ": " << str[i] << " degree: " << degree << " ";
-
-
-		symbol = static_cast<char>(str[i]);
-		cout << symbol << " ";
-
-		code = static_cast<int>(str[i]);
-		cout << code << " \n";
-		//cout << "source in degree: " << radix << "^" << degree << "=" << pow(radix, degree) << endl;
-		//cout << "res: " << static_cast<int>(str[i]) * pow(radix, degree) << endl;
-
-
-		//decimalNumber = decimalNumber + static_cast<int>(str[i]) * pow(radix, degree);
-		
-		
-	}
-
-
-	try
-	{
-		// 
-		
-		int readNumber = std::stoi(str);
-
-		
-
-		return readNumber;
-	}
-	catch (const std::exception& e)
-	{
-		wasError = true;
-		std::cout << "an error occurred while converting the string " << str << " to a number:\n" << e.what() << "\n";
-	}*/
-
-	return 1;
 }
-
 
 bool IsNotationInAllowableRange(const unsigned a)
 { 
@@ -110,33 +38,21 @@ bool IsNotationInAllowableRange(const unsigned a)
 bool IsCharsInAllowableRange(const char ch, const unsigned radix, const char majorSymbol)
 {
 	if (radix < constants::START_NUMBER_SYSTEM_WITH_LETTERS)
-	{
 		return (ch >= '0' && ch <= majorSymbol);
-	}
 	else
-	{
-		return ((ch >= '0' && ch <= '9') ||
-			(toupper(ch) >= 'a' && toupper(ch) <= majorSymbol));
-	}	
+		return ((ch >= '0' && ch <= '9') || (toupper(ch) >= 'A' && toupper(ch) <= toupper(majorSymbol)));
 };
 
-void CheckStringForValidateWithRadix(const string& valueStr, const unsigned radix)
+void CheckStringForValidateWithRadix(string valueStr, const unsigned radix)
 {
-	// ?
-	// -, +
+	if (valueStr[0] == '-' || valueStr[0] == '+')
+		valueStr = valueStr.substr(1);
 
-	char majorSymbol = constants::PERMISSIBLE_CHARS[radix - 1];
+	char majorValidSymbol = constants::PERMISSIBLE_CHARS[radix - 1];
 
 	for (auto &ch : valueStr)
-	{
-		if (!IsCharsInAllowableRange(ch, radix, majorSymbol))
-		{
-			//throw invalid_argument("Characters in the string are not allowed for this number system");
-			cout << "ch: " << ch << " radix: " << radix << " majorSymbol: " << majorSymbol << "FAIL!!!" << endl;
-		}
-			
-	}
-	cout << "i'm OK" << endl << endl;
+		if (!IsCharsInAllowableRange(ch, radix, majorValidSymbol))
+			throw invalid_argument("Characters in the string are not allowed for this number system");
 }
 
 int ReadNumberFromString(const string& notation)
@@ -182,27 +98,26 @@ int main(int argc, char* argv[])
 		}
 
 		bool wasError = false;
-		string valueStr = argv[3];
-		
+		string valueStr = argv[3];		
 
 		CheckStringForValidateWithRadix(valueStr, sourceNotation);
 
-		/*if (!IsCharInAllowableRange(valueStr))
+		// попробовать перевести в систему счисления		
+		if (destinationNotation == sourceNotation)
 		{
-			throw runtime_error("The base of the number systems should be in the range [2, 36]");
-		}*/
-
-		// проверить на валидность
-		// попробовать перевести в систему счисления
-
-		//ValidityOfStringInRadix(valueStr, destinationNotation);
-
-
-		int result = StringToInt(valueStr, sourceNotation, wasError);
-		if (wasError)
-			return 1;
-
-
+			cout << valueStr << endl;
+		}
+		else
+		{
+			cout << valueStr << " in " << sourceNotation << " to 10th";
+			
+			int result = StringToInt(valueStr, sourceNotation, wasError);
+			if (wasError)
+				return 1;
+			else
+				cout << result << endl;
+			
+		}		
 	}
 	catch (const exception& error)
 	{
@@ -210,7 +125,6 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	//cout << result << endl;
     return 0;
 }
 

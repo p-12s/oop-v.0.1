@@ -31,6 +31,15 @@
     <Text Include="123XYZ-32th-to-the-same.txt">
       <Filter>test-data</Filter>
     </Text>
+    <Text Include="1F-16th-to-the-same.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="-1010-2th-to-the-same.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="10000-2th-to-10th-16.txt">
+      <Filter>test-data</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
