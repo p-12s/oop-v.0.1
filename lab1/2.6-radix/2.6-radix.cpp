@@ -10,6 +10,8 @@ const unsigned MAX_RADIX = 36;
 const unsigned START_NUMBER_SYSTEM_WITH_LETTERS = 11;
 }
 
+
+
 int StringToInt(string input, const int radix, bool& wasError)
 {
 	long long result = 0;
@@ -54,7 +56,7 @@ int StringToInt(string input, const int radix, bool& wasError)
 		}
 		charPos++;
 	}
-	return (int) result;
+	return static_cast<int>(result);
 }
 
 bool IsNotationInAllowableRange(const unsigned a)
@@ -110,6 +112,37 @@ void CastCharsToUpperCase(string& valueStr)
 	{
 		throw runtime_error("Error in casting characters to uppercase");
 	}
+}
+
+
+void Divide(int n, int radix, bool& wasError)
+{
+	//cout << "n: " << n << " future remind: " << n % radix << endl;
+	// деление на 0
+	if (n >= radix)
+	{
+		Divide((n / radix), radix, wasError);		
+	}
+	else
+	{
+		cout << "*" << n;
+	}
+	
+}
+
+string IntToString(int n, int radix, bool& wasError)
+{
+	string result = "";
+
+	//result += 1;
+	cout << "n: " << n << " radix: " << radix << endl;
+	Divide(n, radix, wasError);
+	//result
+	/*while (n >= radix)
+	{
+		result += 
+	}*/
+	return result;
 }
 
 int main(int argc, char* argv[])
@@ -172,7 +205,7 @@ int main(int argc, char* argv[])
 			// магическое число
 			if (destinationNotation != 10)
 			{
-
+				cout << IntToString(result, destinationNotation, wasError) << endl;
 			}
 			cout << result << endl;
 		}
