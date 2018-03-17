@@ -28,9 +28,6 @@
     <Text Include="1010-2th-to-the-same.txt">
       <Filter>test-data</Filter>
     </Text>
-    <Text Include="123XYZ-32th-to-the-same.txt">
-      <Filter>test-data</Filter>
-    </Text>
     <Text Include="1F-16th-to-the-same.txt">
       <Filter>test-data</Filter>
     </Text>
@@ -38,6 +35,15 @@
       <Filter>test-data</Filter>
     </Text>
     <Text Include="10000-2th-to-10th-16.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="123XYZ-36th-to-the-same.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="1F-16th-to-10th-31.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="1000-2th-to-10th-8.txt">
       <Filter>test-data</Filter>
     </Text>
   </ItemGroup>

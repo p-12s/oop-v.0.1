@@ -12,21 +12,41 @@ namespace constants
 
 int StringToInt(const string& input, const int radix, bool& wasError)
 {
+	
+
 	int result = 0;
-
-
-	cout << input.length() << endl;
-
-	// а если пустая строка?
-	int charPos = 0;
-	size_t inputLen = input.length();
-
-	for (int i = 10; i >= 0; i--)
+	if (input.empty())
 	{
-		cout << i << endl;
+		wasError = true;
+		return result;
 	}
 
-	
+	// а если отрицательное число, или есть унарный знак
+	int charPos = 0;
+	int increment = 0;
+
+	for (int i = input.length() - 1; i >= 0; i--)
+	{
+		int numeral = constants::PERMISSIBLE_CHARS.find(input[charPos]);
+
+		if (numeral != std::string::npos)
+		{
+			increment = numeral * pow(radix, i);
+			if (result + increment <= INT_MAX)
+				result += increment;
+			else
+			{
+				wasError = true;
+				break;
+			}
+		}
+		else
+		{
+			wasError = true;
+			break;
+		}
+		charPos++;
+	}
 	return result;
 }
 
@@ -109,14 +129,11 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			cout << valueStr << " in " << sourceNotation << " to 10th";
-			
 			int result = StringToInt(valueStr, sourceNotation, wasError);
 			if (wasError)
-				return 1;
+				throw runtime_error("An error occurred while converting the number");
 			else
-				cout << result << endl;
-			
+				cout << result << endl;			
 		}		
 	}
 	catch (const exception& error)
@@ -127,4 +144,3 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-
