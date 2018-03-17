@@ -9,8 +9,11 @@ const unsigned MIN_RADIX = 2;
 const unsigned MAX_RADIX = 36;
 const unsigned START_NUMBER_SYSTEM_WITH_LETTERS = 11;
 }
-
-
+/*
+string GetCharViewOfDigitByPosition(const unsigned pos)
+{
+	string numeral = constants::PERMISSIBLE_CHARS[pos];
+}*/
 
 int StringToInt(string input, const int radix, bool& wasError)
 {
@@ -114,34 +117,22 @@ void CastCharsToUpperCase(string& valueStr)
 	}
 }
 
-
-void Divide(int n, int radix, bool& wasError)
+// подумать над названием
+void Divide(int n, int radix, string& result, bool& wasError)
 {
-	//cout << "n: " << n << " future remind: " << n % radix << endl;
-	// деление на 0
-	if (n >= radix)
+	if (radix != 0)
 	{
-		Divide((n / radix), radix, wasError);		
-	}
-	else
-	{
-		cout << "*" << n;
-	}
-	
+		if (n >= radix)
+			Divide((n / radix), radix, result, wasError);
+		result += constants::PERMISSIBLE_CHARS[n % radix];
+	}	
 }
 
 string IntToString(int n, int radix, bool& wasError)
 {
 	string result = "";
+	Divide(n, radix, result, wasError);
 
-	//result += 1;
-	cout << "n: " << n << " radix: " << radix << endl;
-	Divide(n, radix, wasError);
-	//result
-	/*while (n >= radix)
-	{
-		result += 
-	}*/
 	return result;
 }
 
@@ -203,11 +194,10 @@ int main(int argc, char* argv[])
 		else
 		{
 			// магическое число
-			if (destinationNotation != 10)
-			{
-				cout << IntToString(result, destinationNotation, wasError) << endl;
-			}
-			cout << result << endl;
+
+			string res = IntToString(result, destinationNotation, wasError);
+			
+			cout << res << endl;
 		}
 			
 
