@@ -155,7 +155,6 @@
     <Text Include="3x3.txt" />
     <Text Include="3x4.txt" />
     <Text Include="empty.txt" />
-    <Text Include="ReadMe.txt" />
     <Text Include="test-data\3x3-easy-result.txt" />
     <Text Include="test-data\3x3-easy.txt" />
     <Text Include="test-data\3x3-result.txt" />

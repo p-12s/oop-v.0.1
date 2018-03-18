@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{E37D3ACA-74C9-4018-B964-BBC8C0779D13}</ProjectGuid>
+    <ProjectGuid>{E8C7C979-C3E7-458A-BFD2-39E591E7E5EE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My14replace</RootNamespace>
+    <RootNamespace>My43crypt</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -92,9 +92,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
     </Link>
-    <PostBuildEvent>
-      <Command>test.bat "$(TargetPath)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -106,9 +103,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
     </Link>
-    <PostBuildEvent>
-      <Command>test.bat "$(TargetPath)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -124,9 +118,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <PostBuildEvent>
-      <Command>test.bat "$(TargetPath)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -142,42 +133,19 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <PostBuildEvent>
-      <Command>test.bat "$(TargetPath)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <Text Include="test-data\empty-lines-out.txt" />
-    <Text Include="test-data\empty-lines.txt" />
-    <Text Include="test-data\empty.txt" />
-    <Text Include="test-data\file-with-number-out.txt" />
-    <Text Include="test-data\file-with-number.txt" />
-    <Text Include="test-data\file-without-dog.txt" />
-    <Text Include="test-data\fox-multiline-out.txt" />
-    <Text Include="test-data\fox-multiline.txt" />
-    <Text Include="test-data\fox-multiply-out.txt" />
-    <Text Include="test-data\fox-multiply.txt" />
-    <Text Include="test-data\fox-only-out.txt" />
-    <Text Include="test-data\fox-only.txt" />
-    <Text Include="test-data\fox-replace-dog-with-cat.txt" />
-    <Text Include="test-data\fox-replace-dog-with-empty-string.txt" />
-    <Text Include="test-data\fox.txt" />
-  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="1.4-replace.cpp" />
+    <ClCompile Include="4.3-crypt.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="test.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

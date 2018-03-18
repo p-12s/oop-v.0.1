@@ -162,7 +162,6 @@
     <Text Include="1F-16th-to-the-same.txt" />
     <Text Include="2147483647-10th-to-10th-2147483647.txt" />
     <Text Include="overflow-error.txt" />
-    <Text Include="ReadMe.txt" />
     <Text Include="zero.txt" />
   </ItemGroup>
   <ItemGroup>
