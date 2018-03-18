@@ -145,8 +145,9 @@ void CheckValidityOfParameters(char* argv[], int& sourceNotation, int& destinati
 	CastCharsToUpperCase(valueStr);
 }
 
-string TryChangingRadix(const int sourceNotation, const int destinationNotation, string& valueStr, bool& wasError)
+string TryChangingRadix(const int sourceNotation, const int destinationNotation, string& valueStr)
 {
+	bool wasError = false;
 	long long decimalNumber = StringToInt(valueStr, sourceNotation, wasError);
 	if (wasError)
 		throw underflow_error("There was an overflow of a number of type int\n");

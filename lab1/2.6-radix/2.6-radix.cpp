@@ -27,9 +27,7 @@ int main(int argc, char* argv[])
 		string valueStr;
 		CheckValidityOfParameters(argv, sourceNotation, destinationNotation, valueStr);
 
-		bool wasError = false;
-		string result = TryChangingRadix(sourceNotation, destinationNotation, valueStr, wasError);
-
+		string result = TryChangingRadix(sourceNotation, destinationNotation, valueStr);
 		cout << result << endl;
 	}
 	catch (const exception& error)

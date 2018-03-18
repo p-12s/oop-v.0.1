@@ -27,4 +27,4 @@ std::string IntToString(long long n, int radix, bool& wasError);
 
 void CheckValidityOfParameters(char* argv[], int& sourceNotation, int& destinationNotation, std::string& valueStr);
 
-std::string TryChangingRadix(const int sourceNotation, const int destinationNotation, std::string& valueStr, bool& wasError);
+std::string TryChangingRadix(const int sourceNotation, const int destinationNotation, std::string& valueStr);
