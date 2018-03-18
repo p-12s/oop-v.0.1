@@ -64,6 +64,9 @@
     <Text Include="+Zz-36th-to-16th+50F.txt">
       <Filter>test-data</Filter>
     </Text>
+    <Text Include="-zZ-36th-to-16th-50F.txt">
+      <Filter>test-data</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

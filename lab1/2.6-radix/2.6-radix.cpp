@@ -21,7 +21,7 @@ int StringToInt(string input, const int radix, bool& wasError)
 	if (input.empty() || input == "-" || input == "+")
 	{
 		wasError = true;
-		return result;
+		return static_cast<int>(result);
 	}
 
 	int signOfNumber = (input[0] == '-') ? -1 : 1;
@@ -36,10 +36,9 @@ int StringToInt(string input, const int radix, bool& wasError)
 
 		if (numeral != std::string::npos)
 		{
-			increment = signOfNumber * numeral * pow(radix, i);
+			increment = static_cast<long long>(signOfNumber * numeral * pow(radix, i));
 			if (increment < INT_MIN || increment > INT_MAX)
 			{
-				//cout << "overflow 1!" << endl;
 				wasError = true;
 				break;
 			}
@@ -47,7 +46,6 @@ int StringToInt(string input, const int radix, bool& wasError)
 			result += increment;
 			if (result < INT_MIN || result > INT_MAX)
 			{
-				//cout << "overflow 2!" << endl;
 				wasError = true;
 				break;
 			}
@@ -118,7 +116,7 @@ void CastCharsToUpperCase(string& valueStr)
 }
 
 // подумать над названием
-void Divide(int n, int radix, string& result, bool& wasError)
+void Divide(long long n, int radix, string& result, bool& wasError)
 {
 	if (radix != 0)
 	{
@@ -128,12 +126,16 @@ void Divide(int n, int radix, string& result, bool& wasError)
 	}	
 }
 
-string IntToString(int n, int radix, bool& wasError)
+string IntToString(long long n, int radix, bool& wasError)
 {
 	string result = "";
+
+	int signOfNumber = (n < 0) ? -1 : 1;
+	n *= signOfNumber;
+
 	Divide(n, radix, result, wasError);
 
-	return result;
+	return (signOfNumber < 0) ? "-" + result : result;
 }
 
 int main(int argc, char* argv[])
@@ -181,14 +183,9 @@ int main(int argc, char* argv[])
 
 		CheckStringForValidateWithRadix(valueStr, sourceNotation);
 
-		//cout << valueStr << endl;
 		CastCharsToUpperCase(valueStr);
-		//cout << valueStr << endl;
 
-		// попробовать перевести в систему счисления
-
-		// можно ли использовать __int64 ?
-		int result = StringToInt(valueStr, sourceNotation, wasError);
+		long long result = StringToInt(valueStr, sourceNotation, wasError);
 		if (wasError)
 			throw underflow_error("There was an overflow of a number of type int");
 		else
