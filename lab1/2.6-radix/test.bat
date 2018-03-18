@@ -37,7 +37,10 @@ if NOT ERRORLEVEL 1 goto err
 
 %PROGRAM% "10" "36" "1010" >nul 
 if ERRORLEVEL 1 goto err 
- 
+
+%PROGRAM% "1f" "36" "1010" >nul 
+if NOT ERRORLEVEL 1 goto err 
+
 rem Корректно обрабатывается случай, когда символ в конвертируемой строке 
 rem не может принадлежать числу с исходным основанием 
 rem например, символ A не принадлежит числу с основанием 10 
