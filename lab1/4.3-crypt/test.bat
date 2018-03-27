@@ -8,24 +8,35 @@ rem При пустом параметре входного файла ожид�
 %PROGRAM% "" "" "" "">nul
 if NOT ERRORLEVEL 1 goto err
 
-rem При несуществующем входном файле ожидается ненулевой код возврата
-%PROGRAM% "crypt" "test-data\nonexistent-file.txt" "test-data\empty.txt" "255">nul
-rem if NOT ERRORLEVEL 1 goto err
-
-
 rem При неизвестом параметре режима работы (шифр., дешифр.) ожидается ненулевой код возврата
-%PROGRAM% "crypt" "test-data\empty.txt" "test-data\empty.txt" "255">nul
+%PROGRAM% "crypt" "empty.txt" "empty.txt" "255">nul
 if ERRORLEVEL 1 goto err
 
-%PROGRAM% "decrypt" "test-data\empty.txt" "test-data\empty.txt" "255">nul
+%PROGRAM% "decrypt" "empty.txt" "empty.txt" "255">nul
 if ERRORLEVEL 1 goto err
 
-%PROGRAM% "supercrypt" "test-data\empty.txt" "test-data\empty.txt" "255">nul
+%PROGRAM% "supercrypt" "empty.txt" "empty.txt" "255">nul
 if NOT ERRORLEVEL 1 goto err
 
-rem 
-rem %PROGRAM% "" >nul
-rem if NOT ERRORLEVEL 1 goto err
+rem При несуществующем входном файле ожидается ненулевой код возврата
+%PROGRAM% "crypt" "nonexistent-file.txt" "empty.txt" "255">nul
+if NOT ERRORLEVEL 1 goto err
+
+rem При целочисленном ключе вне интервала 0-255 ожидается ненулевой код возврата
+%PROGRAM% "crypt" "empty.txt" "empty.txt" "-1">nul
+if NOT ERRORLEVEL 1 goto err
+
+%PROGRAM% "crypt" "empty.txt" "empty.txt" "0">nul
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% "crypt" "empty.txt" "empty.txt" "255">nul
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% "crypt" "empty.txt" "empty.txt" "256">nul
+if NOT ERRORLEVEL 1 goto err
+
+%PROGRAM% "crypt" "empty.txt" "empty.txt" "not-number">nul
+if NOT ERRORLEVEL 1 goto err
 
 rem 
 rem %PROGRAM% "test-data\nonexistent-file.txt"
