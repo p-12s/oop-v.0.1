@@ -28,20 +28,25 @@ int main(int argc, char* argv[])
 	}
 
 	// проверить соответствие каждого парметра
+	string modeParamether = argv[1];
+	ModeOfOperation mode = (modeParamether == "crypt") ? ModeOfOperation::Crypt :
+							(modeParamether == "decrypt") ? ModeOfOperation::Decrypt :
+							ModeOfOperation::Unknown;
 	
-	string modeParameter = argv[1];
-	/*ModeOfOperation mode;
-	switch (modeParameter)
+	if (mode == ModeOfOperation::Unknown)
 	{
-	case "crypt":
-		mode = ModeOfOperation::Crypt;
-		break;
-	case "decryt":
-		mode = ModeOfOperation::Decrypt;
-		break;
-	default:
-		mode = ModeOfOperation::Unknown;
-	}*/
+		cout << "Invalid encryption mode!";
+		return 1;
+	}
 
+
+
+	/*if (mode == ModeOfOperation::Crypt)
+		cout << "crypt ++" << endl;
+	else if (mode == ModeOfOperation::Decrypt)
+		cout << "decrypt ++" << endl;
+	else
+		cout << "uncnown ++" << endl;
+	*/
     return 0;
 }
