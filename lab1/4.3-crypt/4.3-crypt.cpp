@@ -21,6 +21,22 @@ int ReadNumberFromString(const string& notation)
 	return number;
 }
 
+ifstream OpenFileInBinaryModeForReading(const string& fileName)
+{
+	ifstream strm(fileName, ios_base::binary);
+	if (!strm.is_open())
+		cout << "Failed to open " << fileName << "\n";
+	return move(strm);
+}
+
+ofstream OpenFileInBinaryModeForWriting(const string& fileName)
+{
+	ofstream strm(fileName, ios_base::binary);
+	if (!strm.is_open())
+		cout << "Failed to open " << fileName << "\n";
+	return move(strm);
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc != 5)
@@ -42,6 +58,8 @@ int main(int argc, char* argv[])
 	}
 
 	// проверка режима
+	// возможно она излишня
+
 	string modeParamether = argv[1];
 	ModeOfOperation mode = (modeParamether == "crypt") ? ModeOfOperation::Crypt :
 							(modeParamether == "decrypt") ? ModeOfOperation::Decrypt :
@@ -77,8 +95,20 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	// открыть файл в двоичном режиме, в файле пусть будет 1 байт
+	// открыть файл на чтение в двоичном режиме, в файле пусть будет 1 байт
+	ifstream input = OpenFileInBinaryModeForReading(argv[2]);
+	// связать с потоком ввода
 
+	uint8_t byte;
+	while (input.read(reinterpret_cast<char*>(&byte), 1))
+	{
+		cout << byte << endl;
+		// flush ?
+	}
+
+	//  то же самое для потока вывода
+
+	// считывать по байту (8 бит) и отправлять на выход
 
 
     return 0;
