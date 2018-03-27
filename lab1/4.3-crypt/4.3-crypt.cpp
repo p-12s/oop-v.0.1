@@ -2,6 +2,11 @@
 
 using namespace std;
 
+enum struct ModeOfOperation
+{
+	Crypt, Decrypt, Unknown
+};
+
 int main(int argc, char* argv[])
 {
 	if (argc != 5)
@@ -21,8 +26,22 @@ int main(int argc, char* argv[])
 		cout << "Arguments crypt <input file> <output file> <key> must be non empty!";
 		return 1;
 	}
-	// проверить соответствие каждого парметра
 
+	// проверить соответствие каждого парметра
+	
+	string modeParameter = argv[1];
+	/*ModeOfOperation mode;
+	switch (modeParameter)
+	{
+	case "crypt":
+		mode = ModeOfOperation::Crypt;
+		break;
+	case "decryt":
+		mode = ModeOfOperation::Decrypt;
+		break;
+	default:
+		mode = ModeOfOperation::Unknown;
+	}*/
 
     return 0;
 }

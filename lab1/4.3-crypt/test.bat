@@ -10,6 +10,17 @@ if NOT ERRORLEVEL 1 goto err
 
 rem При несуществующем входном файле ожидается ненулевой код возврата
 %PROGRAM% "crypt" "test-data\nonexistent-file.txt" "test-data\empty.txt" "255">nul
+rem if NOT ERRORLEVEL 1 goto err
+
+
+rem При неизвестом параметре режима работы (шифр., дешифр.) ожидается ненулевой код возврата
+%PROGRAM% "crypt" "test-data\empty.txt" "test-data\empty.txt" "255">nul
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% "decrypt" "test-data\empty.txt" "test-data\empty.txt" "255">nul
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% "supercrypt" "test-data\empty.txt" "test-data\empty.txt" "255">nul
 if NOT ERRORLEVEL 1 goto err
 
 rem 
