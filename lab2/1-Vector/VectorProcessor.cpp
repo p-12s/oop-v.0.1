@@ -5,7 +5,6 @@
 #pragma warning (pop)
 
 using namespace std;
-using namespace std::placeholders;
 
 double GetVectorsMaxVal(vector<double>& numbers)
 {

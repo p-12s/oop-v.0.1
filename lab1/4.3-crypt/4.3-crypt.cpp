@@ -48,6 +48,31 @@ void CopyFileWithBytePermutation(istream& input, ostream& output)
 	}
 }
 
+uint8_t EncodeByte(const uint8_t& byte)
+{
+	uint8_t bit0 = (byte & 1) << 2;
+	uint8_t bit1 = (byte & 1 << 1) << 2;
+	uint8_t bit2 = (byte & 1 << 2) << 2;
+	uint8_t bit3 = (byte & 1 << 3) << 3;
+	uint8_t bit4 = (byte & 1 << 4) << 3;
+	uint8_t bit5 = (byte & 1 << 5) >> 5;
+	uint8_t bit6 = (byte & 1 << 6) >> 5;
+	uint8_t bit7 = (byte & 1 << 7) >> 2;
+	return bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0;
+}
+
+uint8_t DecodeByte(const uint8_t& byte)
+{
+	uint8_t bit0 = (byte & 1) << 5;
+	uint8_t bit1 = (byte & 1 << 1) << 5;
+	uint8_t bit2 = (byte & 1 << 2) >> 2;
+	uint8_t bit3 = (byte & 1 << 3) >> 2;
+	uint8_t bit4 = (byte & 1 << 4) >> 2;
+	uint8_t bit5 = (byte & 1 << 5) << 2;
+	uint8_t bit6 = (byte & 1 << 6) >> 3;
+	uint8_t bit7 = (byte & 1 << 7) >> 3;
+	return bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0;
+}
 
 int main(int argc, char* argv[])
 {
@@ -119,51 +144,7 @@ int main(int argc, char* argv[])
 		cout << "Failed to save data on disk\n";
 		return 1;
 	}
-	// тест
-	uint8_t byte = 1;
 
-	uint8_t byte0 = (byte & 1) << 2;//0-2
-	uint8_t byte1 = (byte & (1 << 1)) << 2;//1-3
-	uint8_t byte2 = (byte & (1 << 2)) << 2;//2-4
-	uint8_t byte3 = (byte & (1 << 3)) << 3;//3-6
-	uint8_t byte4 = (byte & (1 << 4)) << 3;//4-7
-	uint8_t byte5 = (byte & (1 << 5)) >> 5;//5-0
-	uint8_t byte6 = (byte & (1 << 6)) >> 5;//6-1
-	uint8_t byte7 = (byte & (1 << 7)) >> 2;//7-5
-
-	/*uint8_t byte0 = (byte & 1) << 2;		//0-5
-	uint8_t byte1 = (byte & (1 << 1)) << 2;	//1-6
-	uint8_t byte2 = (byte & (1 << 2)) << 2;	//2-0
-	uint8_t byte3 = (byte & (1 << 3)) << 3;	//3-1
-	uint8_t byte4 = (byte & (1 << 4)) << 3;	//4-2
-	uint8_t byte5 = (byte & (1 << 5)) >> 5;	//5-7
-	uint8_t byte6 = (byte & (1 << 6)) >> 5;	//6-3
-	uint8_t byte7 = (byte & (1 << 7)) >> 2;	//7-4
-	*/
-
-
-
-	uint8_t a = 1;
-	uint8_t b = 2;
-	uint8_t c = 3;
-
-	cout << "a(1): " << a << " b(2): " << b << " c(3): " << c << endl;
-
-	uint8_t ab = a & b;
-	cout << "a & b = " << ab << endl;
-
-	uint8_t ab2 = a | b;
-	cout << "a | b = " << ab2 << endl;
-
-	uint8_t bc3 = b ^ c;
-	cout << "b ^ c = " << bc3 << endl;
-
-	uint8_t ab4 = a ^ b;
-	cout << "a ^ b = " << ab4 << endl;
-
-
-	uint8_t a5 = c >> 1;
-	cout << "c >> 1 = " << a5 << endl;
 
     return 0;
 }

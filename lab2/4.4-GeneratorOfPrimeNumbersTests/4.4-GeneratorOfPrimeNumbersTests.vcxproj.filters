@@ -15,27 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\1-Vector\VectorProcessor.h">
+    <ClInclude Include="..\4.4-GeneratorOfPrimeNumbers\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\4.4-GeneratorOfPrimeNumbers\GeneratePrimeNumbersSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="4.4-GeneratorOfPrimeNumbersTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="1-VectorTests.cpp">
+    <ClCompile Include="..\1-VectorTests\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\1-Vector\VectorProcessor.cpp">
+    <ClCompile Include="GeneratePrimeNumbersSetTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VectorProcessorTests.cpp">
+    <ClCompile Include="..\4.4-GeneratorOfPrimeNumbers\GeneratePrimeNumbersSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
