@@ -38,9 +38,7 @@ if NOT ERRORLEVEL 1 goto err
 %PROGRAM% "crypt" "empty.txt" "empty.txt" "not-number">nul
 if NOT ERRORLEVEL 1 goto err
 
-rem 
-rem %PROGRAM% "test-data\nonexistent-file.txt"
-rem if NOT ERRORLEVEL 1 goto err
+rem Открыть файл и переписать содержимое без шифрования в результирующий файл 
 
 rem 
 rem %PROGRAM% "test-data\empty.txt"
