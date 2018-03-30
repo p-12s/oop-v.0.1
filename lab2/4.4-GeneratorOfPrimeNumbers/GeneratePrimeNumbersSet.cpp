@@ -12,8 +12,8 @@ set<int> GeneratePrimeNumbersSet(int upperBound)
 		return {};
 
 	vector<bool> boleanBolter(upperBound + 1, true);
-	boleanBolter.at(0) = false;
-	boleanBolter.at(1) = false;
+	boleanBolter[0] = false;
+	boleanBolter[1] = false;
 
 	for (size_t i = 2; i * i < boleanBolter.size(); i++)
 	{
@@ -25,8 +25,8 @@ set<int> GeneratePrimeNumbersSet(int upperBound)
 	set<int> result;
 	for (size_t i = 2; i < boleanBolter.size(); i++)
 	{
-		if (boleanBolter.at(i))
-			result.insert(i);
+		if (boleanBolter[i])
+			result.insert(result.end(), i);
 	}
 
 	return result;
