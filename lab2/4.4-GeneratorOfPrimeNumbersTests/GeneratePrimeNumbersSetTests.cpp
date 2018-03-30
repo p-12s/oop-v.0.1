@@ -3,6 +3,11 @@
 
 using namespace std;
 
+int GetNumberOfPrimesInSet(const set<int>& numbersSet)
+{
+	return numbersSet.size();
+}
+
 bool SetsAreEqual(set<int> const& x, set<int> const& y)
 {
 	return x == y;
@@ -29,6 +34,17 @@ BOOST_AUTO_TEST_SUITE(GeneratePrimeNumbersSet_function)
 	{
 		BOOST_CHECK(SetsAreEqual(GeneratePrimeNumbersSet(6), { 2, 3, 5 }));
 	}
-//Для проверки программы используйте тот факт, что в диапазоне от 1 до 100000000 содержится 5761456 простых чисел.
+
+	BOOST_AUTO_TEST_CASE(returns_from_2_to_37_if_the_entered_number_37)
+	{
+		BOOST_CHECK(SetsAreEqual(GeneratePrimeNumbersSet(37), { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 }));
+	}
+
+	/*BOOST_AUTO_TEST_CASE(in_the_range_of_100_million_returns_the_number_of_prime_numbers_equal_to_5761455)
+	{
+		const unsigned countOfPrimeNumbersIn100Millions = 5761455;
+		int countOfPrimeNumbers = GetNumberOfPrimesInSet(GeneratePrimeNumbersSet(100000000));
+		BOOST_CHECK(countOfPrimeNumbers == countOfPrimeNumbersIn100Millions);
+	}*/
 
 BOOST_AUTO_TEST_SUITE_END()
