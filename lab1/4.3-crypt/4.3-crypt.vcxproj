@@ -163,6 +163,8 @@
     <None Include="test.bat" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="abc-crypt.txt" />
+    <Text Include="abc.txt" />
     <Text Include="empty.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

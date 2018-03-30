@@ -38,19 +38,29 @@ if NOT ERRORLEVEL 1 goto err
 %PROGRAM% "crypt" "empty.txt" "empty.txt" "not-number">nul
 if NOT ERRORLEVEL 1 goto err
 
-rem Открыть файл и переписать содержимое без шифрования в результирующий файл 
+rem Зашифровывает файл и дешифровывает его к первоначальному (исходному) виду
+%PROGRAM% "crypt" "abc.txt" %TEMP%\abc-crypt.txt "255">nul
+if ERRORLEVEL 1 goto err
+%PROGRAM% "decrypt" %TEMP%\abc-crypt.txt %TEMP%\abc-decrypt.txt "255">nul
+if ERRORLEVEL 1 goto err
+fc.exe "abc.txt" %TEMP%\abc-decrypt.txt >nul
+if ERRORLEVEL 1 goto err
 
-rem 
-rem %PROGRAM% "test-data\empty.txt"
-rem if NOT ERRORLEVEL 1 goto err
+rem Не изменяет содержимое пустого файла при кодировании-декодировании
+%PROGRAM% "crypt" "empty.txt" %TEMP%\empty-crypt.txt "2">nul
+if ERRORLEVEL 1 goto err
+%PROGRAM% "decrypt" %TEMP%\empty-crypt.txt %TEMP%\empty-decrypt.txt "2">nul
+if ERRORLEVEL 1 goto err
+fc.exe "empty.txt" %TEMP%\empty-decrypt.txt >nul
+if ERRORLEVEL 1 goto err
 
-
-rem открыть файл в двоичном режиме
-rem вывести содержимое на экран
-rem 
-rem 
-rem 
-
+rem При неодинаковом ключе при шифровке-расшифровке ожидается несовпадение исходного и получившегося файла
+%PROGRAM% "crypt" "abc.txt" %TEMP%\abc-crypt-100.txt "100">nul
+if ERRORLEVEL 1 goto err
+%PROGRAM% "decrypt" %TEMP%\abc-crypt-100.txt %TEMP%\abc-decrypt-101.txt "101">nul
+if ERRORLEVEL 1 goto err
+fc.exe "abc.txt" %TEMP%\abc-decrypt-101.txt >nul
+if NOT ERRORLEVEL 1 goto err
 
 echo OK
 exit 0
