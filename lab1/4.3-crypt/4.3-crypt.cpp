@@ -9,7 +9,7 @@ enum struct ModeOfOperation
 
 int ReadNumberFromString(const string& notation)
 {
-	int number = 0;
+	int number;
 	try
 	{
 		number = stoi(notation);
@@ -23,27 +23,27 @@ int ReadNumberFromString(const string& notation)
 
 uint8_t CryptByte(uint8_t& byte)
 {
-	uint8_t bit0 = (byte & (1 << 0)) << 2;
-	uint8_t bit1 = (byte & (1 << 1)) << 2;
-	uint8_t bit2 = (byte & (1 << 2)) << 2;
-	uint8_t bit3 = (byte & (1 << 3)) << 3;
-	uint8_t bit4 = (byte & (1 << 4)) << 3;
-	uint8_t bit5 = (byte & (1 << 5)) >> 5;
-	uint8_t bit6 = (byte & (1 << 6)) >> 5;
-	uint8_t bit7 = (byte & (1 << 7)) >> 2;
+	uint8_t bit0 = (byte & 1) << 2;
+	uint8_t bit1 = (byte & 1 << 1) << 2;
+	uint8_t bit2 = (byte & 1 << 2) << 2;
+	uint8_t bit3 = (byte & 1 << 3) << 3;
+	uint8_t bit4 = (byte & 1 << 4) << 3;
+	uint8_t bit5 = (byte & 1 << 5) >> 5;
+	uint8_t bit6 = (byte & 1 << 6) >> 5;
+	uint8_t bit7 = (byte & 1 << 7) >> 2;
 	return (bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0);
 }
 
 uint8_t DecryptByte(const uint8_t& byte)
 {
-	uint8_t bit0 = (byte & (1 << 0)) << 5;
-	uint8_t bit1 = (byte & (1 << 1)) << 5;
-	uint8_t bit2 = (byte & (1 << 2)) >> 2;
-	uint8_t bit3 = (byte & (1 << 3)) >> 2;
-	uint8_t bit4 = (byte & (1 << 4)) >> 2;
-	uint8_t bit5 = (byte & (1 << 5)) << 2;
-	uint8_t bit6 = (byte & (1 << 6)) >> 3;
-	uint8_t bit7 = (byte & (1 << 7)) >> 3;
+	uint8_t bit0 = (byte & 1) << 5;
+	uint8_t bit1 = (byte & 1 << 1) << 5;
+	uint8_t bit2 = (byte & 1 << 2) >> 2;
+	uint8_t bit3 = (byte & 1 << 3) >> 2;
+	uint8_t bit4 = (byte & 1 << 4) >> 2;
+	uint8_t bit5 = (byte & 1 << 5) << 2;
+	uint8_t bit6 = (byte & 1 << 6) >> 3;
+	uint8_t bit7 = (byte & 1 << 7) >> 3;
 	return (bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0);
 }
 
