@@ -122,14 +122,6 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	if (any_of(&argv[1], &argv[4], [](char* arg) {
-		return strlen(arg) == 0;
-	}))
-	{
-		cout << "Arguments crypt <input file> <output file> <key> must be non empty!";
-		return 1;
-	}
-
 	try
 	{
 		CopyFileWithEncryption(argv);
