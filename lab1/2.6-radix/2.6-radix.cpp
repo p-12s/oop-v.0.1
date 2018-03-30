@@ -12,14 +12,6 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	if (any_of(&argv[1], &argv[4], [](char* arg) {
-			return strlen(arg) == 0;
-		}))
-	{
-		cout << "Arguments <source notation> <destination notation> <value> must be non empty!\n";
-		return 1;
-	}
-
 	try
 	{
 		int sourceNotation;
