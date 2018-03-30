@@ -13,5 +13,8 @@ bool ParseURL(string const& url, Protocol&  protocol, int& port, string& host, s
 
 bool IsUrlValid(string url)
 {
-	return false;
+	if (url.empty())
+		return false;
+
+	return true;
 }

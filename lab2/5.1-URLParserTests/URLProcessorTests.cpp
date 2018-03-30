@@ -11,10 +11,25 @@ BOOST_AUTO_TEST_CASE(with_an_empty_string_returns_false)
 	BOOST_CHECK(IsUrlValid("") == false);
 }
 
-// 
-BOOST_AUTO_TEST_CASE(with_an_not_empty_string_returns_false)
+// ѕри не пустой входной строке возвращает true 
+BOOST_AUTO_TEST_CASE(with_an_not_empty_string_returns_true)
 {
 	BOOST_CHECK(IsUrlValid("http://site.ru") == true);
 }
+
+// »звлекает из строки информации об используемом протоколе
+// номере порта
+// имени хоста
+// и имени документа
+
+// ¬ случае успеха функци€ возвращает true
+// в случае ошибки Ц false.
+
+// ≈сли порт не указан, то он считаетс€ равным номеру порта по умолчанию дл€ данного протокола 
+// дл€ HTTP Ц это 80
+// дл€ HTTPS Ц 443
+// дл€ FTP Ц 21
+
+
 
 BOOST_AUTO_TEST_SUITE_END()
