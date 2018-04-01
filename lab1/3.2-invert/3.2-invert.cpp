@@ -59,31 +59,19 @@ void ReadMatrix3x3(istream& input, matrix& sourceMatrix)
 		++rowIndex;
 	}	
 
-	if (rowIndex != 3)
+	if (rowIndex != constants::MATRIX_SIZE)
 	{
 		throw runtime_error("Matrix must have 3 rows!");
 	}
 }
 
-bool TryReadMatrix(const string& inputName, matrix& matrix)
+void TryReadMatrix(const string& inputName, matrix& matrix)
 {
 	ifstream inputFile(inputName);
 	if (!inputFile.is_open())
-	{
-		cout << "Failed to open " << inputName << " for reading" << endl;
-		return false;
-	}
+		throw runtime_error("Failed to open file for reading");
 	
-	try
-	{
-		ReadMatrix3x3(inputFile, matrix);
-	}
-	catch (exception const& error)
-	{
-		cout << error.what() << endl;
-		return false;
-	}	
-	return true;
+	ReadMatrix3x3(inputFile, matrix);
 }
 
 void PrintMatrix3x3(const matrix& sourceMatrix)
@@ -130,13 +118,14 @@ void SetOppositeIndicesForMatrix3x3(const int index, int& oppositeIndex1, int& o
 	}
 }
 
-void TransposeMatrix3x3(matrix& mx)
+void TransposeMatrix3x3(const matrix& mx, matrix& transposeMx)
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < constants::MATRIX_SIZE; i++)
 	{
-		for (int j = i; j < 3; j++)
+		for (int j = i; j < constants::MATRIX_SIZE; j++)
 		{
-			swap(mx[i][j], mx[j][i]);
+			transposeMx[i][j] = mx[j][i];
+			transposeMx[j][i] = mx[i][j];
 		}
 	}
 }
@@ -169,33 +158,18 @@ void DivideMatrix3x3ByDeterminant(matrix& invertedMatrix, const double& determin
 	}
 }
 
-void InvertMatrix3x3(matrix& sourceMatrix, matrix& invertedMatrix)
+void TryInvertMatrix(const matrix& sourceMatrix, matrix& invertedMatrix)
 {
 	double determinant = Get3x3MatrixDetermanant(sourceMatrix);
 	if (determinant == 0)
-	{
 		throw runtime_error("The inverse matrix does not exist, because the determinant = 0");
-	}
-	
-	TransposeMatrix3x3(sourceMatrix);
-	
-	GetAdjointMatrix3x3(sourceMatrix, invertedMatrix); // matrix of algebraic complements (adjoint matrix)
+
+	matrix transposeMatrix;
+	TransposeMatrix3x3(sourceMatrix, transposeMatrix);
+
+	GetAdjointMatrix3x3(transposeMatrix, invertedMatrix); // matrix of algebraic complements (adjoint matrix)
 
 	DivideMatrix3x3ByDeterminant(invertedMatrix, determinant);
-}
-
-bool IsMatrixInverted(matrix& sourceMatrix, matrix& invertedMatrix)
-{
-	try
-	{
-		InvertMatrix3x3(sourceMatrix, invertedMatrix);
-	}
-	catch (exception const& error)
-	{
-		cout << error.what() << endl;
-		return false;
-	}
-	return true;
 }
 
 int main(int argc, char* argv[])
@@ -207,15 +181,13 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	matrix sourceMatrix;
-	if (!TryReadMatrix(argv[1], sourceMatrix))
-		return 1;
-
 	try
 	{
+		matrix sourceMatrix;
+		TryReadMatrix(argv[1], sourceMatrix);
+
 		matrix invertedMatrix;
-		if (!IsMatrixInverted(sourceMatrix, invertedMatrix))
-			return 1;
+		TryInvertMatrix(sourceMatrix, invertedMatrix);
 
 		PrintMatrix3x3(invertedMatrix);
 	}
