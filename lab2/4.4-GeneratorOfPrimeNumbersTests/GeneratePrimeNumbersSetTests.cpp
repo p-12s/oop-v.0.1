@@ -40,11 +40,13 @@ BOOST_AUTO_TEST_SUITE(GeneratePrimeNumbersSet_function)
 		BOOST_CHECK(SetsAreEqual(GeneratePrimeNumbersSet(37), { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 }));
 	}
 
-	/*BOOST_AUTO_TEST_CASE(in_the_range_of_100_million_returns_the_number_of_prime_numbers_equal_to_5761455)
-	{
-		const unsigned countOfPrimeNumbersIn100Millions = 5761455;
-		int countOfPrimeNumbers = GetNumberOfPrimesInSet(GeneratePrimeNumbersSet(100000000));
-		BOOST_CHECK(countOfPrimeNumbers == countOfPrimeNumbersIn100Millions);
-	}*/
+	#ifdef _DEBUG
+		BOOST_AUTO_TEST_CASE(in_the_range_of_100_million_returns_the_number_of_prime_numbers_equal_to_5761455)
+		{
+			const unsigned countOfPrimeNumbersIn100Millions = 5761455;
+			int countOfPrimeNumbers = GetNumberOfPrimesInSet(GeneratePrimeNumbersSet(100000000));
+			BOOST_CHECK(countOfPrimeNumbers == countOfPrimeNumbersIn100Millions);
+		}
+	#endif
 
 BOOST_AUTO_TEST_SUITE_END()
