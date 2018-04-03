@@ -146,13 +146,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CarRemote.h" />
+    <ClInclude Include="Car.h" />
+    <ClInclude Include="ControlPanel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1-Car.cpp" />
-    <ClCompile Include="CarRemote.cpp" />
+    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="ControlPanel.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -1,10 +1,22 @@
 #include "stdafx.h"
-#include "CarRemote.h"
-#include <string>
+#include "ControlPanel.h"
+#include "Car.h"
 
 using namespace std;
 
-int main(int argc, char* argv[])
+void main()
 {
-    return 0;
+	CCar car;
+	//CRemoteControl remoteControl(tv, cin, cout);
+	CControlPanel controlPanel();
+
+	/*while (!cin.eof() && !cin.fail())
+	{
+		cout << "> ";
+		if (!controlPanel.HandleCommand())
+		{
+			cout << "Unknown command!" << endl;
+		}
+	}
+	*/
 }

@@ -24,7 +24,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\1-Car\CarRemote.h">
+    <ClInclude Include="..\1-Car\Car.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\1-Car\ControlPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,10 +38,16 @@
     <ClCompile Include="1-CarTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\1-Car\CarRemote.cpp">
+    <ClCompile Include="..\1-Car\Car.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CarRemoteTests.cpp">
+    <ClCompile Include="..\1-Car\ControlPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlPanelTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CarTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
