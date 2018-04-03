@@ -41,6 +41,18 @@ bool CCar::SetGear(const Gear gear)
 	{
 		return gear == Gear::NEUTRAL;
 	}
+	/* включить заднюю можем, когда
+	- включен двигатель
+	- только на нулевой скорости;
+	*/
+	if (m_speed == 0)
+	{
+		m_previousGear = m_gear;// м.б. обойтись без предыдущей скорости?
+		m_gear = Gear::REVERSE;
+		m_direction = Direction::BACK;
+		return true;
+	}
+	
 	return false;
 }
 
