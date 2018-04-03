@@ -6,17 +6,6 @@ using namespace std;
 
 void main()
 {
-	CCar car;
-	//CRemoteControl remoteControl(tv, cin, cout);
+	CCar car(cout);
 	CControlPanel controlPanel();
-
-	/*while (!cin.eof() && !cin.fail())
-	{
-		cout << "> ";
-		if (!controlPanel.HandleCommand())
-		{
-			cout << "Unknown command!" << endl;
-		}
-	}
-	*/
 }

@@ -1,9 +1,28 @@
 #include "stdafx.h"
 #include "../1-Car/Car.h"
 
-struct CarFixture
+using namespace std;
+
+struct CarDependencies
+{
+	stringstream output;
+};
+
+struct CarFixture : CarDependencies
 {
 	CCar car;
+
+	CarFixture()
+		: car(output)
+	{
+	}
+
+	void CheckCarState(Gear expectedGear, Direction expectedDirection, int expectedSpeed) const
+	{
+		BOOST_CHECK(car.GetGear() == expectedGear);
+		BOOST_CHECK(car.GetDirection() == expectedDirection);
+		BOOST_CHECK(car.GetSpeed() == expectedSpeed);
+	}
 };
 
 BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
@@ -11,120 +30,56 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 	BOOST_AUTO_TEST_SUITE(general_behavior)
 		BOOST_AUTO_TEST_CASE(engine_is_not_start_by_default)
 		{
-			BOOST_CHECK(!car.IsCarRunning());
+			BOOST_CHECK(!car.IsEngineOn());
 		}
-		BOOST_AUTO_TEST_CASE(none)
+		BOOST_AUTO_TEST_CASE(default_speed_is_0)
 		{
 			BOOST_CHECK(car.GetSpeed() == 0);
 		}
-		BOOST_AUTO_TEST_CASE(none2)
+		BOOST_AUTO_TEST_CASE(default_gear_is_neutral)
 		{
 			BOOST_CHECK(car.GetGear() == Gear::NEUTRAL);
+		}
+		BOOST_AUTO_TEST_CASE(default_direction_is_stands_still)
+		{
+			BOOST_CHECK(car.GetDirection() == Direction::STOP);
+		}
+	BOOST_AUTO_TEST_SUITE_END()
+
+	BOOST_AUTO_TEST_SUITE(when_the_engine_is_off)		
+		BOOST_AUTO_TEST_CASE(gear_can_be_switched_only_to_neutral)
+		{
+			BOOST_CHECK(!car.SetGear(Gear::REVERSE));
+			BOOST_CHECK(car.GetGear() == Gear::NEUTRAL);
+
+			BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
+			BOOST_CHECK(car.GetGear() == Gear::NEUTRAL);
+
+			BOOST_CHECK(!car.SetGear(Gear::FIRST));
+			BOOST_CHECK(car.GetGear() == Gear::NEUTRAL);
+
+			BOOST_CHECK(!car.SetGear(Gear::SECOND));
+			BOOST_CHECK(car.GetGear() == Gear::NEUTRAL);
+
+			BOOST_CHECK(!car.SetGear(Gear::THIRD));
+			BOOST_CHECK(car.GetGear() == Gear::NEUTRAL);
+
+			BOOST_CHECK(!car.SetGear(Gear::FOURTH));
+			BOOST_CHECK(car.GetGear() == Gear::NEUTRAL);
+
+			BOOST_CHECK(!car.SetGear(Gear::FIFTH));
+			BOOST_CHECK(car.GetGear() == Gear::NEUTRAL);
+		}
+		BOOST_AUTO_TEST_CASE(can_not_increase_the_speed)
+		{
+			BOOST_CHECK(!car.SetSpeed(10));
+		}
+		BOOST_AUTO_TEST_CASE(engine_can_be_turned_on)
+		{
+			BOOST_CHECK(!car.TurnOffEngine());
+			BOOST_CHECK(car.TurnOnEngine());
+			BOOST_CHECK(car.IsEngineOn());
 		}		
 	BOOST_AUTO_TEST_SUITE_END()
 
-		/*BOOST_AUTO_TEST_CASE(engine_can_be_switched_on_by_default)
-		{
-		BOOST_CHECK(car.TurnOnEngine());
-		CheckCarState(Gear::NEUTRAL, 0, Direction::STOP);
-		}
-		BOOST_AUTO_TEST_CASE(engine_can_be_switched_on_and_then_can_be_switched_off_by_default)
-		{
-		BOOST_CHECK(car.TurnOnEngine());
-		BOOST_CHECK(car.TurnOffEngine());
-		CheckCarState(Gear::NEUTRAL, 0, Direction::STOP);
-		}*/
 BOOST_AUTO_TEST_SUITE_END()
-
-/*
-// ћашина 
-BOOST_FIXTURE_TEST_SUITE(TVSet, TVSetFixture)
-	// изначально выключен
-	BOOST_AUTO_TEST_CASE(is_turned_off_by_default)
-	{
-		BOOST_CHECK(!tv.IsTurnedOn());
-	}
-	// не может переключать канал в выключенном состо€нии
-	BOOST_AUTO_TEST_CASE(cant_select_channel_when_turned_off)
-	{
-		BOOST_CHECK(!tv.SelectChannel(87));
-		BOOST_CHECK_EQUAL(tv.GetChannel(), 0);
-	}
-
-	// может быть включен
-	BOOST_AUTO_TEST_CASE(can_be_turned_on)
-	{
-		tv.TurnOn();
-		BOOST_CHECK(tv.IsTurnedOn());
-	}
-	// изначально отображает 0 канал
-	BOOST_AUTO_TEST_CASE(displays_channel_0_by_default)
-	{
-		BOOST_CHECK_EQUAL(tv.GetChannel(), 0);
-	}
-
-	struct when_turned_on_ : TVSetFixture
-	{
-		when_turned_on_()
-		{
-			tv.TurnOn();
-		}
-	};
-
-	// после включени€
-	BOOST_FIXTURE_TEST_SUITE(when_turned_on, when_turned_on_)
-		// отображает канал 1
-		BOOST_AUTO_TEST_CASE(displays_channel_one)
-		{
-			BOOST_CHECK_EQUAL(tv.GetChannel(), 1);
-		}
-		// можно выключить
-		BOOST_AUTO_TEST_CASE(can_be_turned_off)
-		{
-			tv.TurnOff();
-			BOOST_CHECK(!tv.IsTurnedOn());
-		}
-		// позвол€ет выбрать канал от 1 до 99
-		BOOST_AUTO_TEST_CASE(can_select_channel_from_1_to_99)
-		{
-			BOOST_CHECK(tv.SelectChannel(1));
-			BOOST_CHECK_EQUAL(tv.GetChannel(), 1);
-
-			BOOST_CHECK(tv.SelectChannel(99));
-			BOOST_CHECK_EQUAL(tv.GetChannel(), 99);
-
-			// ¬ыбираем канал между 1 и 99
-			BOOST_CHECK(tv.SelectChannel(42));
-			BOOST_CHECK_EQUAL(tv.GetChannel(), 42);
-
-			// ѕри попытке выбрать канал за пределами [1; 99] 
-			// телевизор не должен мен€ть свой канал
-			BOOST_CHECK(!tv.SelectChannel(0));
-			BOOST_CHECK_EQUAL(tv.GetChannel(), 42);
-
-			BOOST_CHECK(!tv.SelectChannel(100));
-			BOOST_CHECK_EQUAL(tv.GetChannel(), 42);
-		}
-		BOOST_AUTO_TEST_SUITE_END()
-
-		struct after_subsequent_turning_on_ : when_turned_on_
-		{
-			after_subsequent_turning_on_()
-			{
-				tv.SelectChannel(33);
-				tv.TurnOff();
-				tv.TurnOn();
-			}
-		};
-
-		// после повторного включени€
-		BOOST_FIXTURE_TEST_SUITE(after_subsequent_turning_on, after_subsequent_turning_on_)
-			// восстанавливает последний выбранный канал
-			BOOST_AUTO_TEST_CASE(restores_last_selected_channel)
-			{
-				BOOST_CHECK_EQUAL(tv.GetChannel(), 33);
-			}
-			BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE_END()
-*/
