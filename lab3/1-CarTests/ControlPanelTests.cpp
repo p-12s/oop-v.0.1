@@ -20,11 +20,11 @@ ControlPanelFixture()
 {
 }
 
-// Вспомогательная функция для проверки работы команды command
-// Она принимает ожидаемый номер канала expectedChannel и expectedOutput
+// Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅР°СЏ С„СѓРЅРєС†РёСЏ РґР»СЏ РїСЂРѕРІРµСЂРєРё СЂР°Р±РѕС‚С‹ РєРѕРјР°РЅРґС‹ command
+// РћРЅР° РїСЂРёРЅРёРјР°РµС‚ РѕР¶РёРґР°РµРјС‹Р№ РЅРѕРјРµСЂ РєР°РЅР°Р»Р° expectedChannel Рё expectedOutput
 void VerifyCommandHandling(const string& command, const boost::optional<int> & expectedChannel, const string& expectedOutput)
 {
-// Предварительно очищаем содержимое выходного потока
+// РџСЂРµРґРІР°СЂРёС‚РµР»СЊРЅРѕ РѕС‡РёС‰Р°РµРј СЃРѕРґРµСЂР¶РёРјРѕРµ РІС‹С…РѕРґРЅРѕРіРѕ РїРѕС‚РѕРєР°
 output = stringstream();
 input = stringstream();
 /*BOOST_CHECK(input << command);
@@ -34,7 +34,7 @@ BOOST_CHECK_EQUAL(car.GetChannel(), expectedChannel.get_value_or(0));
 BOOST_CHECK(input.eof());
 BOOST_CHECK_EQUAL(output.str(), expectedOutput);
 
-// тут проще
+// С‚СѓС‚ РїСЂРѕС‰Рµ
 BOOST_CHECK(input << command);
 string commandLine = command;
 BOOST_CHECK(car.HandleCommand(commandLine));
@@ -45,7 +45,7 @@ BOOST_CHECK_EQUAL(output.str(), expectedOutput);
 */
 BOOST_AUTO_TEST_SUITE(ControlPanel_function)
 
-// Тестовый тест
+// РўРµСЃС‚РѕРІС‹Р№ С‚РµСЃС‚
 BOOST_AUTO_TEST_CASE(empty_vector_equal_himself)
 {
 	vector<double> emptyVector;

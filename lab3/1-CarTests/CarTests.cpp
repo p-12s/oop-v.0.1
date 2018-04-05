@@ -32,7 +32,7 @@ struct CarFixture : CarDependencies
 
 	void CheckCarState(const Gear expectedGear, const Direction expectedDirection, const int expectedSpeed) const
 	{
-		// Direction можно вычислять в зависимости от Gear
+		// Direction is depeanding on Gear
 		BOOST_CHECK(car.GetGear() == expectedGear);
 		BOOST_CHECK(car.GetDirection() == expectedDirection);
 		BOOST_CHECK(car.GetSpeed() == expectedSpeed);
@@ -84,7 +84,7 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 			CheckCarImmobility();
 		}
 		BOOST_AUTO_TEST_CASE(can_not_increase_the_speed)
-		{// сообщить причину невозможности
+		{// to inform the reason of impossibility
 			BOOST_CHECK(!car.SetSpeed(10));
 		}
 		BOOST_AUTO_TEST_CASE(engine_can_be_turned_on)
@@ -122,7 +122,6 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 			BOOST_CHECK(car.GetSpeed() == 0);
 		}
 
-		// если машина стоит
 		BOOST_AUTO_TEST_SUITE(if_the_car_is_standing)
 			BOOST_AUTO_TEST_CASE(can_be_turned_first_gear)
 			{
@@ -175,11 +174,11 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 				car.SetSpeed(5);
 			}
 		};
-		// если машина начала движение назад
-			// может развить скорость до 20
-			// не может переключиться на передачи с 1 по 5				
-			// может включить нейтральную передачу
-			// может включить 1 передачу, если сбросит скорость до 0
+		// when_car_starts_moving_backwards
+			// can increase speed up to 20
+			// Can not switch to gear from 1th to 5th	
+			// can switch neutral gear
+			// can switch 1th gear if speed is reset to 0
 
 		BOOST_FIXTURE_TEST_SUITE(when_car_starts_moving_backwards, when_the_car_starts_moving_backwards_)
 
@@ -192,13 +191,15 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 		BOOST_AUTO_TEST_SUITE_END()
 
 
-		// если машина начала движение вперед 
-			// и находится на нейтральной передаче
-			// и находится на 1 передаче
-			// и находится на 2 передаче
-			// и находится на 3 передаче
-			// и находится на 4 передаче
-			// и находится на 5 передаче
+		// when_car_starts_moving_forward
+			// and is in 1th gear	
+			// can increase speed up to 30
+			// 
+
+			// 2 gear
+			// 3 gear
+			// 4 gear
+			// 5 gear
 
 
 	BOOST_AUTO_TEST_SUITE_END()	
