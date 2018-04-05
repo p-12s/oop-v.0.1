@@ -30,8 +30,6 @@ struct CarFixture : CarDependencies
 		BOOST_CHECK(car.GetDirection() == expectedDirection);
 	}
 
-
-
 	void CheckCarState(const Gear expectedGear, const Direction expectedDirection, const int expectedSpeed) const
 	{
 		// Direction можно вычислять в зависимости от Gear
@@ -126,30 +124,75 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 
 		// если машина стоит
 		BOOST_AUTO_TEST_SUITE(if_the_car_is_standing)
-			BOOST_AUTO_TEST_CASE(engine_can_be_turned_off)
-			{// может быть выключен только при нулевой скорости на нейтральной передаче
-				BOOST_CHECK(car.TurnOffEngine());
-				BOOST_CHECK(!car.IsEngineOn());
-			}// повторное переключение на ту же самую передачу
-			BOOST_AUTO_TEST_CASE(can_be_turned_reverse_gear)
-			{
-				BOOST_CHECK(car.SetGear(Gear::REVERSE));
-				CheckCarState(Gear::REVERSE, Direction::BACK);
-			}
-			//можно включить заднюю
-			// на задней можем увеличить-уменьшить скорость 0-20
-
 			BOOST_AUTO_TEST_CASE(can_be_turned_first_gear)
 			{
-				BOOST_CHECK(car.TurnOffEngine());
-				BOOST_CHECK(!car.IsEngineOn());
+				BOOST_CHECK(car.SetGear(Gear::FIRST));
+				BOOST_CHECK(car.GetGear() == Gear::FIRST);
 			}
-			
+			BOOST_AUTO_TEST_CASE(engine_can_be_turned_off_if_only_gear_is_neutral)
+			{
+				BOOST_CHECK(car.SetGear(Gear::FIRST));
+				BOOST_CHECK(car.SetSpeed(10));
+				BOOST_CHECK(car.GetGear() == Gear::FIRST);
+				BOOST_CHECK(car.GetDirection() == Direction::STOP);
+				BOOST_CHECK(car.GetSpeed() == 0);
+				//CheckCarState(Gear::FIRST, Direction::FORWARD, 10);
+				BOOST_CHECK(!car.TurnOffEngine());
+				BOOST_CHECK(car.IsEngineOn());
 
-			// можно включить первую передачу
+				BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
+				CheckCarState(Gear::NEUTRAL, Direction::STOP, 0);
+				//BOOST_CHECK(!car.TurnOffEngine());
+				//BOOST_CHECK(car.IsEngineOn());
+
+				car.SetSpeed(0);
+				//BOOST_CHECK(car.TurnOffEngine());
+				//BOOST_CHECK(!car.IsEngineOn());				
+			}
+			BOOST_AUTO_TEST_CASE(can_be_turned_reverse_gear_only_if_first_or_neutral_gear_is_on)
+			{
+				BOOST_CHECK(car.SetGear(Gear::FIRST));
+				car.SetSpeed(10);
+				//BOOST_CHECK(!car.SetGear(Gear::REVERSE));
+				//CheckCarState(Gear::FIRST, Direction::FORWARD, 10);
+
+				car.SetSpeed(0);
+				BOOST_CHECK(car.SetGear(Gear::REVERSE));
+				CheckCarState(Gear::REVERSE, Direction::BACK, 0);
+
+				BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
+				CheckCarState(Gear::NEUTRAL, Direction::STOP, 0);
+				BOOST_CHECK(car.SetGear(Gear::REVERSE));
+				CheckCarState(Gear::REVERSE, Direction::BACK, 0);
+			}
+		BOOST_AUTO_TEST_SUITE_END()		
+
+		struct when_the_car_starts_moving_backwards_ : when_the_engine_is_on_
+		{
+			when_the_car_starts_moving_backwards_()
+			{
+				car.SetGear(Gear::REVERSE);
+				car.SetSpeed(5);
+			}
+		};
+		// если машина начала движение назад
+			// может развить скорость до 20
+			// не может переключиться на передачи с 1 по 5				
+			// может включить нейтральную передачу
+			// может включить 1 передачу, если сбросит скорость до 0
+
+		BOOST_FIXTURE_TEST_SUITE(when_car_starts_moving_backwards, when_the_car_starts_moving_backwards_)
+
+			BOOST_AUTO_TEST_CASE(test_test)
+			{
+				car.SetSpeed(0);
+				//CheckCarState(Gear::REVERSE, Direction::BACK, 5);
+			}
+
 		BOOST_AUTO_TEST_SUITE_END()
-		// если машина едет назад
-		// если машина едет вперед 
+
+
+		// если машина начала движение вперед 
 			// и находится на нейтральной передаче
 			// и находится на 1 передаче
 			// и находится на 2 передаче
@@ -157,13 +200,8 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 			// и находится на 4 передаче
 			// и находится на 5 передаче
 
-		/*false – если двигатель был уже включен.
 
-		bool TurnOnEngine()
-		• Выключить двигатель(если он включен и текущая передача – нейтральная, а автомобиль стоит).Возвращает true, если двигатель был успешно выключен, и false, если двигатель не может быть в данный момент выключен, либо он был выключен ранее).
-		bool TurnOffEngine()*/
-	BOOST_AUTO_TEST_SUITE_END()
-		
+	BOOST_AUTO_TEST_SUITE_END()	
 
 
 BOOST_AUTO_TEST_SUITE_END()

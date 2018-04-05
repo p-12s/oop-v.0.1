@@ -26,8 +26,39 @@ bool CCar::SetSpeed(const int speed)
 	{
 		return false;
 	}
-	m_speed = speed;
-	return true;
+	
+	if (speed == 0)
+	{
+		m_direction = Direction::STOP;
+		return true;
+	}
+	else
+	{
+		switch (m_gear)
+		{
+		case Gear::NEUTRAL:
+			if (speed > m_speed)
+			{
+				return false;
+			}
+			m_speed = speed;
+			return true;
+		case Gear::FIRST:
+			m_speed = speed;
+			m_direction = Direction::FORWARD;
+			return true;
+		case Gear::REVERSE:
+			if (speed > 20)
+			{
+				return false;
+			}
+			m_speed = speed;
+			m_direction = Direction::BACK;
+			return true;
+		default:
+			return false;
+		}
+	}
 }
 
 Gear CCar::GetGear() const
@@ -45,15 +76,42 @@ bool CCar::SetGear(const Gear gear)
 	- включен двигатель
 	- только на нулевой скорости;
 	*/
-	if (m_speed == 0)
+
+	if (gear == Gear::NEUTRAL)
 	{
-		m_previousGear = m_gear;// м.б. обойтись без предыдущей скорости?
-		m_gear = Gear::REVERSE;
-		m_direction = Direction::BACK;
+		m_previousGear = m_gear;
+		m_gear = Gear::NEUTRAL;
+		m_direction = m_speed == 0 ? Direction::STOP : m_direction;
 		return true;
 	}
-	
-	return false;
+
+	if (m_speed == 0)
+	{
+		switch (gear)
+		{
+		case Gear::NEUTRAL:
+			m_previousGear = m_gear;// м.б. обойтись без предыдущей скорости?
+			m_gear = Gear::NEUTRAL;
+			m_direction = Direction::STOP;
+			return true;
+		case Gear::FIRST:
+			m_previousGear = m_gear;
+			m_gear = Gear::FIRST;
+			m_direction = Direction::FORWARD;
+			return true;
+		case Gear::REVERSE:
+			m_previousGear = m_gear;
+			m_gear = Gear::REVERSE;
+			m_direction = Direction::BACK;
+			return true;
+		default:
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}	
 }
 
 Direction CCar::GetDirection() const
@@ -76,7 +134,7 @@ bool CCar::TurnOnEngine()
 
 bool CCar::TurnOffEngine()
 {
-	if (IsEngineOn())
+	if (IsEngineOn() && m_speed == 0 && m_gear == Gear::NEUTRAL)
 	{
 		m_isEngineOn = false;
 		m_output << "Car engine is switched off" << endl;
