@@ -29,6 +29,7 @@ bool CCar::SetSpeed(const int speed)
 	
 	if (speed == 0)
 	{
+		m_speed = speed;
 		m_direction = Direction::STOP;
 		return true;
 	}
@@ -69,13 +70,10 @@ Gear CCar::GetGear() const
 bool CCar::SetGear(const Gear gear)
 {
 	if (!IsEngineOn())
-	{
 		return gear == Gear::NEUTRAL;
-	}
-	/* включить заднюю можем, когда
-	- включен двигатель
-	- только на нулевой скорости;
-	*/
+
+	if (m_gear == gear)
+		return true;
 
 	if (gear == Gear::NEUTRAL)
 	{
@@ -87,22 +85,20 @@ bool CCar::SetGear(const Gear gear)
 
 	if (m_speed == 0)
 	{
+		m_direction = Direction::STOP;
 		switch (gear)
 		{
 		case Gear::NEUTRAL:
-			m_previousGear = m_gear;// м.б. обойтись без предыдущей скорости?
+			m_previousGear = m_gear;// м.б. обойтись без предыдущей передачи?
 			m_gear = Gear::NEUTRAL;
-			m_direction = Direction::STOP;
 			return true;
 		case Gear::FIRST:
 			m_previousGear = m_gear;
 			m_gear = Gear::FIRST;
-			m_direction = Direction::FORWARD;
 			return true;
 		case Gear::REVERSE:
 			m_previousGear = m_gear;
 			m_gear = Gear::REVERSE;
-			m_direction = Direction::BACK;
 			return true;
 		default:
 			return false;
