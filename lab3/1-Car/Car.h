@@ -34,7 +34,7 @@ public:
 private:
 	bool m_isEngineOn = false;
 	Gear m_gear = Gear::NEUTRAL;
-	Gear m_previousGear;
+	Gear m_previousGear;//TODO избавиться от 
 	int m_speed = 0;
 	Direction m_direction = Direction::STOP;
 };
