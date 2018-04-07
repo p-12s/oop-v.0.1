@@ -4,7 +4,7 @@
 using namespace std;
 
 CCar::CCar(std::ostream &output)
-	: m_output(output)
+	: m_output(output), m_previousGear()
 {
 }
 
@@ -104,10 +104,7 @@ bool CCar::SetGear(const Gear gear)
 			return false;
 		}
 	}
-	else
-	{
-		return false;
-	}	
+	return false;
 }
 
 Direction CCar::GetDirection() const

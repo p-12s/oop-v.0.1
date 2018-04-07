@@ -231,7 +231,6 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 				BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
 				CheckCarState(Gear::NEUTRAL, Direction::BACK, 5);
 			}
-
 			BOOST_AUTO_TEST_CASE(but_can_to_switch_gear_after_that_only_complete_stop)
 			{
 				BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
@@ -257,10 +256,51 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 		{
 			when_car_starts_moving_forward_()
 			{
-				car.SetGear(Gear::FIFTH);
+				car.SetGear(Gear::FIRST);
 				car.SetSpeed(5);
 			}
 		};
+		BOOST_FIXTURE_TEST_SUITE(when_car_starts_moving_forward, when_car_starts_moving_forward_)
+			BOOST_AUTO_TEST_SUITE(in_1th_gear)
+				BOOST_AUTO_TEST_CASE(can_switch_neutral_gear)
+				{
+					BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
+					CheckCarState(Gear::NEUTRAL, Direction::FORWARD, 5);
+				}
+			BOOST_AUTO_TEST_SUITE_END()
+
+			BOOST_AUTO_TEST_SUITE(in_2th_gear)
+				BOOST_AUTO_TEST_CASE(can_switch_neutral_gear)
+				{
+					BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
+					CheckCarState(Gear::NEUTRAL, Direction::FORWARD, 5);
+				}
+			BOOST_AUTO_TEST_SUITE_END()
+
+			BOOST_AUTO_TEST_SUITE(in_3th_gear)
+				BOOST_AUTO_TEST_CASE(can_switch_neutral_gear)
+				{
+					BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
+					CheckCarState(Gear::NEUTRAL, Direction::FORWARD, 5);
+				}
+			BOOST_AUTO_TEST_SUITE_END()
+
+			BOOST_AUTO_TEST_SUITE(in_4th_gear)
+				BOOST_AUTO_TEST_CASE(can_switch_neutral_gear)
+				{
+					BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
+					CheckCarState(Gear::NEUTRAL, Direction::FORWARD, 5);
+				}
+			BOOST_AUTO_TEST_SUITE_END()
+
+			BOOST_AUTO_TEST_SUITE(in_5th_gear)
+				BOOST_AUTO_TEST_CASE(can_switch_neutral_gear)
+				{
+					BOOST_CHECK(car.SetGear(Gear::NEUTRAL));
+					CheckCarState(Gear::NEUTRAL, Direction::FORWARD, 5);
+				}
+			BOOST_AUTO_TEST_SUITE_END()
+		BOOST_AUTO_TEST_SUITE_END()
 		// when_car_starts_moving_forward
 			// and is in 1th gear	
 			// can increase speed up to 30
