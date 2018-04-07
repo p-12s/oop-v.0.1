@@ -6,7 +6,7 @@ enum class Gear { REVERSE = -1, NEUTRAL = 0, FIRST, SECOND, THIRD, FOURTH, FIFTH
 enum class Direction { BACK, STOP, FORWARD };
 
 static const vector<pair<int, int>> speedRange = {
-	{ -20, 0 },
+	{ 0, 20 },
 	{ 0, 30 },
 	{ 20, 50 },
 	{ 30, 60 },
