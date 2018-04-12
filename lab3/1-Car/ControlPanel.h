@@ -3,12 +3,13 @@
 
 class CCar;
 
-// явно запрещаем копирование и присваивание экземпл€ров класса
+// Ќаследование от boost::noncopyable - €вный способ запретить копирование и присваивание экземпл€ров класса
 class CControlPanel : boost::noncopyable
 {
 public:
 	CControlPanel(CCar& car, std::istream& input, std::ostream& output);
 	~CControlPanel();
+
 	bool HandleCommand();
 
 	// »збавл€емс€ от предупреждени€ компил€тора о том, что он не сможет сгенерировать оператор присваивани€
@@ -17,13 +18,13 @@ private:
 	bool Info(std::istream& args);
 	bool EngineOn(std::istream& args);
 	bool EngineOff(std::istream& args);
-	bool SetGear(std::istream& args);
-	bool SetSpeed(std::istream& args);
+	/*bool SetGear(std::istream& args);
+	bool SetSpeed(std::istream& args);*/
 
-private:
+private:	
 	CCar& m_car;
 	std::istream& m_input;
 	std::ostream& m_output;
 	typedef std::map<std::string, std::function<bool(std::istream& args)>> ActionMap;
-	const ActionMap m_actionMap;		
+	const ActionMap m_actionMap;
 };

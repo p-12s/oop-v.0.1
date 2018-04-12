@@ -14,11 +14,9 @@ bool IsSpeedAllowableForGear(Gear gear, int spead)
 }
 
 CCar::CCar(std::ostream &output)
-	: m_output(output), m_previousGear()
+	: m_output(output)
 {
 }
-
-CCar::~CCar() = default;
 
 bool CCar::IsEngineOn()const
 {
@@ -76,9 +74,6 @@ bool CCar::SetSpeed(const int speed)
 				return true;
 			}
 			return false;
-
-		//
-		
 
 		default:
 			return false;
@@ -154,7 +149,7 @@ bool CCar::TurnOnEngine()
 	if (!IsEngineOn())
 	{
 		m_isEngineOn = true;
-		m_output << "Car engine is switched on" << endl;
+		//m_output << "Car engine is switched on" << endl;
 		return true;
 	}
 
@@ -167,10 +162,10 @@ bool CCar::TurnOffEngine()
 	if (IsEngineOn() && m_speed == 0 && m_gear == Gear::NEUTRAL)
 	{
 		m_isEngineOn = false;
-		m_output << "Car engine is switched off" << endl;
+		//m_output << "Car engine is switched off" << endl;
 		return true;
 	}
 
-	m_output << "Car engine is already switched off" << endl;
+	//m_output << "Car engine is already switched off" << endl;
 	return false;
 }

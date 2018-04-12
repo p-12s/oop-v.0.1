@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 using namespace std;
 
 enum class Gear { REVERSE = -1, NEUTRAL = 0, FIRST, SECOND, THIRD, FOURTH, FIFTH };
@@ -17,10 +17,10 @@ static const vector<pair<int, int>> speedRange = {
 class CCar
 {
 public:
-	ostream & m_output;
+	ostream& m_output;
 
-	CCar(ostream &output);
-	~CCar();
+	CCar(ostream& output = cout);
+	~CCar() = default;
 
 	bool IsEngineOn() const;
 	bool TurnOnEngine();
@@ -34,7 +34,7 @@ public:
 private:
 	bool m_isEngineOn = false;
 	Gear m_gear = Gear::NEUTRAL;
-	Gear m_previousGear;//TODO избавиться от 
+	Gear m_previousGear = Gear::NEUTRAL; // избавиться
 	int m_speed = 0;
 	Direction m_direction = Direction::STOP;
 };

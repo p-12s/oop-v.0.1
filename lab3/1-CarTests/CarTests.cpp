@@ -3,13 +3,9 @@
 
 using namespace std;
 
-struct CarDependencies
+struct CarFixture
 {
 	stringstream output;
-};
-
-struct CarFixture : CarDependencies
-{
 	CCar car;
 
 	CarFixture()
@@ -95,7 +91,7 @@ BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 			CheckCarImmobility();
 		}
 		BOOST_AUTO_TEST_CASE(can_not_increase_the_speed)
-		{// to inform the reason of impossibility
+		{
 			BOOST_CHECK(!car.SetSpeed(10));
 		}
 		BOOST_AUTO_TEST_CASE(engine_can_be_turned_on)
