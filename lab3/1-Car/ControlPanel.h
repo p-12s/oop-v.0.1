@@ -3,12 +3,11 @@
 
 class CCar;
 
-// Наследование от boost::noncopyable - явный способ запретить копирование и присваивание экземпляров класса
 class CControlPanel : boost::noncopyable
 {
 public:
 	CControlPanel(CCar& car, std::istream& input, std::ostream& output);
-	~CControlPanel();
+	~CControlPanel() = default;
 	bool HandleCommand();
 	// Избавляемся от предупреждения компилятора о том, что он не сможет сгенерировать оператор присваивания
 	CControlPanel& operator=(const CControlPanel&) = delete;

@@ -1,22 +1,20 @@
 #include "stdafx.h"
 #include "ControlPanel.h"
-#include "Car.h"
+#include "Car.h"  
 
 using namespace std;
-using namespace std::placeholders;
+using namespace placeholders;
 
 int ReadNumberFromString(const string& input)
 {
-	int number = 0;
 	try
 	{
-		number = stoi(input);
+		return stoi(input);
 	}
 	catch (exception const&)
 	{
 		throw invalid_argument("could not convert string to number");
 	}
-	return number;
 }
 
 Gear GetGearByString(const string& input)
@@ -90,8 +88,6 @@ CControlPanel::CControlPanel(CCar& car, std::istream& input, std::ostream& outpu
 	})
 	{
 	}
-
-CControlPanel::~CControlPanel() = default;
 
 bool CControlPanel::HandleCommand()
 {
