@@ -13,8 +13,7 @@ void main(int argc, char* argv[])
 	{
 		cout << "> ";
 		if (!controlPanel.HandleCommand())
-		{
-			car.m_lastError << endl;
-		}
+			car.m_lastError;
+		cout << endl;
 	}
 }

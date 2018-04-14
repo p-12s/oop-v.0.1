@@ -15,7 +15,7 @@ public:
 	// Избавляемся от предупреждения компилятора о том, что он не сможет сгенерировать оператор присваивания
 	CControlPanel& operator=(const CControlPanel&) = delete;
 private:
-	bool Info(std::istream& args);
+	bool Info(std::istream& args) const;
 	bool EngineOn(std::istream& args);
 	bool EngineOff(std::istream& args);
 	bool SetGear(std::istream& args);
