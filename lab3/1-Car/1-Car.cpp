@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void main(int argc, char* argv[])
+void main()
 {
 	CCar car;
 	CControlPanel controlPanel(car, cin, cout);

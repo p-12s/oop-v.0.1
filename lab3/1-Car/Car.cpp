@@ -13,7 +13,7 @@ bool IsSpeedAllowableForGear(Gear gear, int speed)
 	return speed >= GetSpeedRange(gear).first && speed <= GetSpeedRange(gear).second;
 }
 
-CCar::CCar(std::ostream &output)
+CCar::CCar(ostream &output)
 	: m_lastError(output)
 {
 }
@@ -112,7 +112,6 @@ bool CCar::SetGear(const Gear gear)
 
 	if (gear == Gear::NEUTRAL)
 	{
-		m_previousGear = m_gear;
 		m_gear = Gear::NEUTRAL;
 		m_direction = m_speed == 0 ? Direction::STOP : m_direction;
 		return true;
@@ -124,15 +123,12 @@ bool CCar::SetGear(const Gear gear)
 		switch (gear)
 		{
 		case Gear::NEUTRAL:
-			m_previousGear = m_gear;// м.б. обойтись без предыдущей передачи?
 			m_gear = Gear::NEUTRAL;
 			return true;
 		case Gear::FIRST:
-			m_previousGear = m_gear;
 			m_gear = Gear::FIRST;
 			return true;
 		case Gear::REVERSE:
-			m_previousGear = m_gear;
 			m_gear = Gear::REVERSE;
 			return true;
 		default:
@@ -151,7 +147,6 @@ bool CCar::SetGear(const Gear gear)
 
 		if (IsSpeedAllowableForGear(gear, m_speed))
 		{
-			m_previousGear = m_gear;
 			m_gear = gear;
 			return true;
 		}
@@ -182,7 +177,6 @@ bool CCar::TurnOnEngine()
 		m_isEngineOn = true;
 		return true;
 	}
-
 	m_lastError << "car engine is already on";
 	return false;
 }

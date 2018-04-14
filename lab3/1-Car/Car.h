@@ -19,10 +19,8 @@ class CCar
 {
 public:
 	ostream& m_lastError;
-
 	CCar(ostream& output = cout);
 	~CCar() = default;
-
 	bool IsEngineOn() const;
 	bool TurnOnEngine();
 	bool TurnOffEngine();
@@ -35,7 +33,6 @@ public:
 private:
 	bool m_isEngineOn = false;
 	Gear m_gear = Gear::NEUTRAL;
-	Gear m_previousGear = Gear::NEUTRAL; // избавиться
 	int m_speed = 0;
 	Direction m_direction = Direction::STOP;
 };

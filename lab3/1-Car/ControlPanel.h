@@ -9,11 +9,10 @@ class CControlPanel : boost::noncopyable
 public:
 	CControlPanel(CCar& car, std::istream& input, std::ostream& output);
 	~CControlPanel();
-
 	bool HandleCommand();
-
 	// Избавляемся от предупреждения компилятора о том, что он не сможет сгенерировать оператор присваивания
 	CControlPanel& operator=(const CControlPanel&) = delete;
+
 private:
 	bool Info(std::istream& args) const;
 	bool EngineOn(std::istream& args);
@@ -21,7 +20,6 @@ private:
 	bool SetGear(std::istream& args);
 	bool SetSpeed(std::istream& args);
 
-private:	
 	CCar& m_car;
 	std::istream& m_input;
 	std::ostream& m_output;
