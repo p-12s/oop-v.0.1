@@ -14,7 +14,7 @@ bool IsSpeedAllowableForGear(Gear gear, int spead)
 }
 
 CCar::CCar(std::ostream &output)
-	: m_output(output)
+	: m_lastError(output)
 {
 }
 
@@ -127,7 +127,10 @@ bool CCar::SetGear(const Gear gear)
 	if (m_direction == Direction::FORWARD)
 	{
 		if (gear == Gear::REVERSE)
-			return false;//хотим при движении вперед включить заднюю
+		{
+			m_lastError << "you can not turn the reverse gear when driving forward\n";
+			return false; //хотим при движении вперед включить заднюю
+		}
 
 		if (IsSpeedAllowableForGear(gear, m_speed))
 		{
@@ -153,7 +156,7 @@ bool CCar::TurnOnEngine()
 		return true;
 	}
 
-	m_output << "Car engine is already switched on" << endl;
+	m_lastError << "car engine is already on\n";
 	return false;
 }
 
@@ -166,6 +169,6 @@ bool CCar::TurnOffEngine()
 		return true;
 	}
 
-	//m_output << "Car engine is already switched off" << endl;
+	m_lastError << "car engine is already off\n";
 	return false;
 }

@@ -18,8 +18,8 @@ private:
 	bool Info(std::istream& args);
 	bool EngineOn(std::istream& args);
 	bool EngineOff(std::istream& args);
-	/*bool SetGear(std::istream& args);
-	bool SetSpeed(std::istream& args);*/
+	bool SetGear(std::istream& args);
+	bool SetSpeed(std::istream& args);
 
 private:	
 	CCar& m_car;

@@ -1,5 +1,6 @@
 #pragma once
-#include <iostream>
+#include "stdafx.h"
+
 using namespace std;
 
 enum class Gear { REVERSE = -1, NEUTRAL = 0, FIRST, SECOND, THIRD, FOURTH, FIFTH };
@@ -17,7 +18,7 @@ static const vector<pair<int, int>> speedRange = {
 class CCar
 {
 public:
-	ostream& m_output;
+	ostream& m_lastError;
 
 	CCar(ostream& output = cout);
 	~CCar() = default;

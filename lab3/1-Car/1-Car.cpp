@@ -14,7 +14,7 @@ void main(int argc, char* argv[])
 		cout << "> ";
 		if (!controlPanel.HandleCommand())
 		{
-			cout << "Unknown command" << endl;
+			car.m_lastError << endl;
 		}
 	}
 }

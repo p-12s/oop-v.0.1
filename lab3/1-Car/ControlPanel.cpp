@@ -5,6 +5,44 @@
 using namespace std;
 using namespace std::placeholders;
 
+int ReadNumberFromString(const string& input)
+{
+	int number = 0;
+	try
+	{
+		number = stoi(input);
+	}
+	catch (exception const&)
+	{
+		throw invalid_argument("could not convert string to number");
+	}
+	return number;
+}
+
+Gear GetGearByString(const string& input)
+{
+	int gearNumber = ReadNumberFromString(input);
+	switch (gearNumber)
+	{
+	case -1:
+		return Gear::REVERSE;
+	case 0:
+		return Gear::NEUTRAL;
+	case 1:
+		return Gear::FIRST;
+	case 2:
+		return Gear::SECOND;
+	case 3:
+		return Gear::THIRD;
+	case 4:
+		return Gear::FOURTH;
+	case 5:
+		return Gear::FIFTH;
+	default:
+		throw invalid_argument("invalid gear number. the gear should be in the range [-1, 5]");
+	}
+}
+
 string GetGearAsString(const Gear gear)
 {
 	switch(gear)
@@ -46,7 +84,9 @@ CControlPanel::CControlPanel(CCar& car, std::istream& input, std::ostream& outpu
 	, m_actionMap({
 		{ "EngineOn", bind(&CControlPanel::EngineOn, this, _1) },
 		{ "EngineOff", bind(&CControlPanel::EngineOff, this, _1) },
-		{ "Info", bind(&CControlPanel::Info, this, _1) }
+		{ "Info", bind(&CControlPanel::Info, this, _1) },
+		{ "SetGear", bind(&CControlPanel::SetGear, this, _1) },
+		{ "SetSpeed", bind(&CControlPanel::SetSpeed, this, _1) }
 	})
 	{
 	}
@@ -67,33 +107,85 @@ bool CControlPanel::HandleCommand()
 	{
 		return it->second(strm);
 	}
-	m_output << "Unknown command" << endl;
+	m_output << "unknown command" << endl;
 	return true;
 }
 
 bool CControlPanel::EngineOn(istream& /*args*/)
 {
-	m_car.TurnOnEngine();
-	m_output << "Car engine is turned on" << endl;
-	return true;
+	if (m_car.TurnOnEngine())
+	{
+		m_output << "car engine is turned on\n";
+		return true;
+	}
+	m_car.m_lastError;
+	return false;
 }
 
 bool CControlPanel::EngineOff(istream& /*args*/)
 {
-	m_car.TurnOffEngine();
-	m_output << "Car engine is turned off" << endl;
-	return true;
+	if (m_car.TurnOffEngine())
+	{
+		m_output << "car engine is turned off\n";
+		return true;
+	}
+	m_car.m_lastError;
+	return false;
 }
 
 bool CControlPanel::Info(std::istream& /*args*/)
 {
 	string info = (m_car.IsEngineOn())
-		? "Engine status is: on\nGear is: " + GetGearAsString(m_car.GetGear()) + "\n" +
-		"Direction is: " + GetDirectionAsString(m_car.GetDirection()) + "\n" +
-		"Speed is: " + to_string(m_car.GetSpeed()) + "\n"
-		: "Engine status is: off\n";
+		? "engine status is: on\ngear is: " + GetGearAsString(m_car.GetGear()) + "\n" +
+		"direction is: " + GetDirectionAsString(m_car.GetDirection()) + "\n" +
+		"speed is: " + to_string(m_car.GetSpeed()) + "\n"
+		: "engine status is: off\n";
 
 	m_output << info;
 
 	return true;
+}
+
+bool CControlPanel::SetGear(istream& args)
+{
+	try
+	{
+		string arg;
+		args >> arg;
+
+		Gear gear = GetGearByString(arg);
+		bool isGearSet = m_car.SetGear(gear);
+
+		if (isGearSet)
+			m_output << GetGearAsString(gear) << " gear is switched\n";
+
+		return true;
+	}
+	catch (exception const& error)
+	{
+		m_output << "gear change error. " << error.what();
+		return false;
+	}
+}
+
+bool CControlPanel::SetSpeed(istream& args)
+{
+	try
+	{
+		string arg;
+		args >> arg;
+
+		int speed = ReadNumberFromString(arg);
+		bool isSpeedSet = m_car.SetSpeed(speed);
+
+		if (isSpeedSet)
+			m_output << "speed " << speed << " is on\n";
+
+		return true;
+	}
+	catch (exception const& error)
+	{
+		m_output << "speed change error. " << error.what();
+		return false;
+	}
 }

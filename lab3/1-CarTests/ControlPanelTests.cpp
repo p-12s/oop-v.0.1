@@ -30,7 +30,7 @@ struct ControlPanelFixture : ControlPanelDependencies
 	{
 	}
 
-	void CheckCommandHandling(const string& command, const string& expectedOutput)
+	void CheckCommandSucceed(const string& command, const string& expectedOutput)
 	{
 		output = stringstream();
 		input = stringstream();
@@ -40,21 +40,73 @@ struct ControlPanelFixture : ControlPanelDependencies
 		BOOST_CHECK(controlPanel.HandleCommand());
 		BOOST_CHECK_EQUAL(output.str(), expectedOutput);
 	}
+
+	void CheckCommandFailed(const string& command, const string& expectedOutput)
+	{
+		output = stringstream();
+		input = stringstream();
+
+		BOOST_CHECK(input << command);
+		string commandLine = command;
+		BOOST_CHECK(!controlPanel.HandleCommand());
+		BOOST_CHECK_EQUAL(output.str(), expectedOutput);
+	}
+
 };
 
 BOOST_FIXTURE_TEST_SUITE(ControlPanel, ControlPanelFixture)
-	BOOST_AUTO_TEST_CASE(can_handle_an_unknown_command)
+
+	BOOST_AUTO_TEST_SUITE(general_behavior)
+		BOOST_AUTO_TEST_CASE(can_handle_an_unknown_command)
+		{
+			CheckCommandSucceed("chicken", "unknown command\n");
+		}
+// показать инфу при выключенном сост
+// не может выкл движок повторно
+
+		BOOST_AUTO_TEST_CASE(when_the_engine_is_off)
+		{
+			BOOST_CHECK(!car.IsEngineOn());
+		}
+		BOOST_AUTO_TEST_CASE(engine_can_not_be_turned_off_again)
+		{
+			CheckCommandFailed("EngineOff", "car engine is already off\n");
+		}
+		/*BOOST_AUTO_TEST_CASE(default_speed_is_0)
+		{
+			BOOST_CHECK(car.GetSpeed() == 0);
+		}*/
+	BOOST_AUTO_TEST_SUITE_END()
+		/*
+		general_behavior
+		when_the_engine_is_off
+		engine_can_not_be_turned_off_again
+		gear_can_be_switched_only_to_neutral
+		can_not_increase_the_speed
+		engine_can_be_turned_on
+		when_engine_is_on
+		*/
+	
+	/*BOOST_AUTO_TEST_CASE(can_turn_on_engine)
 	{
-		CheckCommandHandling("chicken", "Unknown command\n");
+		CheckCommandHandling("EngineOn", "car engine is turned on\n");
 	}
-	BOOST_AUTO_TEST_CASE(can_turn_on_engine)
+	BOOST_AUTO_TEST_CASE(can_set_gear)
 	{
-		CheckCommandHandling("EngineOn", "Car engine is turned on\n");
+		car.TurnOnEngine();
+		CheckCommandHandling("SetGear 1", "first gear is switched\n");
+	}*/
+
+
+
+	/*BOOST_AUTO_TEST_CASE(can_set_speed)
+	{
+		CheckCommandHandling("SetSpeed 10", "speed 10 is on\n");
 	}
 	BOOST_AUTO_TEST_CASE(can_turn_off_engine)
 	{
-		CheckCommandHandling("EngineOff", "Car engine is turned off\n");
-	}
+		CheckCommandHandling("EngineOff", "car engine is turned off\n");
+	}*/
 
 
 /*
@@ -146,10 +198,7 @@ can_handle_command_SetSpeed_with_valid_speed
 		can_switch_to_4th_gear_if_speed_of_less_than_90
 */
 /*
-	BOOST_AUTO_TEST_CASE(can_handle_an_unknown_command)
-	{
-		CheckCommandHandling("chicken", "Unknown command\n");
-	}
+
 	/*
 	BOOST_AUTO_TEST_CASE(can_turn_on_engine)
 	{
