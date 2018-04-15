@@ -4,7 +4,7 @@
 class IShape
 {
 public:
-	virtual ~IShape() {};
+	virtual ~IShape();
 	virtual double GetArea() const = 0; //abstract base class
 	virtual double GetPerimether() const = 0;
 	virtual std::string ToString() const = 0;
