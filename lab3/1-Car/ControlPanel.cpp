@@ -86,8 +86,8 @@ CControlPanel::CControlPanel(CCar& car, std::istream& input, std::ostream& outpu
 		{ "SetGear", bind(&CControlPanel::SetGear, this, _1) },
 		{ "SetSpeed", bind(&CControlPanel::SetSpeed, this, _1) }
 	})
-	{
-	}
+{
+}
 
 bool CControlPanel::HandleCommand()
 {
