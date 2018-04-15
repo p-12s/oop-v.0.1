@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{B0903310-156A-405B-9965-CA49D8FB8EEE}</ProjectGuid>
+    <ProjectGuid>{8685584C-E345-4CA6-B804-AD7D034E3471}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My11Body</RootNamespace>
+    <RootNamespace>My12ShapeTests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -142,7 +142,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="1.1-Body.cpp" />
+    <ClCompile Include="1.2-ShapeTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
