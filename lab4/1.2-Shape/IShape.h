@@ -4,8 +4,8 @@
 class IShape
 {
 public:
-	virtual ~IShape();
-	virtual double GetArea() const = 0; //abstract base class
+	virtual ~IShape(); // if the base class is intended for polymorphic use, then its destructor must be declared virtual
+	virtual double GetArea() const = 0; // abstract base class
 	virtual double GetPerimether() const = 0;
 	virtual std::string ToString() const = 0;
 	virtual std::string GetOutlineColor() const = 0;
