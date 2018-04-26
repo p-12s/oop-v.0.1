@@ -4,14 +4,21 @@
 using namespace std;
 
 CShape::CShape(const string& type, const string& color)
-	: m_type(type)
-	, m_color(color)
+	: m_color(color)
+	, m_type(type)
 {	
 }
 
 string CShape::ToString() const
 {
-	return "shapeName";
+	ostringstream output;
+	output << m_type << "\nArea: " << GetArea() <<
+		"\nPerimeter: " << GetPerimeter() <<
+		"\nOutline color: " << GetOutlineColor() << "\n";
+	
+	return output.str();
+	
+	//return "CShape";
 }
 
 string CShape::GetOutlineColor() const
