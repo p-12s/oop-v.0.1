@@ -143,9 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="LineSegment.h" />
     <ClInclude Include="IShape.h" />
     <ClInclude Include="Point.h" />
@@ -155,7 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1.2-Shape.cpp" />
-    <ClCompile Include="CLineSegment.cpp" />
+    <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="stdafx.cpp">

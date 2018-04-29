@@ -3,11 +3,12 @@
 class CPoint
 {
 public:
-	CPoint(double m_x, double m_y);
+	CPoint(const double x, const double y);
 	~CPoint() = default;
-	//std::string ToString() const;
+	std::pair<double, double> GetCoordinates() const;
+	double GetDistanceTo(const CPoint point) const;
 
 private:
-	double m_x;
-	double m_y;
+	double m_x = 0;
+	double m_y = 0;
 };

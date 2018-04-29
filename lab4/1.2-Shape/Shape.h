@@ -12,6 +12,6 @@ public:
 	std::string GetOutlineColor() const override; 
 
 private:
-	std::string m_color;
 	std::string m_type;
+	std::string m_color;
 };

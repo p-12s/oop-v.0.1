@@ -4,8 +4,8 @@
 using namespace std;
 
 CShape::CShape(const string& type, const string& color)
-	: m_color(color)
-	, m_type(type)
+	: m_type(type)
+	, m_color(color)
 {	
 }
 
