@@ -10,8 +10,6 @@ public:
 	~CLineSegment() = default;
 	double GetArea() const override;
 	double GetPerimeter() const override;
-	std::string ToString() const override;
-	std::string GetOutlineColor() const override;
 	CPoint GetStartPoint() const;
 	CPoint GetEndPoint() const;
 

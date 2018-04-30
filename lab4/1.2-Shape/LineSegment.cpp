@@ -16,22 +16,12 @@ CLineSegment::CLineSegment(const CPoint& start, const CPoint& end, const string&
 
 double CLineSegment::GetArea() const
 {
-	return 0;
+	return 0.0;
 }
 
 double CLineSegment::GetPerimeter() const
 {
-	return 0;
-}
-
-string CLineSegment::ToString() const
-{
-	return "";
-}
-
-string CLineSegment::GetOutlineColor() const
-{
-	return "";
+	return m_start.GetDistanceTo(m_end);
 }
 
 CPoint CLineSegment::GetStartPoint() const
