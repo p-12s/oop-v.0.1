@@ -6,13 +6,10 @@ using namespace std;
 
 struct LineSegmentFixture
 {
-	CLineSegment lineSegment;
-	const CPoint startPoint = CPoint(0, 0);
-	const CPoint endPoint = CPoint(-10, -10);
-	const string color = "ff0000";
+	CLineSegment lineSegment = CLineSegment(CPoint(0, 0), CPoint(-10, -10), "ff0000");
 
 	LineSegmentFixture()
-		: lineSegment(startPoint, endPoint, color)
+	: lineSegment()
 	{
 	}
 };
@@ -27,6 +24,6 @@ BOOST_FIXTURE_TEST_SUITE(LineSegment, LineSegmentFixture)
 // имеет цыет обводки
 // имеет координаты начала
 // имеет конечную точку
-	
+
 
 BOOST_AUTO_TEST_SUITE_END()

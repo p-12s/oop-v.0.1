@@ -21,12 +21,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\1.2-Shape\Point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\1.2-Shape\LineSegment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -38,13 +32,16 @@
     <ClCompile Include="PointTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LineSegmentTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\1.2-Shape\Point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\1.2-Shape\LineSegment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\1.2-Shape\Shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineSegmentTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

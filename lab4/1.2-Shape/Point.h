@@ -3,6 +3,7 @@
 class CPoint
 {
 public:
+	CPoint();
 	CPoint(const double x, const double y);
 	~CPoint() = default;
 	std::pair<double, double> GetCoordinates() const;

@@ -4,6 +4,7 @@
 class CShape : public virtual IShape
 {
 public:
+	CShape();
 	CShape(const std::string& type, const std::string& color);
 	~CShape() = default;
 	double GetArea() const override = 0;
