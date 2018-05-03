@@ -18,7 +18,8 @@ string CShape::ToString() const
 	ostringstream output;
 	output << m_type << "\nArea: " << GetArea() <<
 		"\nPerimeter: " << (round(GetPerimeter() * 100) / 100) <<
-		"\nOutline color: " << GetOutlineColor() << "\n";	
+		"\nOutline color: " << GetOutlineColor() << "\n";
+	
 	return output.str();
 }
 
