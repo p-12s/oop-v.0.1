@@ -23,12 +23,15 @@ bool ArePointCoordinatesEqual(const CPoint& point, const double expectedX, const
 }
 
 bool IsInformationEqual(const CShape& chape, const string& existedType,
-	const double expectedArea, const double existedPerimether, const string& existedColor)
+	const double expectedArea, const double existedPerimether, 
+	const string& outlineColor, const string& fillColor)
 {
 	ostringstream compoundString;
 	compoundString << existedType << "\nArea: " << expectedArea <<
 		"\nPerimeter: " << existedPerimether <<
-		"\nOutline color: " << existedColor << "\n";
+		"\nOutline color: " << outlineColor << "\n";
+	if (!fillColor.empty())
+		compoundString << "\nFill color: " << fillColor << "\n";
 
 	return compoundString.str() == chape.ToString();
 }

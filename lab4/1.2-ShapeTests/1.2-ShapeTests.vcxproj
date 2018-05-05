@@ -175,6 +175,8 @@
     <ClCompile Include="..\1.2-Shape\LineSegment.cpp" />
     <ClCompile Include="..\1.2-Shape\Point.cpp" />
     <ClCompile Include="..\1.2-Shape\Shape.cpp" />
+    <ClCompile Include="..\1.2-Shape\SolidShape.cpp" />
+    <ClCompile Include="..\1.2-Shape\Triangle.cpp" />
     <ClCompile Include="1.2-ShapeTests.cpp" />
     <ClCompile Include="LineSegmentTests.cpp" />
     <ClCompile Include="PointTests.cpp" />
@@ -185,6 +187,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestingUtilities.cpp" />
+    <ClCompile Include="TriangleTests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

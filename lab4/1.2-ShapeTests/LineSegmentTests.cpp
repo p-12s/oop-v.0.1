@@ -13,7 +13,7 @@ struct LineSegmentFixture
 	CLineSegment lineSegment;
 
 	LineSegmentFixture()
-	: lineSegment(startPoint, endPoint, color)
+		: lineSegment(startPoint, endPoint, color)
 	{
 	}
 };
@@ -30,6 +30,10 @@ BOOST_FIXTURE_TEST_SUITE(LineSegment, LineSegmentFixture)
 		CPoint currentEnd = lineSegment.GetEndPoint();
 		BOOST_CHECK(ArePointCoordinatesEqual(currentEnd, -10.0, -10.0));
 	}
+	BOOST_AUTO_TEST_CASE(has_an_area_equal_to_zero)
+	{
+		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(lineSegment.GetArea(), 0));
+	}
 	BOOST_AUTO_TEST_CASE(can_find_its_length_which_is_equal_to_the_perimeter)
 	{
 		double length = lineSegment.GetStartPoint().GetDistanceTo(lineSegment.GetEndPoint());
@@ -37,14 +41,10 @@ BOOST_FIXTURE_TEST_SUITE(LineSegment, LineSegmentFixture)
 
 		double perimeter = lineSegment.GetPerimeter();		
 		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(perimeter, 14.14));
-	}	
-	BOOST_AUTO_TEST_CASE(has_an_area_equal_to_zero)
-	{		
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(lineSegment.GetArea(), 0));
 	}
 	BOOST_AUTO_TEST_CASE(has_a_method_of_obtaining_information)
 	{
-		BOOST_CHECK(IsInformationEqual(lineSegment, "Line segment", 0, 14.14, "ff0000"));
+		BOOST_CHECK(IsInformationEqual(lineSegment, "Line segment", 0, 14.14, "ff0000", ""));
 	}
 	BOOST_AUTO_TEST_CASE(has_outline_color)
 	{

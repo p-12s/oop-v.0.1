@@ -8,4 +8,5 @@ bool ArePointCoordinatesEqual(const CPoint& point, const double expectedX, const
 bool CheckEqualOfTwoDoubleNumbers(const double a, const double b);
 
 bool IsInformationEqual(const CShape& chape, const std::string& existedType,
-	const double expectedArea, const double existedPerimether, const std::string& existedColor);
+	const double expectedArea, const double existedPerimether,
+	const std::string& outlineColor, const std::string& fillColor);
