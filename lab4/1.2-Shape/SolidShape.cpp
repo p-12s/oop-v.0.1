@@ -21,5 +21,5 @@ string CSolidShape::GetOutlineColor() const
 
 string CSolidShape::ToString() const
 {
-	return CShape::ToString() + "\nFill color: " + m_fillColor + "\n";
+	return CShape::ToString() + "Fill color: " + m_fillColor + "\n";
 }

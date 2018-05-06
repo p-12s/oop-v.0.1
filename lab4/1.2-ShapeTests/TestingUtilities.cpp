@@ -31,7 +31,7 @@ bool IsInformationEqual(const CShape& chape, const string& existedType,
 		"\nPerimeter: " << existedPerimether <<
 		"\nOutline color: " << outlineColor << "\n";
 	if (!fillColor.empty())
-		compoundString << "\nFill color: " << fillColor << "\n";
+		compoundString << "Fill color: " << fillColor << "\n";
 
 	return compoundString.str() == chape.ToString();
 }

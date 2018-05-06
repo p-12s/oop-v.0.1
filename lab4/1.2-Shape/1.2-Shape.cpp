@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Point.h"
 #include "LineSegment.h"
+#include "Rectangle.h"
 
 using namespace std;
 
@@ -20,18 +21,17 @@ bool AsStringEqual(const CShape& chape, const string& existedType,
 
 int main()
 {
-	CPoint startPoint = CPoint(0.0, 0.0);
-	CPoint endPoint = CPoint(-10.0, -10.0);
-	string color = "ff0000";
-	CLineSegment lineSegment = CLineSegment(startPoint, endPoint, color);
+	CPoint leftTop = CPoint(0.0, 2.0);
+	CPoint rightBottom = CPoint(3.0, 0.0);
+	string outlineColor = "ff0011";
+	string fillColor = "ffffff";
+	CRectangle rectangle = CRectangle(leftTop, rightBottom, outlineColor, fillColor);
 
 
-	cout << lineSegment.ToString() << endl;
+	cout << rectangle.ToString() << endl;
 
-	if (AsStringEqual(lineSegment, "Line segment", 0, lineSegment.GetPerimeter(), color))
-		cout << "equal" << endl;
-	else
-		cout << "none" << endl;
+	double area = rectangle.GetArea();
+	double per = rectangle.GetPerimeter();
 	
     return 0;
 }

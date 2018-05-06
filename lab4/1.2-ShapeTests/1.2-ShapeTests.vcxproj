@@ -174,12 +174,14 @@
   <ItemGroup>
     <ClCompile Include="..\1.2-Shape\LineSegment.cpp" />
     <ClCompile Include="..\1.2-Shape\Point.cpp" />
+    <ClCompile Include="..\1.2-Shape\Rectangle.cpp" />
     <ClCompile Include="..\1.2-Shape\Shape.cpp" />
     <ClCompile Include="..\1.2-Shape\SolidShape.cpp" />
     <ClCompile Include="..\1.2-Shape\Triangle.cpp" />
     <ClCompile Include="1.2-ShapeTests.cpp" />
     <ClCompile Include="LineSegmentTests.cpp" />
     <ClCompile Include="PointTests.cpp" />
+    <ClCompile Include="RectangleTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

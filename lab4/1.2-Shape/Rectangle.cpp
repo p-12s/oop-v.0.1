@@ -3,31 +3,18 @@
 
 using namespace std;
 
+double GetCoordinateDifference(const double a, const double b)
+{
+	double difference = a - b;
+	return (difference > 0) ? difference : (difference * -1);
+}
+
 CRectangle::CRectangle(const CPoint& leftTop, const CPoint& rightBottom,
-	const std::string& outlineColor, const std::string& fillColor)
+	const string& outlineColor, const string& fillColor)
 	: m_leftTop(leftTop)
 	, m_rightBottom(rightBottom)
 	, CSolidShape("Rectangle", outlineColor, fillColor)
 {
-}
-
-double CRectangle::GetArea() const
-{
-	/*pair<double, double> vertex1 = m_vertex1.GetCoordinates();
-	pair<double, double> vertex2 = m_vertex2.GetCoordinates();
-	pair<double, double> vertex3 = m_vertex3.GetCoordinates();
-
-	double area = ((vertex1.first - vertex3.first) * (vertex2.second - vertex3.second) -
-		(vertex2.first - vertex3.first) * (vertex1.second - vertex3.second)) * 0.5;*/
-	return 0;
-}
-
-double CRectangle::GetPerimeter() const
-{
-	/*return m_vertex1.GetDistanceTo(m_vertex2) +
-		m_vertex2.GetDistanceTo(m_vertex3) +
-		m_vertex3.GetDistanceTo(m_vertex1);*/
-	return 0;
 }
 
 CPoint CRectangle::GetLeftTop() const
@@ -42,10 +29,20 @@ CPoint CRectangle::GetRightBottom() const
 
 double CRectangle::GetWidth() const
 {
-	return 0;
+	return GetCoordinateDifference(m_leftTop.GetCoordinates().first, m_rightBottom.GetCoordinates().first);
 }
 
 double CRectangle::GetHeight() const
 {
-	return 0;
+	return GetCoordinateDifference(m_leftTop.GetCoordinates().second, m_rightBottom.GetCoordinates().second);
+}
+
+double CRectangle::GetArea() const
+{
+	return GetHeight() * GetWidth();
+}
+
+double CRectangle::GetPerimeter() const
+{
+	return (GetWidth() + GetHeight()) * 2;
 }
