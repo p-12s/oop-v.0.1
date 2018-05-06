@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="ISolidShape.h" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1.2-Shape.cpp" />
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Rectangle.cpp" />

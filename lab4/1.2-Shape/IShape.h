@@ -10,7 +10,3 @@ public:
 	virtual std::string ToString() const = 0;
 	virtual std::string GetOutlineColor() const = 0;
 };
-
-/*inline IShape::~IShape()
-{
-}*/

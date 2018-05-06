@@ -172,6 +172,7 @@
     <ClInclude Include="TestingUtilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\1.2-Shape\Circle.cpp" />
     <ClCompile Include="..\1.2-Shape\LineSegment.cpp" />
     <ClCompile Include="..\1.2-Shape\Point.cpp" />
     <ClCompile Include="..\1.2-Shape\Rectangle.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="..\1.2-Shape\SolidShape.cpp" />
     <ClCompile Include="..\1.2-Shape\Triangle.cpp" />
     <ClCompile Include="1.2-ShapeTests.cpp" />
+    <ClCompile Include="CircleTests.cpp" />
     <ClCompile Include="LineSegmentTests.cpp" />
     <ClCompile Include="PointTests.cpp" />
     <ClCompile Include="RectangleTests.cpp" />

@@ -10,7 +10,6 @@ public:
 	~CRectangle() = default;
 	double GetArea() const override;
 	double GetPerimeter() const override;
-
 	CPoint GetLeftTop() const;
 	CPoint GetRightBottom() const;
 	double GetWidth() const;

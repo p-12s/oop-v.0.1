@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Point.h"
 #include "LineSegment.h"
-#include "Rectangle.h"
+#include "Circle.h"
 
 using namespace std;
 
@@ -21,17 +21,17 @@ bool AsStringEqual(const CShape& chape, const string& existedType,
 
 int main()
 {
-	CPoint leftTop = CPoint(0.0, 2.0);
-	CPoint rightBottom = CPoint(3.0, 0.0);
+	CPoint center = CPoint(0.0, 0.0);
+	double radius = 3;
 	string outlineColor = "ff0011";
 	string fillColor = "ffffff";
-	CRectangle rectangle = CRectangle(leftTop, rightBottom, outlineColor, fillColor);
+	CCircle circle = CCircle(center, radius, outlineColor, fillColor);
 
 
-	cout << rectangle.ToString() << endl;
+	cout << circle.ToString() << endl;
 
-	double area = rectangle.GetArea();
-	double per = rectangle.GetPerimeter();
+	double area = circle.GetArea();
+	double per = circle.GetPerimeter();
 	
     return 0;
 }
