@@ -85,15 +85,28 @@ shared_ptr<IShape> CCreatorOfShapes::CreateLineSegment(istringstream& strm) cons
 
 shared_ptr<IShape> CCreatorOfShapes::CreateRectangle(istringstream& strm) const
 {
-	return nullptr;
+	CPoint leftTop = CreatePoint(strm);
+	CPoint rightBottom = CreatePoint(strm);
+	string outlineColor = ReadColor(strm);
+	string fillColor = ReadColor(strm);
+	return make_shared<CRectangle>(leftTop, rightBottom, outlineColor, fillColor);
 }
 
 shared_ptr<IShape> CCreatorOfShapes::CreateCircle(istringstream& strm) const
 {
-	return nullptr;
+	CPoint center = CreatePoint(strm);
+	double radius = ReadLength(strm);
+	string outlineColor = ReadColor(strm);
+	string fillColor = ReadColor(strm);
+	return make_shared<CCircle>(center, radius, outlineColor, fillColor);
 }
 
 shared_ptr<IShape> CCreatorOfShapes::CreateTriangle(istringstream& strm) const
 {
-	return nullptr;
+	CPoint vertex1 = CreatePoint(strm);
+	CPoint vertex2 = CreatePoint(strm);
+	CPoint vertex3 = CreatePoint(strm);
+	string outlineColor = ReadColor(strm);
+	string fillColor = ReadColor(strm);
+	return make_shared<CTriangle>(vertex1, vertex2, vertex3, outlineColor, fillColor);
 }
