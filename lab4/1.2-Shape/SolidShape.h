@@ -2,7 +2,7 @@
 #include "ISolidShape.h"
 #include "Shape.h"
 
-class CSolidShape : public CShape, public ISolidShape // TODO как избавитьс€ от ромбовидного наследовани€?
+class CSolidShape : public CShape, public ISolidShape
 {
 public:
 	CSolidShape(const std::string& type, const std::string& outlineColor, const std::string& fillColor);

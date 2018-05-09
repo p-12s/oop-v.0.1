@@ -30,3 +30,13 @@ double CPoint::GetDistanceTo(const CPoint point) const
 		throw overflow_error("The coordinate value is too large");
 	}	
 }
+
+void CPoint::SetXValue(const double x)
+{
+	m_x = x;
+}
+
+void CPoint::SetYValue(const double y)
+{
+	m_y = y;
+}

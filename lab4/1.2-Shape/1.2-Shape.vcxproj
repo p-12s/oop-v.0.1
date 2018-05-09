@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="CreatorOfShapes.h" />
+    <ClInclude Include="ReadShape.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="ISolidShape.h" />
@@ -158,8 +160,10 @@
   <ItemGroup>
     <ClCompile Include="1.2-Shape.cpp" />
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="CreatorOfShapes.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="ReadShape.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SolidShape.cpp" />
@@ -170,6 +174,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Triangle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="rectangle.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

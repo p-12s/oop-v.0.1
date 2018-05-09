@@ -1,37 +1,56 @@
 #include "stdafx.h"
-#include "Point.h"
-#include "LineSegment.h"
-#include "Circle.h"
+#include "ReadShape.h"
 
 using namespace std;
 
-bool AsStringEqual(const CShape& chape, const string& existedType,
-	const double expectedArea, const double existedPerimether, const string& existedColor)
+int main(int argc, char* argv[])
 {
-	ostringstream compoundString;
-	compoundString << existedType << "\nArea: " << expectedArea <<
-		"\nPerimeter: " << existedPerimether <<
-		"\nOutline color: " << existedColor << "\n";
+	if (argc != 2)
+	{
+		cout << "Invalid arguments count\n"
+			<< "Usage: program.exe <file with shapes>\n";
+		return 1;
+	}
+	// Is/Has обычно не выполняют действий, а проверяют некоторое условие
+	// лучше бросать std::runtime_error 
+	// Имя, содержащее Try* обычно подразумевает, что вместо исключения вернут bool или иной код возврата, который надо проверить. Без try - подразумевает выброс исключения в случае неудачи
+	try
+	{
+		/*shared_ptr основывается на подсчете количества ссылок на объект 
+		 и может использоваться в составе контейнеров STL
+		boost::scoped_ptr и boost::shared_ptr 
+		Первый используется для контроля времени жизни указателя в пределах операторного блока. 
+		Второй – для длительного контроля за указателем.
+		*/
+		vector<shared_ptr<IShape>> shapes;
+		ReadShapes(argv[1], shapes);
 
-	string info = chape.ToString();
-	string my = compoundString.str();
+		// пока не конец строки - будет считывать и с помощью bind создавать фигуры
 
-	return my == info;
-}
+		// загрузить фигуры из файла с указанным именем
+		// Попытаться найти наибольшую площадь, сообщить об ошибке, если невозможно
+		// Попытаться найти наименьший периметр
+		// вывести результат
 
-int main()
-{
-	CPoint center = CPoint(0.0, 0.0);
-	double radius = 3;
-	string outlineColor = "ff0011";
-	string fillColor = "ffffff";
-	CCircle circle = CCircle(center, radius, outlineColor, fillColor);
-
-
-	cout << circle.ToString() << endl;
-
-	double area = circle.GetArea();
-	double per = circle.GetPerimeter();
+	}
+	catch (const exception& error)
+	{
+		cout << error.what();
+		return 1;
+	}
+	/*
+	В программе должна быть функция, позволяющая найти среди массива фигур ту, которая имеет 
+	наибольшую площадь, 
+	а также функция, позволяющая найти фигуру, имеющую 
+	наименьший периметр. 
+	
+	После окончания считывания фигур программа должна вывести в стандартный поток вывода информацию об этих двух фигурах. 
+	При этом должна быть выведена полная информация, включающая в себя:
+    • Площадь и периметр фигуры
+    • Цвет обводки и заливки (при наличии)
+    • Данные, специфичные для конкретной фигуры 
+	(для этого удобно использовать ToString()) 
+	 */
 	
     return 0;
 }
