@@ -4,17 +4,12 @@
 class CComplex
 {
 public:
-	// инициализация комплексного числа значениями действительной и мнимой частей
 	CComplex(double real = 0, double imaginary = 0);
 	~CComplex() = default;
-	// возвращает действительную часть комплексного числа
-	double Re()const;
-	// возвращает мнимую часть комплексного числа
-	double Im()const;
-	// возвращает модуль комплексного числа
-	double GetMagnitude()const;
-	// возвращает аргумент комплексного числа
-	double GetArgument()const;
+	double Re() const;
+	double Im() const;	
+	double GetMagnitude() const; // возвращает модуль комплексного числа	
+	double GetArgument() const; // возвращает аргумент комплексного числа
 
 private:
 	double m_real;

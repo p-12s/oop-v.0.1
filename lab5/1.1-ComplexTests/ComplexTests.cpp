@@ -21,7 +21,6 @@ struct ComplexFixture
 	}*/
 };
 
-
 BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 
 	BOOST_AUTO_TEST_CASE(has_real_part)
@@ -32,5 +31,15 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 	{
 		BOOST_CHECK_CLOSE(complex.Im(), expectedIm, DBL_EPSILON);
 	}
+// добавить проверки на неизменение 
+	BOOST_AUTO_TEST_CASE(can_get_its_module)
+	{
+		BOOST_CHECK_CLOSE(complex.GetMagnitude(), sqrt(5), DBL_EPSILON);
+	}
+	BOOST_AUTO_TEST_CASE(can_get_its_argument)
+	{
+		BOOST_CHECK_CLOSE(complex.GetArgument(), 0, DBL_EPSILON);
+	}
+// для 0 не определен
 
 BOOST_AUTO_TEST_SUITE_END()
