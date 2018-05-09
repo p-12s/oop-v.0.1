@@ -3,10 +3,6 @@
 
 using namespace std;
 
-CPoint::CPoint()
-{
-}
-
 CPoint::CPoint(const double x, const double y)
 	: m_x(x)
 	, m_y(y)
@@ -18,7 +14,7 @@ pair<double, double> CPoint::GetCoordinates() const
 	return { m_x, m_y };
 }
 
-double CPoint::GetDistanceTo(const CPoint point) const
+double CPoint::GetDistanceTo(const CPoint& point) const
 {
 	try
 	{
@@ -29,14 +25,4 @@ double CPoint::GetDistanceTo(const CPoint point) const
 	{
 		throw overflow_error("The coordinate value is too large");
 	}	
-}
-
-void CPoint::SetXValue(const double x)
-{
-	m_x = x;
-}
-
-void CPoint::SetYValue(const double y)
-{
-	m_y = y;
 }

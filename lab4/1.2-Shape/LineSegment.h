@@ -5,7 +5,6 @@
 class CLineSegment : public CShape
 {
 public:
-	CLineSegment();
 	CLineSegment(const CPoint& start, const CPoint& end, const std::string& color);
 	~CLineSegment() = default;
 	double GetArea() const override;

@@ -17,5 +17,5 @@ public:
 private:
 	CPoint m_vertex1;
 	CPoint m_vertex2;
-	CPoint m_vertex3; // TODO мб вектор использовать, лучше что-то другое
+	CPoint m_vertex3;
 };

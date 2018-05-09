@@ -3,7 +3,8 @@
 
 using namespace std;
 
-CTriangle::CTriangle(const CPoint& vertex1, const CPoint& vertex2, const CPoint& vertex3, const string& outlineColor, const string& fillColor)
+CTriangle::CTriangle(const CPoint& vertex1, const CPoint& vertex2, const CPoint& vertex3, 
+	const string& outlineColor, const string& fillColor)
 	: m_vertex1(vertex1)
 	, m_vertex2(vertex2)
 	, m_vertex3(vertex3)

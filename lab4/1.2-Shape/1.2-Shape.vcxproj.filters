@@ -47,10 +47,10 @@
     <ClInclude Include="Circle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ReadShape.h">
+    <ClInclude Include="CalculatingShapes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CreatorOfShapes.h">
+    <ClInclude Include="ShapesCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -82,15 +82,15 @@
     <ClCompile Include="Circle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ReadShape.cpp">
+    <ClCompile Include="CalculatingShapes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CreatorOfShapes.cpp">
+    <ClCompile Include="ShapesCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="rectangle.txt">
+    <Text Include="shapes.txt">
       <Filter>test-data</Filter>
     </Text>
   </ItemGroup>

@@ -1,0 +1,5 @@
+LineSegment 12.5 12.5 -12.5 -12.5 ff0000
+LineSegment 12.5 1.0 -12.5 -12.5 000000
+Rectangle 1.0 -1.0 12.5 36.5 000000 ffffff
+Circle 1.0 -1.0 12.4 000000 ffffff
+Triangle 1.0 -1.0 12.4 8.5 16.8 32.2 000000 ffffff

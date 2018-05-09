@@ -3,10 +3,6 @@
 
 using namespace std;
 
-CLineSegment::CLineSegment()
-{
-}
-
 CLineSegment::CLineSegment(const CPoint& start, const CPoint& end, const string& color)
 	: m_start(start)
 	, m_end(end)
@@ -16,7 +12,7 @@ CLineSegment::CLineSegment(const CPoint& start, const CPoint& end, const string&
 
 double CLineSegment::GetArea() const
 {
-	return 0.0;
+	return 0;
 }
 
 double CLineSegment::GetPerimeter() const

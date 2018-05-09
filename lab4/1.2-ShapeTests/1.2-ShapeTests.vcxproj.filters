@@ -71,10 +71,10 @@
     <ClCompile Include="CircleTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CreatorOfShapesTests.cpp">
+    <ClCompile Include="ShapesCreatorTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\1.2-Shape\CreatorOfShapes.cpp">
+    <ClCompile Include="..\1.2-Shape\ShapesCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

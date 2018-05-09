@@ -6,10 +6,10 @@ using namespace std;
 
 struct PointFixture
 {
-	CPoint point = CPoint(0, 0);
+	CPoint point;
 
 	PointFixture()
-		: point()
+		: point(0.0, 0.0)
 	{
 	}
 };
@@ -29,18 +29,6 @@ BOOST_FIXTURE_TEST_SUITE(Point, PointFixture)
 
 		auto newPoint2 = CPoint(-4, -4);
 		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(point.GetDistanceTo(newPoint2), 5.66));
-	}
-	BOOST_AUTO_TEST_CASE(it_is_possible_to_change_the_coordinate_x)
-	{
-		BOOST_CHECK(ArePointCoordinatesEqual(point, 0, 0));
-		point.SetXValue(-12.5);
-		BOOST_CHECK(ArePointCoordinatesEqual(point, -12.5, 0));
-	}
-	BOOST_AUTO_TEST_CASE(it_is_possible_to_change_the_coordinate_y)
-	{
-		BOOST_CHECK(ArePointCoordinatesEqual(point, 0, 0));
-		point.SetYValue(12.5);
-		BOOST_CHECK(ArePointCoordinatesEqual(point, 0, 12.5));
 	}
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,7 +1,44 @@
 #include "stdafx.h"
-#include "ReadShape.h"
+#include "IShape.h"
+#include "ShapesCreator.h"
+#include "CalculatingShapes.h"
 
 using namespace std;
+
+void ReadShapes(const string& inputName, vector<shared_ptr<IShape>>& shapes)
+{
+	ifstream inputFile(inputName);
+	if (!inputFile.is_open())
+		throw runtime_error("Failed to open file for reading");
+
+	string shapeString;
+	CShapesCreator shapesCreator;
+	while (getline(inputFile, shapeString))
+		shapes.push_back(shapesCreator.CreateShapesFromString(shapeString));
+}
+
+void PrintShapes(const vector<shared_ptr<IShape>>& shapes)
+{
+	for_each(shapes.begin(), shapes.end(), [&](auto& shape) {
+		cout << shape->ToString() << endl;
+	});
+}
+
+void PrintShapeWithLargestArea(const vector<shared_ptr<IShape>>& shapes)
+{
+	shared_ptr<IShape> shapeWithLargestArea = CalculateLargestArea(shapes);
+	if (shapeWithLargestArea)
+		cout << "The figure with the largest area:\n" 
+			<< shapeWithLargestArea->ToString() << endl;
+}
+
+void PrintShapeWithLeastPerimeter(const vector<shared_ptr<IShape>>& shapes)
+{
+	shared_ptr<IShape> shapeWithLeastPerimeter = CalculateLeastPerimeter(shapes);
+	if (shapeWithLeastPerimeter)
+		cout << "The figure with the least perimeter:\n"
+		<< shapeWithLeastPerimeter->ToString() << endl;
+}
 
 int main(int argc, char* argv[])
 {
@@ -11,47 +48,26 @@ int main(int argc, char* argv[])
 			<< "Usage: program.exe <file with shapes>\n";
 		return 1;
 	}
-	// Is/Has обычно не выполняют действий, а проверяют некоторое условие
-	// лучше бросать std::runtime_error 
-	// Имя, содержащее Try* обычно подразумевает, что вместо исключения вернут bool или иной код возврата, который надо проверить. Без try - подразумевает выброс исключения в случае неудачи
+	
 	try
 	{
-		/*shared_ptr основывается на подсчете количества ссылок на объект 
-		 и может использоваться в составе контейнеров STL
-		boost::scoped_ptr и boost::shared_ptr 
-		Первый используется для контроля времени жизни указателя в пределах операторного блока. 
-		Второй – для длительного контроля за указателем.
-		*/
 		vector<shared_ptr<IShape>> shapes;
+
 		ReadShapes(argv[1], shapes);
+		if (shapes.empty())
+		{
+			cout << "There is no figure\n";
+			return 0;
+		}			
 
-		// пока не конец строки - будет считывать и с помощью bind создавать фигуры
-
-		// загрузить фигуры из файла с указанным именем
-		// Попытаться найти наибольшую площадь, сообщить об ошибке, если невозможно
-		// Попытаться найти наименьший периметр
-		// вывести результат
-
+		PrintShapes(shapes);
+		PrintShapeWithLargestArea(shapes);
+		PrintShapeWithLeastPerimeter(shapes);
 	}
 	catch (const exception& error)
 	{
 		cout << error.what();
 		return 1;
 	}
-	/*
-	В программе должна быть функция, позволяющая найти среди массива фигур ту, которая имеет 
-	наибольшую площадь, 
-	а также функция, позволяющая найти фигуру, имеющую 
-	наименьший периметр. 
-	
-	После окончания считывания фигур программа должна вывести в стандартный поток вывода информацию об этих двух фигурах. 
-	При этом должна быть выведена полная информация, включающая в себя:
-    • Площадь и периметр фигуры
-    • Цвет обводки и заливки (при наличии)
-    • Данные, специфичные для конкретной фигуры 
-	(для этого удобно использовать ToString()) 
-	 */
-	
-    return 0;
 }
 
