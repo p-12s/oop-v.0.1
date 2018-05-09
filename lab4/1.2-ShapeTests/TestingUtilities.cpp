@@ -3,23 +3,11 @@
 
 using namespace std;
 
-bool CheckEqualOfTwoDoubleNumbers(const double a, const double b)
+void ArePointCoordinatesEqual(const CPoint& point, const double expectedX, const double expectedY)
 {
-	try
-	{
-		return (round(a * 100) / 100) == (round(b * 100) / 100);
-	}
-	catch (exception const&)
-	{
-		throw overflow_error("The checked numbers is too large");
-	}	
-}
-
-bool ArePointCoordinatesEqual(const CPoint& point, const double expectedX, const double expectedY)
-{
-	pair<double, double> pointCoordinates = point.GetCoordinates();
-	return CheckEqualOfTwoDoubleNumbers(pointCoordinates.first, expectedX) && 
-			CheckEqualOfTwoDoubleNumbers(pointCoordinates.second, expectedY);
+	pair<double, double> coordinates = point.GetCoordinates();
+	BOOST_CHECK_CLOSE(coordinates.first, expectedX, DBL_EPSILON);
+	BOOST_CHECK_CLOSE(coordinates.second, expectedY, DBL_EPSILON);
 }
 
 bool IsInformationEqual(const CShape& chape, const string& existedType,

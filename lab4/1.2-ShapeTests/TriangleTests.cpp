@@ -24,17 +24,17 @@ BOOST_FIXTURE_TEST_SUITE(Triangle, TriangleFixture)
 
 	BOOST_AUTO_TEST_CASE(has_the_coordinates_of_3_vertexes)
 	{
-		BOOST_CHECK(ArePointCoordinatesEqual(triangle.GetVertex1(), 0.0, 0.0));
-		BOOST_CHECK(ArePointCoordinatesEqual(triangle.GetVertex2(), 0.0, 2.0));
-		BOOST_CHECK(ArePointCoordinatesEqual(triangle.GetVertex3(), 2.0, 0.0));
+		ArePointCoordinatesEqual(triangle.GetVertex1(), 0, 0);
+		ArePointCoordinatesEqual(triangle.GetVertex2(), 0, 2);
+		ArePointCoordinatesEqual(triangle.GetVertex3(), 2, 0);
 	}
 	BOOST_AUTO_TEST_CASE(has_an_area)
 	{
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(triangle.GetArea(), 2));
+		BOOST_CHECK_CLOSE(triangle.GetArea(), 2, DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_a_perimeter)
 	{
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(triangle.GetPerimeter(), 6.83));
+		BOOST_CHECK_CLOSE(triangle.GetPerimeter(), 6.83, DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_outline_color)
 	{

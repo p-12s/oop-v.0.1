@@ -23,19 +23,19 @@ BOOST_FIXTURE_TEST_SUITE(Circle, CircleFixture)
 
 	BOOST_AUTO_TEST_CASE(has_the_coordinate_of_center)
 	{
-		BOOST_CHECK(ArePointCoordinatesEqual(circle.GetCenter(), 0.0, 0.0));
+		ArePointCoordinatesEqual(circle.GetCenter(), 0, 0);
 	}
 	BOOST_AUTO_TEST_CASE(has_a_radius)
 	{
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(circle.GetRadius(), 3));
+		BOOST_CHECK_CLOSE(circle.GetRadius(), 3, DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_an_area)
 	{
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(circle.GetArea(), 28.27));
+		BOOST_CHECK_CLOSE(circle.GetArea(), 28.27, DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_a_perimeter)
 	{
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(circle.GetPerimeter(), 18.85));
+		BOOST_CHECK_CLOSE(circle.GetPerimeter(), (2 * M_PI * 3), DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_outline_color)
 	{

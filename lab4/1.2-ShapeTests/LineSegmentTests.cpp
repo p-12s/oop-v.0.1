@@ -23,24 +23,24 @@ BOOST_FIXTURE_TEST_SUITE(LineSegment, LineSegmentFixture)
 	BOOST_AUTO_TEST_CASE(has_the_start_coordinates)
 	{
 		CPoint currentStart = lineSegment.GetStartPoint();
-		BOOST_CHECK(ArePointCoordinatesEqual(currentStart, 0, 0));
+		ArePointCoordinatesEqual(currentStart, 0, 0);
 	}
 	BOOST_AUTO_TEST_CASE(has_the_end_coordinates)
 	{
 		CPoint currentEnd = lineSegment.GetEndPoint();
-		BOOST_CHECK(ArePointCoordinatesEqual(currentEnd, -10.0, -10.0));
+		ArePointCoordinatesEqual(currentEnd, -10, -10);
 	}
 	BOOST_AUTO_TEST_CASE(has_an_area_equal_to_zero)
 	{
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(lineSegment.GetArea(), 0));
+		BOOST_CHECK_CLOSE(lineSegment.GetArea(), 0, DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(can_find_its_length_which_is_equal_to_the_perimeter)
 	{
 		double length = lineSegment.GetStartPoint().GetDistanceTo(lineSegment.GetEndPoint());
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(length, 14.14));
+		BOOST_CHECK_CLOSE(length, 14.14, DBL_EPSILON);
 
 		double perimeter = lineSegment.GetPerimeter();		
-		BOOST_CHECK(CheckEqualOfTwoDoubleNumbers(perimeter, 14.14));
+		BOOST_CHECK_CLOSE(perimeter, 14.14, DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_a_method_of_obtaining_information)
 	{
