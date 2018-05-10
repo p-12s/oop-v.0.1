@@ -58,3 +58,13 @@ CComplex const operator+(const double real, const CComplex& complex)
 {
 	return CComplex(real) + complex;
 }
+
+CComplex const CComplex::operator-(const CComplex& complex) const
+{
+	return CComplex(m_real - complex.m_real, m_imaginary - complex.m_imaginary);
+}
+
+CComplex const operator-(double real, const CComplex& complex)
+{
+	return CComplex(real) - complex;
+}

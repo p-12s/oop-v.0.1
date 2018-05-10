@@ -12,6 +12,7 @@ public:
 	double GetArgument() const;
 
 	CComplex const operator+(const CComplex& complex) const;
+	CComplex const operator-(const CComplex& complex) const;
 
 private:
 	double m_real;
@@ -19,3 +20,6 @@ private:
 };
 
 CComplex const operator+(const double real, const CComplex& complex);
+CComplex const operator-(double real, const CComplex& complex);
+
+// TODO непонятка с отношениями объектов к текущему классы, тест не проходит

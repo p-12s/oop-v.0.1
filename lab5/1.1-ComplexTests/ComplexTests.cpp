@@ -67,8 +67,8 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 
 	struct Complex2Fixture : ComplexFixture
 	{
-		double expectedRe = 5.0;
-		double expectedIm = -9.0;
+		double expectedRe = 5.0; // 1
+		double expectedIm = -9.0; // -2
 		CComplex complex2;
 
 		Complex2Fixture()
@@ -89,6 +89,22 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 			CheckArgumentsOfComplexNumber(result, -5, -9);
 
 			CComplex result2 = complex2 + real;
+			CheckArgumentsOfComplexNumber(result, -5, -9);
+		}
+
+		BOOST_AUTO_TEST_CASE(binary_minus_for_two_complex_numbers)
+		{
+			CComplex result = complex1 - complex2;
+			CheckArgumentsOfComplexNumber(result, -4, 7);
+		}
+		BOOST_AUTO_TEST_CASE(binary_minus_for_complex_and_real_number)
+		{
+			double real = -10;
+			CComplex result = real - complex2;
+			CheckArgumentsOfComplexNumber(result, -15, 9);
+
+			double real2 = 10;
+			CComplex result2 = complex2 - real2;
 			CheckArgumentsOfComplexNumber(result, -5, -9);
 		}
 	BOOST_AUTO_TEST_SUITE_END()
