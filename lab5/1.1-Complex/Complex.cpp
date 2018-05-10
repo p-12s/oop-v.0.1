@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Complex.h"
 
-
 using namespace std;
 
 CComplex::CComplex(double real, double imaginary)
@@ -20,22 +19,42 @@ double CComplex::Im() const
 	return m_imaginary;
 }
 
-double CComplex::GetMagnitude() const // возвращает модуль комплексного числа
+double CComplex::GetMagnitude() const // модуль
 {
 	return sqrt(pow(m_real, 2) + pow(m_imaginary, 2));
 }
 
-double CComplex::GetArgument() const // возвращает аргумент комплексного числа
+double CComplex::GetArgument() const
 {
-	/*double argument = 1.0 / atan(m_imaginary / m_real);
-	if (m_real < 0.0 && m_imaginary > 0.0)
+	if (m_real == 0 && m_imaginary == 0)
+		return 0;
+
+	if (m_real == 0 && m_imaginary != 0)
+		return DBL_MAX;
+
+	double argument;
+	if (m_real > 0)
 	{
-		return M_PI + argument;
-	}
-	if (m_real < 0.0 && m_imaginary < 0.0)
+		argument = atan(m_imaginary / m_real);
+	} 
+	else if(m_real < 0 && m_imaginary >= 0)
 	{
-		return -M_PI + argument;
+		argument = atan(m_imaginary / m_real) + M_PI;
+	} 
+	else
+	{
+		argument = atan(m_imaginary / m_real) - M_PI;
 	}
-	return argument;*/
-	return 0;
+
+	return argument;
+}
+
+CComplex const CComplex::operator+(const CComplex& complex) const
+{
+	return CComplex(m_real + complex.m_real, m_imaginary + complex.m_imaginary);
+}
+
+CComplex const operator+(const double real, const CComplex& complex)
+{
+	return CComplex(real) + complex;
 }

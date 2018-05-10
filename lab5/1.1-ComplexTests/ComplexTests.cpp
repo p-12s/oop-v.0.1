@@ -7,39 +7,90 @@ struct ComplexFixture
 {
 	double expectedRe = 1.0;
 	double expectedIm = -2.0;
-	CComplex complex;
+	CComplex complex1;
 
 	ComplexFixture()
-		: complex(expectedRe, expectedIm)
+		: complex1(expectedRe, expectedIm)
 	{
 	}
 
-	/*void CheckValueOfComplexNumber(const CComplex& complex, const double expectedRe, const double expectedIm) const
+	void AreComplexNumbersEqual(const CComplex& arg1, const CComplex& arg2) const
 	{
-		BOOST_CHECK(complex.Re() == expectedRe);
-		BOOST_CHECK(complex.Im() == expectedIm);
-	}*/
+		BOOST_CHECK_CLOSE(arg1.Re(), arg2.Re(), DBL_EPSILON);
+		BOOST_CHECK_CLOSE(arg1.Im(), arg2.Im(), DBL_EPSILON);
+	}
+
+	void CheckArgumentsOfComplexNumber(const CComplex& arg1, const double re, const double im) const
+	{
+		BOOST_CHECK_CLOSE(arg1.Re(), re, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(arg1.Im(), im, DBL_EPSILON);
+	}
 };
 
 BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 
 	BOOST_AUTO_TEST_CASE(has_real_part)
 	{
-		BOOST_CHECK_CLOSE(complex.Re(), expectedRe, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(complex1.Re(), expectedRe, DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_imaginary_part)
 	{
-		BOOST_CHECK_CLOSE(complex.Im(), expectedIm, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(complex1.Im(), expectedIm, DBL_EPSILON);
 	}
-// добавить проверки на неизменение 
 	BOOST_AUTO_TEST_CASE(can_get_its_module)
 	{
-		BOOST_CHECK_CLOSE(complex.GetMagnitude(), sqrt(5), DBL_EPSILON);
+		CComplex coordinateCenter = CComplex(0, 0);
+		BOOST_CHECK_CLOSE(coordinateCenter.GetMagnitude(), 0, DBL_EPSILON);
+
+		BOOST_CHECK_CLOSE(complex1.GetMagnitude(), sqrt(pow(expectedRe, 2) + pow(expectedIm, 2)), DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(can_get_its_argument)
 	{
-		BOOST_CHECK_CLOSE(complex.GetArgument(), 0, DBL_EPSILON);
+		CComplex coordinateCenter = CComplex(0, 0);
+		BOOST_CHECK_CLOSE(coordinateCenter.GetArgument(), 0, DBL_EPSILON);
+
+		CComplex centerBottom = CComplex(0, -2);
+		BOOST_CHECK_CLOSE(centerBottom.GetArgument(), DBL_MAX, DBL_EPSILON);
+
+		CComplex rightTopQuarter = CComplex(1, 2);
+		BOOST_CHECK_CLOSE(rightTopQuarter.GetArgument(), 1.1071487177940904, DBL_EPSILON);
+		
+		CComplex rightBottomQuarter = CComplex(1, -2);
+		BOOST_CHECK_CLOSE(rightBottomQuarter.GetArgument(), -1.1071487177940904, DBL_EPSILON);
+
+		CComplex leftTopQuarter = CComplex(-1, 2);
+		BOOST_CHECK_CLOSE(leftTopQuarter.GetArgument(), 2.0344439357957027, DBL_EPSILON);
+
+		CComplex leftBottomQuarter = CComplex(-1, -2);
+		BOOST_CHECK_CLOSE(leftBottomQuarter.GetArgument(), -2.0344439357957027, DBL_EPSILON);
 	}
-// для 0 не определен
+
+	struct Complex2Fixture : ComplexFixture
+	{
+		double expectedRe = 5.0;
+		double expectedIm = -9.0;
+		CComplex complex2;
+
+		Complex2Fixture()
+			: complex2(expectedRe, expectedIm)
+		{
+		}
+	};
+	BOOST_FIXTURE_TEST_SUITE(for_the_object_are_defined_operations, Complex2Fixture)
+		BOOST_AUTO_TEST_CASE(binary_plus_for_two_complex_numbers)
+		{
+			CComplex result = complex1 + complex2;
+			CheckArgumentsOfComplexNumber(result, 6, -11);
+		}
+		BOOST_AUTO_TEST_CASE(binary_plus_for_complex_and_real_number)
+		{
+			double real = -10;
+			CComplex result = real + complex2;
+			CheckArgumentsOfComplexNumber(result, -5, -9);
+
+			CComplex result2 = complex2 + real;
+			CheckArgumentsOfComplexNumber(result, -5, -9);
+		}
+	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -8,10 +8,14 @@ public:
 	~CComplex() = default;
 	double Re() const;
 	double Im() const;	
-	double GetMagnitude() const; // возвращает модуль комплексного числа	
-	double GetArgument() const; // возвращает аргумент комплексного числа
+	double GetMagnitude() const; // модуль	
+	double GetArgument() const;
+
+	CComplex const operator+(const CComplex& complex) const;
 
 private:
 	double m_real;
 	double m_imaginary;
 };
+
+CComplex const operator+(const double real, const CComplex& complex);
