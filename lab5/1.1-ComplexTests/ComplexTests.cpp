@@ -67,6 +67,7 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 
 	struct Complex2Fixture : ComplexFixture
 	{
+		double real = -10;
 		double expectedRe = 5.0; // 1
 		double expectedIm = -9.0; // -2
 		CComplex complex2;
@@ -83,8 +84,7 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 			CheckArgumentsOfComplexNumber(result, 6, -11);
 		}
 		BOOST_AUTO_TEST_CASE(binary_plus_for_complex_and_real_number)
-		{
-			double real = -10;
+		{			
 			CComplex result = real + complex2;
 			CheckArgumentsOfComplexNumber(result, -5, -9);
 
@@ -96,17 +96,54 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 		{
 			CComplex result = complex1 - complex2;
 			CheckArgumentsOfComplexNumber(result, -4, 7);
+
+			CComplex result2 = complex2 - complex1;
+			CheckArgumentsOfComplexNumber(result2, 4, -7);
 		}
 		BOOST_AUTO_TEST_CASE(binary_minus_for_complex_and_real_number)
 		{
-			double real = -10;
 			CComplex result = real - complex2;
 			CheckArgumentsOfComplexNumber(result, -15, 9);
 
-			double real2 = 10;
-			CComplex result2 = complex2 - real2;
-			CheckArgumentsOfComplexNumber(result, -5, -9);
+			CComplex result2 = complex2 - real;
+			CheckArgumentsOfComplexNumber(result2, 15, -9);
 		}
+
+		BOOST_AUTO_TEST_CASE(multiplication_for_two_complex_numbers)
+		{
+			CComplex result = complex1 * complex2;
+			CheckArgumentsOfComplexNumber(result, -13, -19);
+
+			CComplex result2 = complex2 * complex1;
+			CheckArgumentsOfComplexNumber(result2, -13, -19);
+		}
+		BOOST_AUTO_TEST_CASE(multiplication_for_complex_and_real_number)
+		{
+			CComplex result = real * complex2;
+			CheckArgumentsOfComplexNumber(result, -50, 90);
+
+			CComplex result2 = complex2 * real;
+			CheckArgumentsOfComplexNumber(result2, -50, 90);
+		}
+
+		BOOST_AUTO_TEST_CASE(division_for_two_complex_numbers)
+		{
+			CComplex result = complex2 / complex1;
+			CheckArgumentsOfComplexNumber(result, 4.6, 0.2);
+
+			CComplex result2 = complex1 / complex1;
+			CheckArgumentsOfComplexNumber(result2, 1, 0);
+		}
+		BOOST_AUTO_TEST_CASE(division_for_complex_and_real_number)
+		{
+			CComplex result = complex2 / real;
+			CheckArgumentsOfComplexNumber(result, -0.5, 0.9);
+
+			double real2 = 2;
+			CComplex result2 = real2 / complex1;
+			CheckArgumentsOfComplexNumber(result2, 0.4, 0.8);
+		}
+
 	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

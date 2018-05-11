@@ -68,3 +68,28 @@ CComplex const operator-(double real, const CComplex& complex)
 {
 	return CComplex(real) - complex;
 }
+
+CComplex const CComplex::operator*(const CComplex& complex) const
+{
+	return CComplex(m_real * complex.m_real - m_imaginary * complex.m_imaginary,
+		m_imaginary * complex.m_real + m_real * complex.m_imaginary);
+}
+
+CComplex const operator*(double real, const CComplex& complex)
+{
+	return CComplex(real) * complex;
+}
+
+CComplex const CComplex::operator/(const CComplex& complex) const
+{
+	double denominator = pow(complex.m_real, 2) + pow(complex.m_imaginary, 2);
+	double real = (m_real * complex.m_real + m_imaginary * complex.m_imaginary) / denominator;
+	double imaginary = (complex.m_real * m_imaginary - m_real * complex.m_imaginary) / denominator;
+
+	return CComplex(real, imaginary);
+}
+
+CComplex const operator/(double real, const CComplex& complex)
+{
+	return CComplex(real) / complex;
+}
