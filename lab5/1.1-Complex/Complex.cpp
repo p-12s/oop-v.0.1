@@ -93,3 +93,27 @@ CComplex const operator/(double real, const CComplex& complex)
 {
 	return CComplex(real) / complex;
 }
+
+CComplex const CComplex::operator+() const
+{
+	return CComplex(m_real, m_imaginary);
+}
+
+CComplex const CComplex::operator-() const
+{
+	return CComplex(-m_real, -m_imaginary);
+}
+
+CComplex& CComplex::operator+=(const CComplex& complex)
+{
+	m_imaginary += complex.m_imaginary;
+	m_real += complex.m_real;
+	return *this;
+}
+
+CComplex& CComplex::operator-=(const CComplex& complex)
+{
+	m_imaginary -= complex.m_imaginary;
+	m_real -= complex.m_real;
+	return *this;
+}

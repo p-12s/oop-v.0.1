@@ -144,6 +144,39 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 			CheckArgumentsOfComplexNumber(result2, 0.4, 0.8);
 		}
 
+		BOOST_AUTO_TEST_CASE(unary_operator_plus)
+		{
+			CComplex result = +complex1;
+			CheckArgumentsOfComplexNumber(result, 1, -2);
+
+			CComplex result2 = +complex2;
+			CheckArgumentsOfComplexNumber(result2, 5, -9);
+		}
+
+		BOOST_AUTO_TEST_CASE(unary_operator_minus)
+		{
+			CComplex result = -complex1;
+			CheckArgumentsOfComplexNumber(result, -1, 2);
+
+			CComplex result2 = -complex2;
+			CheckArgumentsOfComplexNumber(result2, -5, 9);
+		}
+
+		BOOST_AUTO_TEST_CASE(addition_assignment_operator)
+		{
+			CComplex result = complex1;
+			result += complex2;
+			CheckArgumentsOfComplexNumber(result, 6, -11);
+		}
+
+		BOOST_AUTO_TEST_CASE(subtraction_assignment_operator)
+		{
+			CComplex result = complex1;
+			result -= complex2;
+			CheckArgumentsOfComplexNumber(result, -4, 7);
+		}
+
+
 	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

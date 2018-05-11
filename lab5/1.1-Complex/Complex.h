@@ -15,6 +15,10 @@ public:
 	CComplex const operator-(const CComplex& complex) const;
 	CComplex const operator*(const CComplex& complex) const;
 	CComplex const operator/(const CComplex& complex) const;
+	CComplex const operator+() const;
+	CComplex const operator-() const;
+	CComplex& operator+=(const CComplex& complex);
+	CComplex& operator-=(const CComplex& complex);
 
 private:
 	double m_real;
