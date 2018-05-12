@@ -35,5 +35,8 @@
     <ClCompile Include="Solve4Tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\1.4-Solve4\Solve4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
