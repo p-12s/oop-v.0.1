@@ -49,14 +49,9 @@ double CComplex::GetArgument() const
 	return argument;
 }
 
-CComplex const CComplex::operator+(const CComplex& complex) const
+CComplex const operator+(const CComplex& complex1, const CComplex& complex2)
 {
-	return CComplex(m_real + complex.m_real, m_imaginary + complex.m_imaginary);
-}
-
-CComplex const operator+(const double real, const CComplex& complex)
-{
-	return CComplex(real) + complex;
+	return CComplex(complex1.Re() + complex2.Re(), complex1.Im() + complex2.Im());
 }
 
 CComplex const CComplex::operator-(const CComplex& complex) const
