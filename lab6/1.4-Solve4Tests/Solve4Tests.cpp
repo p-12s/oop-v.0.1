@@ -17,7 +17,7 @@ struct Solve4Fixture
 	{
 	}
 
-	void CheckSolve4Roots(const EquationRoot4& equationRoot4, const vector<double>& roots)
+	void CheckRoots(const EquationRoot4& equationRoot4, const vector<double>& roots)
 	{
 		BOOST_CHECK_EQUAL(roots.size(), equationRoot4.numRoots);
 		for (auto i = 0; i < equationRoot4.numRoots; ++i)
@@ -53,29 +53,50 @@ BOOST_FIXTURE_TEST_SUITE(Solve4, Solve4Fixture)
 		BOOST_CHECK_THROW(CSolve4(0, b, c, d, e), invalid_argument);
 		BOOST_CHECK_NO_THROW(CSolve4(a, b, c, d, e));
 	}
-
-// может иметь 1 корень
-	BOOST_AUTO_TEST_CASE(solution_with_1_root)
+	BOOST_AUTO_TEST_CASE(can_have_no_real_roots)
 	{
-		CSolve4 solve4 = CSolve4(1, 0, 0, 0, 0);
-		vector<double> expectedRoots = {0};
-		EquationRoot4 answer = solve4.GetRootsOfEquation();
-		// CheckRoots(Solve4(1, 0, 0, 0, 0), 4, expectedRoots1);
-		CheckSolve4Roots(answer, expectedRoots);
-		//VerificationRootsByTheoremOfVieta(answer, 1, 0, 0, 0, 0);
+		CSolve4 solve = CSolve4(1, 2, 3, 4, 5);
+		BOOST_CHECK_THROW(solve.GetRootsOfEquation(), domain_error);
+	}
+	BOOST_AUTO_TEST_CASE(can_have_1_root)
+	{
+		CSolve4 solve1 = CSolve4(1, 0, 0, 0, 0);
+		CheckRoots(solve1.GetRootsOfEquation(), { 0 });
+		
+		/*CSolve4 solve2 = CSolve4(1, 0, -2, 0, 1);
+		EquationRoot4 answer = solve2.GetRootsOfEquation();
+		CSolve4 solve2 = CSolve4(1, 4, 6, 4, 1);
+		CheckRoots(solve2.GetRootsOfEquation(), {-1});*/
+	}
+	
+
+	BOOST_AUTO_TEST_CASE(can_have_2_real_root)
+	{
+		CSolve4 solve1 = CSolve4(1, 0, -2, 0, 1);
+		CheckRoots(solve1.GetRootsOfEquation(), { -1, 1 });
+
+		/*CSolve4 solve2 = CSolve4(1, 3, 3, -1, -6);
+		CheckRoots(solve2.GetRootsOfEquation(), { -2, 1 });*/
+	}
+	BOOST_AUTO_TEST_CASE(can_have_4_real_root)
+	{
+		CSolve4 solve1 = CSolve4(2, 5, -11, -20, 12);
+		EquationRoot4 answer = solve1.GetRootsOfEquation();
+		// -3, -2, 0.5, 2
+		/*CheckRoots(solve1.GetRootsOfEquation(), { -1 });*/
 	}
 
-	/*BOOST_AUTO_TEST_CASE(test_2)
-	{
-		CSolve4 solve4 = CSolve4(2, 5, -11, -20, 12);
-		vector<double> expectedRoots = { 2, 0.5, -2, 3 };
-		EquationRoot4 answer = solve4.GetRootsOfEquation();
-		CheckSolve4Roots(answer, expectedRoots);
-		//VerificationRootsByTheoremOfVieta(answer, 1, 0, 0, 0, 0);
-	}*/
-// может иметь 2 корень
-// может иметь 3 корень
-// может иметь 4 корень
+	// может не иметь действительных корней
+	// может иметь 1 корень
+	// может иметь 2 корень
+	// может иметь 3 корень
+	// может иметь 4 корень
+
+
+	// комбинации с коэффициентами, в каждой по 2-3
+
+
+
 
 /*
 	BOOST_AUTO_TEST_CASE(solution_with_2_roots)

@@ -38,7 +38,7 @@ double Solve3(double a, double b, double c) // сложно
 			double t = acosh(abs(r) / sqrt(pow(abs(q), 3))) / 3.0;
 			roots[0] = -2 * ((r > 0) ? 1 : ((r < 0) ? -1 : 0)) * sqrt(q) * sinh(t) - a / 3.0;
 		}
-		if (q = 0)
+		if (q == 0)
 		{
 			roots[0] = -pow((c - pow(a, 3) / 27), 1 / 3.0) - a / 3.0;
 		}
@@ -110,35 +110,28 @@ EquationRoot4 CSolve4::GetRootsOfEquation() const
 	double D = m_e / m_a;
 
 	// коэф. кубической резольвенты, начиная с y^2 (y^3 без коэф.)
-	double y0 = Solve3(-B, (A * C - 4 * D), (A * A * D + 4 * B * D - C * C));
+	double y = Solve3(-B, (A * C - 4 * D), (A * A * D + 4 * B * D - C * C));
 	/*
 	Это уравнение, имеет три корня, но для метода Феррари 
 	требуется найти только один вещественный корень этого уравнения. 
 	Он всегда существует, поскольку кубическая парабола как минимум один раз пересекается с осью абсцисс. 
-	Пока будем считать, что этот корень найден и равен y0
+	Пока будем считать, что этот корень найден и равен y
 	 */
 	
-	double alpha = sqrt(A * A / 4 - B + y0); // переименовать на y
-	double beta = sqrt(y0 * y0 / 4 - D);
-	if ((A * y0 / 2 - C) < 0)
+	double alpha = sqrt(A * A / 4 - B + y); // переименовать на y
+	double beta = sqrt(y * y / 4 - D);
+	if ((A * y / 2 - C) < 0)
 	{
 		beta *= -1;
 	}
-	AddRootsToEquation(answer, Solve2(1, A / 2 + alpha, y0 / 2 + beta));
-	AddRootsToEquation(answer, Solve2(1, A / 2 - alpha, y0 / 2 - beta));
+	AddRootsToEquation(answer, Solve2(1, A / 2 + alpha, y / 2 + beta));
+	AddRootsToEquation(answer, Solve2(1, A / 2 - alpha, y / 2 - beta));
 	
 	sort(begin(answer.roots), begin(answer.roots) + answer.numRoots);
-	try
-	{
-		if (answer.numRoots == 0)
-		{
-			throw domain_error("Equation does not have of real roots");
-		}
-	}
-	catch (domain_error)
-	{
-		cout << "Equation does not have of real roots" << endl;
-	}
+
+	if (answer.numRoots == 0)
+		throw domain_error("Equation does not have of real roots");
+
 	return answer;
 }
 
