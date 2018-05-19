@@ -10,3 +10,4 @@ bool FindMaxEx(std::vector<T> const& arr, T& maxValue)
 	return true;
 }
 
+// мне нужно найти максимальное. не важно какой тип придет, вернуть макс
