@@ -13,3 +13,5 @@
 #include <algorithm>
 #include <boost/none.hpp>
 #include <boost/optional/optional.hpp>
+#include <array>
+#include <limits>

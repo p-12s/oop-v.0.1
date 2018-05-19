@@ -3,72 +3,15 @@
 
 using namespace std;
 
-bool IsRootAlreadyFound(EquationRoot4& equationRoot4, const double root) // почему тут не работает const EquationRoot4& equationRoot4
+bool IsRootAlreadyFound(EquationRoot4& equationRoot4, const double root)
 {
 	double* start = equationRoot4.roots;
 	double* end = start + equationRoot4.numRoots;
 	return find(start, end, root) != end;
 }
 
-// решение кубического уравнени€ методом  ардано
-double Solve3(double a, double b, double c) // сложно
-{
-	double roots[3];
-
-	double q = (a * a - 3.0 * b) / 9.0;
-	double r = (2.0 * a * a * a - 9.0 * a * b + 27.0 * c) / 54.0;
-	double s = pow(q, 3) - pow(r, 2);
-
-	if (s > 0)
-	{
-		double t = acos(r / sqrt(pow(q, 3))) / 3.0;
-		roots[0] = -2 * sqrt(q) * cos(t) - a / 3.0; // а если тут q отрицательное?
-		roots[1] = -2 * sqrt(q) * cos(t + 2 * M_PI / 3.0) - a / 3.0;
-		roots[2] = -2 * sqrt(q) * cos(t - 2 * M_PI / 3.0) - a / 3.0;
-	}
-	else if (s < 0)
-	{
-		if (q > 0)
-		{
-			double t = acosh(abs(r) / sqrt(pow(q, 3))) / 3.0;
-			roots[0] = -2 * ((r > 0) ? 1 : ((r < 0) ? -1 : 0)) * sqrt(q) * cosh(t) - a / 3.0;
-		}
-		if (q < 0)
-		{
-			double t = acosh(abs(r) / sqrt(pow(abs(q), 3))) / 3.0;
-			roots[0] = -2 * ((r > 0) ? 1 : ((r < 0) ? -1 : 0)) * sqrt(q) * sinh(t) - a / 3.0;
-		}
-		if (q == 0)
-		{
-			roots[0] = -pow((c - pow(a, 3) / 27), 1 / 3.0) - a / 3.0;
-		}
-	}
-	else
-	{
-		roots[0] = -2 * pow(r, 1 / 3.0) - a / 3.0;
-		roots[1] = pow(r, 1 / 3.0) - a / 3.0;
-	}
-	sort(rbegin(roots), rend(roots));
-	return roots[0];
-}
-
-pair<boost::optional<double>, boost::optional<double>> Solve2(double a, double b, double c)
-{
-	double D = b * b - 4 * a * c;
-	if (D == 0)
-	{
-		return {-b / (2 * a), boost::none};
-	}
-	if (D > 0)
-	{
-		return {(-b + sqrt(D)) / (2 * a), (-b - sqrt(D)) / (2 * a)};
-	}
-	return {boost::none, boost::none};
-}
-
-
-void AddRootsToEquation(EquationRoot4& equationRoot4, 
-	pair<boost::optional<double>, boost::optional<double>> const& roots)// почему тут константна€ ссылка, сделать парамтер константным, а ссылку - нет
+void AddRootsToDecision(EquationRoot4& equationRoot4,
+	const pair<boost::optional<double>, boost::optional<double>>& roots)
 {
 	if (roots.first)
 	{
@@ -76,7 +19,7 @@ void AddRootsToEquation(EquationRoot4& equationRoot4,
 		{
 			equationRoot4.roots[equationRoot4.numRoots] = roots.first.get();
 			equationRoot4.numRoots++;
-		}		
+		}
 	}
 	if (roots.second)
 	{
@@ -84,56 +27,85 @@ void AddRootsToEquation(EquationRoot4& equationRoot4,
 		{
 			equationRoot4.roots[equationRoot4.numRoots] = roots.second.get();
 			equationRoot4.numRoots++;
-		}		
+		}
 	}
 }
 
-CSolve4::CSolve4(double a, double b, double c, double d, double e)
-	: m_a(a)
-	, m_b(b)
-	, m_c(c)
-	, m_d(d)
-	, m_e(e)
+// решение кубического уравнени€ методом  ардано
+double Solve3(const double a, const double b, const double c)
 {
-	if (a == 0) throw invalid_argument("The coefficient of x^4 can not be 0");
-}
+	double roots[3];
 
-EquationRoot4 CSolve4::GetRootsOfEquation() const
-{
-	EquationRoot4 answer;
-	answer.numRoots = 0;
-
-	// приведем к виду, пригодному дл€ решени€ методом ‘еррари
-	double A = m_b / m_a;
-	double B = m_c / m_a;
-	double C = m_d / m_a;
-	double D = m_e / m_a;
-
-	// коэф. кубической резольвенты, начина€ с y^2 (y^3 без коэф.)
-	double y = Solve3(-B, (A * C - 4 * D), (A * A * D + 4 * B * D - C * C));
-	/*
-	Ёто уравнение, имеет три корн€, но дл€ метода ‘еррари 
-	требуетс€ найти только один вещественный корень этого уравнени€. 
-	ќн всегда существует, поскольку кубическа€ парабола как минимум один раз пересекаетс€ с осью абсцисс. 
-	ѕока будем считать, что этот корень найден и равен y
-	 */
-	
-	double alpha = sqrt(A * A / 4 - B + y); // переименовать на y
-	double beta = sqrt(y * y / 4 - D);
-	if ((A * y / 2 - C) < 0)
+	double Q = (pow(a, 2) - 3 * b) / 9;
+	double R = (2 * pow(a, 3) - 9 * a * b + 27 * c) / 54;
+	double S = pow(Q, 3) - pow(R, 2);
+	if (S > 0)
 	{
-		beta *= -1;
+		double phi = acos(R / sqrt(pow(Q, 3))) / 3;
+		roots[0] = -2 * sqrt(Q) * cos(phi) - a / 3;
+		roots[1] = -2 * sqrt(Q) * cos(phi + 2 * M_PI / 3) - a / 3;
+		roots[2] = -2 * sqrt(Q) * cos(phi - 2 * M_PI / 3) - a / 3;
 	}
-	AddRootsToEquation(answer, Solve2(1, A / 2 + alpha, y / 2 + beta));
-	AddRootsToEquation(answer, Solve2(1, A / 2 - alpha, y / 2 - beta));
-	
-	sort(begin(answer.roots), begin(answer.roots) + answer.numRoots);
-
-	if (answer.numRoots == 0)
-		throw domain_error("Equation does not have of real roots");
-
-	return answer;
+	else
+	{
+		if (Q > 0)
+		{
+			double phi = acosh(fabs(R) / sqrt(pow(Q, 3))) / 3;
+			roots[0] = -2 * (R >= 0 ? 1 : -1) * sqrt(Q) * cosh(phi) - a / 3;
+		}
+		else if (Q < 0)
+		{
+			double phi = asinh(fabs(R) / sqrt(pow(fabs(Q), 3))) / 3;
+			roots[0] = -2 * (R >= 0 ? 1 : -1) * sqrt(fabs(Q)) * sinh(phi) - (a / 3);
+		}
+		else
+		{
+			roots[0] = -pow(c - pow(a, 3) / 27, 1. / 3) - a / 3;
+		}
+	}
+	return *max_element(begin(roots), end(roots));
 }
 
+// решение уравнени€ 4 степени по методу ‘еррари
+EquationRoot4 Solve4(double a, double b, double c, double d, double e)
+{
+	if (a == 0)
+		throw invalid_argument("Argument at supmere degree must not be equal to 0");
 
+	double inv = a;
+	a = b / inv;
+	b = c / inv;
+	c = d / inv;
+	d = e / inv;
 
+	// найдем один из корней кубической резольвенты
+	double y = Solve3(-b, a * c - 4 * d, 4 * b * d - pow(a, 2) * d - pow(c, 2));
+
+	double alpha = sqrt(pow(a, 2) / 4 - b + y);
+	double beta = sqrt(pow(y, 2) / 4 - d);
+	if ((a * y / 2 - c) < 0)
+		beta *= -1;
+
+	EquationRoot4 result;
+	AddRootsToDecision(result, Solve2(1, a / 2 + alpha, y / 2 + beta));
+	AddRootsToDecision(result, Solve2(1, a / 2 - alpha, y / 2 - beta));
+	if (result.numRoots == 0)
+		throw domain_error("Equation does not have real roots");
+
+	sort(begin(result.roots), begin(result.roots) + result.numRoots);
+	return result;
+}
+
+pair<boost::optional<double>, boost::optional<double>> Solve2(const double a, const double b, const double c)
+{
+	double D = pow(b, 2) - 4 * a * c;
+	if (D == 0)
+	{
+		return { -b / (2 * a), boost::none };
+	}
+	if (D > 0)
+	{
+		return { (-b + sqrt(D)) / (2 * a), (-b - sqrt(D)) / (2 * a) };
+	}
+	return { boost::none, boost::none };
+}
