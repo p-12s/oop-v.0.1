@@ -8,5 +8,3 @@ struct EquationRoot4
 };
 
 EquationRoot4 Solve4(double a, double b, double c, double d, double e);
-double Solve3(double a, double b, double c);
-std::pair<boost::optional<double>, boost::optional<double>> Solve2(double a, double b, double c);

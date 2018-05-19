@@ -31,6 +31,20 @@ void AddRootsToDecision(EquationRoot4& equationRoot4,
 	}
 }
 
+pair<boost::optional<double>, boost::optional<double>> Solve2(const double a, const double b, const double c)
+{
+	double D = pow(b, 2) - 4 * a * c;
+	if (D == 0)
+	{
+		return { -b / (2 * a), boost::none };
+	}
+	if (D > 0)
+	{
+		return { (-b + sqrt(D)) / (2 * a), (-b - sqrt(D)) / (2 * a) };
+	}
+	return { boost::none, boost::none };
+}
+
 // решение кубического уравнени€ методом  ардано
 double Solve3(const double a, const double b, const double c)
 {
@@ -94,18 +108,4 @@ EquationRoot4 Solve4(double a, double b, double c, double d, double e)
 
 	sort(begin(result.roots), begin(result.roots) + result.numRoots);
 	return result;
-}
-
-pair<boost::optional<double>, boost::optional<double>> Solve2(const double a, const double b, const double c)
-{
-	double D = pow(b, 2) - 4 * a * c;
-	if (D == 0)
-	{
-		return { -b / (2 * a), boost::none };
-	}
-	if (D > 0)
-	{
-		return { (-b + sqrt(D)) / (2 * a), (-b - sqrt(D)) / (2 * a) };
-	}
-	return { boost::none, boost::none };
 }
