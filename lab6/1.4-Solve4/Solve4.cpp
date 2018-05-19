@@ -45,7 +45,7 @@ pair<boost::optional<double>, boost::optional<double>> Solve2(const double a, co
 	return { boost::none, boost::none };
 }
 
-// решение кубического уравнени€ методом  ардано
+// solution of the cubic equation by the Cardano method
 double Solve3(const double a, const double b, const double c)
 {
 	double roots[3];
@@ -80,7 +80,7 @@ double Solve3(const double a, const double b, const double c)
 	return *max_element(begin(roots), end(roots));
 }
 
-// решение уравнени€ 4 степени по методу ‘еррари
+// solution of the fourth-degree equation by the method of Ferrari
 EquationRoot4 Solve4(double a, double b, double c, double d, double e)
 {
 	if (a == 0)
@@ -92,7 +92,7 @@ EquationRoot4 Solve4(double a, double b, double c, double d, double e)
 	c = d / inv;
 	d = e / inv;
 
-	// найдем один из корней кубической резольвенты
+	// we find one of the roots of the cubic resolvent
 	double y = Solve3(-b, a * c - 4 * d, 4 * b * d - pow(a, 2) * d - pow(c, 2));
 
 	double alpha = sqrt(pow(a, 2) / 4 - b + y);

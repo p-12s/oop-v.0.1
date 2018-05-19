@@ -28,8 +28,8 @@ int main()
 			}
 			else
 			{
-				cin.clear();	// сбросим флаг состояния потока
-				cin.ignore(cin.rdbuf()->in_avail());	// обратимся к буферу, спросим сколько символов он хранит и проигнорируем их
+				cin.clear();	// reset the status flag of the stream
+				cin.ignore(cin.rdbuf()->in_avail());	// turn to the buffer, ask how many characters it stores and ignore them
 				cout << "Odds are entered incorrectly, enter 5 numbers" << endl;				
 			}
 		}
