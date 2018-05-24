@@ -176,6 +176,7 @@
   <ItemGroup>
     <ClCompile Include="2.1-MyArrayTests.cpp" />
     <ClCompile Include="MyArrayTests.cpp" />
+    <ClCompile Include="MyIteratorTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
