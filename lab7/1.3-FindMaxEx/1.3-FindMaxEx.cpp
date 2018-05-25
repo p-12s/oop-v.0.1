@@ -23,7 +23,6 @@ int main()
 	athletes.push_back({ 205, 105.0f, "Lusy" });
 	athletes.push_back({ 173, 68.5f, "Baddy" });
 
-
 	cout << "\nSportsman with max growth: \n";
 	Athlete max;
 	FindMaxEx(athletes, max, [](auto&& a, auto&& b) {
