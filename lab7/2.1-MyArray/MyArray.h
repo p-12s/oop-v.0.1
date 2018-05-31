@@ -24,7 +24,7 @@ public:
 	//friend const_iterator;
 	CMyArray() = default; // зачем нужен дефолтный конструктор? спросить у Ильи
 	
-	CMyArray(const CMyArray& arr)
+	CMyArray(const CMyArray& arr)//копирующий конструктор
 	{
 		const auto size = arr.GetSize();
 		if (size != 0)
@@ -32,8 +32,8 @@ public:
 			m_begin = RawAlloc(size);//вернет указатель на начало выделенной "сырой" памяти
 			try
 			{
-				CopyItems(arr.m_begin, arr.m_end, m_begin, m_end);// скопируем элементы массива
-				m_endOfCapacity = m_end;
+				CopyItems(arr.m_begin, arr.m_end, m_begin, m_end);
+				m_endOfCapacity = m_begin + arr.GetCapacity();
 			}
 			catch (...)
 			{
@@ -116,6 +116,8 @@ public:
 			CMyArray copy; // создадим копию
 			size_t min = std::min(size, GetSize());// что за н?
 
+			//TODO можно уменьшить накладные расходы на создание нового объекта, 
+			// если массив ресайзится в меньшую сторону. тогда просто обрубаем конец
 			
 			copy.m_begin = copy.RawAlloc(size); // присвоим начало выделенной памяти нашему началу копии
 			copy.m_end = copy.m_begin; // присвоим начало концу
@@ -123,29 +125,12 @@ public:
 
 			copy.CopyItems(m_begin, m_begin + min, copy.m_begin, copy.m_end);
 
-
+			// если в большую сторону - довставим пустые элементы в конец
 			for (size_t i = min; i < size ; ++i)
 			{
 				copy.Append(T());
 			}
 			*this = std::move(copy);
-
-			
-
-			/*
-			CMyArray copy;
-			for (size_t i = 0; i < GetSize(); ++i)
-			{
-				copy.Append(*(m_begin + i));
-			}
-			for (size_t i = GetSize(); i < size; ++i)
-			{
-				copy.Append(T());
-			}
-			*this = std::move(copy);
-			Не обрабатывается ситуация с уменьшением размера в меньшую сторону.
-			При увеличении в большую сторону память следует зарезервировать сразу.
-			*/
 		}
 	}
 
@@ -188,24 +173,25 @@ public:
 
 
 
-	//TODO зачем 2 оператора присваивания?
-	CMyArray& operator=(CMyArray const& arr)//перегрузка оператора перемещения
+	//TODO зачем нужны 2 версии, удаляющая исходный массив, и не удаляющая?
+	CMyArray& operator=(CMyArray const& arr)//перегрузка оператора перемещения (arr не изменится)
 	{
 		if (std::addressof(arr) != this)
 		{
-			CMyArray copy(arr);
-			std::swap(m_begin, copy.m_begin);
-			std::swap(m_end, copy.m_end);
-			std::swap(m_endOfCapacity, copy.m_endOfCapacity);
+			CMyArray copyArr(arr);
+			std::swap(m_begin, copyArr.m_begin);
+			std::swap(m_end, copyArr.m_end);
+			std::swap(m_endOfCapacity, copyArr.m_endOfCapacity);
 		}
 		return *this;
 	}
-
-	CMyArray& operator=(CMyArray && arr)// перегрузка оператора перемещения
+	// а если присваивать разноразмерные массивы?
+	CMyArray& operator=(CMyArray && arr)// перегрузка оператора перемещения (arr обнулится)
 	{
 		if (&arr != this)
 		{
-			Clear();
+			//Clear();
+			DeleteItems(m_begin, m_end); // а если после удаления возникла проблема? мб не удалять, а перекинуть в темп?
 			m_begin = arr.m_begin;
 			m_end = arr.m_end;
 			m_endOfCapacity = arr.m_endOfCapacity;
@@ -322,6 +308,8 @@ private:
 	{
 		size_t memSize = n * sizeof(T);//нужный размер
 		T *p = static_cast<T*>(malloc(memSize));// malloc выделяет блок памяти, размером sizemem байт, и возвращает указатель на начало блока
+		// Instantiate CMyArray < string >: The 'malloc' function is used to allocate 
+		// memory for an array of objects which are classes containing constructors and destructors.
 		// char * buffer = (char*) malloc(len + 1); 
 		if (!p)
 			throw std::bad_alloc();
