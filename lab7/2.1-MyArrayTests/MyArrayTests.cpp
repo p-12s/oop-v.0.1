@@ -1,19 +1,34 @@
 #include "stdafx.h"
+#include "../2.1-MyArray/MyArray.h"
 
 using namespace std;
 
-struct Test
+struct EmptyArray
 {
-
+	CMyArray<string> stringArr;
+	CMyArray<float> floatArr;
 };
 
 
-BOOST_FIXTURE_TEST_SUITE(MyArray, Test)
+BOOST_FIXTURE_TEST_SUITE(MyArray, EmptyArray)
 
-	BOOST_AUTO_TEST_CASE(test_test)
-	{
-		BOOST_CHECK(true);
-	}
+	BOOST_AUTO_TEST_SUITE(by_default)
+		BOOST_AUTO_TEST_CASE(is_empty)
+		{
+			BOOST_CHECK_EQUAL(stringArr.GetSize(), 0u);
+			BOOST_CHECK_EQUAL(floatArr.GetSize(), 0u);
+		}
+		BOOST_AUTO_TEST_CASE(has_zero_capacity)
+		{
+			BOOST_CHECK_EQUAL(stringArr.GetCapacity(), 0u);
+			BOOST_CHECK_EQUAL(floatArr.GetCapacity(), 0u);
+		}
+		BOOST_AUTO_TEST_CASE(has_access_by_index)
+		{
+			BOOST_CHECK_THROW(stringArr[0], std::out_of_range);
+			BOOST_CHECK_THROW(floatArr[-1], std::out_of_range);
+		}
+	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
 

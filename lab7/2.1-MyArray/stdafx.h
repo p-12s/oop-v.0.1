@@ -3,3 +3,4 @@
 #include "targetver.h"
 #include <vector>
 #include <iostream>
+#include <new>
