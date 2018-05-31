@@ -9,7 +9,9 @@ private:
 	T *m_begin = nullptr;
 	T *m_end = nullptr;
 	T *m_endOfCapacity = nullptr;
-	/* лучше перенести отсюда
+
+	/* лучше перенести отсюда или нет?
+	 * 
 	typedef CMyIterator<T> iterator;
 	typedef CMyIterator<const T> const_iterator;
 
@@ -20,9 +22,9 @@ private:
 public:
 	//friend iterator;
 	//friend const_iterator;
-	//CMyArray() = default; // зачем нужен дефолтный конструктор? спросить у Ильи
+	CMyArray() = default; // зачем нужен дефолтный конструктор? спросить у Ильи
 	
-	/*CMyArray(const CMyArray& arr)
+	CMyArray(const CMyArray& arr)
 	{
 		const auto size = arr.GetSize();
 		if (size != 0)
@@ -72,19 +74,19 @@ public:
 	недостающие операции перемещения определены не будут.
 	Это следует учитывать при написании классов.
 	 */
-/*
- 	void Append(const T & value)
+
+ 	void Append(const T& value)
 	{
 		if (m_end == m_endOfCapacity) // no free space
 		{
-			size_t newCapacity = std::max(size_t(1), GetCapacity() * 2);
+			size_t newCapacity = GetCapacity() > 0 ? GetCapacity() * 2 : size_t(1);
 
-			auto newBegin = RawAlloc(newCapacity);
+			auto newBegin = RawAlloc(newCapacity);// получим ссылку на новый блок памяти
 			T *newEnd = newBegin;
 			try
 			{
-				CopyItems(m_begin, m_end, newBegin, newEnd);
-				// Конструируем копию value по адресу newItemLocation
+				CopyItems(m_begin, m_end, newBegin, newEnd);// копируем элементы в новое место (если они есть)
+				// Конструируем копию value в конце нового блока
 				new (newEnd)T(value);
 				++newEnd;
 			}
@@ -111,13 +113,13 @@ public:
 	{
 		if (size != GetSize())
 		{
-			CMyArray copy;
-			size_t min = std::min(size, GetSize());
+			CMyArray copy; // создадим копию
+			size_t min = std::min(size, GetSize());// что за н?
 
 			
-			copy.m_begin = copy.RawAlloc(size);
-			copy.m_end = copy.m_begin;
-			copy.m_endOfCapacity = copy.m_begin + size;
+			copy.m_begin = copy.RawAlloc(size); // присвоим начало выделенной памяти нашему началу копии
+			copy.m_end = copy.m_begin; // присвоим начало концу
+			copy.m_endOfCapacity = copy.m_begin + size;// размер капасити будет целевым
 
 			copy.CopyItems(m_begin, m_begin + min, copy.m_begin, copy.m_end);
 
@@ -127,6 +129,23 @@ public:
 				copy.Append(T());
 			}
 			*this = std::move(copy);
+
+			
+
+			/*
+			CMyArray copy;
+			for (size_t i = 0; i < GetSize(); ++i)
+			{
+				copy.Append(*(m_begin + i));
+			}
+			for (size_t i = GetSize(); i < size; ++i)
+			{
+				copy.Append(T());
+			}
+			*this = std::move(copy);
+			Не обрабатывается ситуация с уменьшением размера в меньшую сторону.
+			При увеличении в большую сторону память следует зарезервировать сразу.
+			*/
 		}
 	}
 
@@ -137,7 +156,7 @@ public:
 		m_end = nullptr;
 		m_endOfCapacity = nullptr;
 	}
-
+	/*
 	T & GetBack()
 	{
 		assert(GetSize() != 0u);
@@ -150,9 +169,10 @@ public:
 		return m_end[-1];
 	}
 	*/
+	//TODO может заменить одной перегрузкой?
 	const T& operator[](size_t index) const // возвр. константную ссылку (нельзя изменить объект)
 	{
-		if (m_begin + index >= m_end)
+		if (m_begin + index >= m_end || m_begin + index < m_begin)// если не использовать GetBack() - можно упростить
 			throw std::out_of_range("Error! Out of range");
 
 		return *(m_begin + index);
@@ -160,13 +180,16 @@ public:
 
 	T& operator[](size_t index) // возвр. константную ссылку ЗАЧЕМ НУЖНО 2 ПЕРЕГРУЗКИ [] ??? спросить
 	{
-		if (m_begin + index >= m_end)
+		if (m_begin + index >= m_end || m_begin + index < m_begin)// если не использовать GetBack() - можно упростить
 			throw std::out_of_range("Error! Out of range");
 
 		return *(m_begin + index);
 	}
 
-	/*CMyArray& operator=(CMyArray const& arr)//перегрузка оператора перемещения
+
+
+	//TODO зачем 2 оператора присваивания?
+	CMyArray& operator=(CMyArray const& arr)//перегрузка оператора перемещения
 	{
 		if (std::addressof(arr) != this)
 		{
@@ -192,7 +215,10 @@ public:
 			arr.m_endOfCapacity = nullptr;
 		}
 		return *this;
-	}*/
+	}
+
+
+
 
 	size_t GetSize() const
 	{
@@ -259,13 +285,13 @@ private:
 	}
 	
 	// Копирует элементы из текущего вектора в to, возвращает newEnd
-	static void CopyItems(const T *srcBegin, T *srcEnd, T * const dstBegin, T * & dstEnd)// и снова, зачем тут статик
+	static void CopyItems(const T *srcBegin, T *srcEnd, T *const dstBegin, T *&dstEnd)// и снова, зачем тут статик
 	{
 		for (dstEnd = dstBegin; srcBegin != srcEnd; ++srcBegin, ++dstEnd)//
 		{
 			// Construct "T" at "dstEnd" as a copy of "*begin"
 			// Построить «T» на «dstEnd» как копию «* begin»
-			new (dstEnd)T(*srcBegin); // похоже тут конструктор копирования, и источник не уничтожается.  можно ли проще скопировать?
+			new (dstEnd)T(*srcBegin); //TODO похоже тут конструктор копирования, и источник не уничтожается.  можно ли проще скопировать?
 		}
 	}
 
