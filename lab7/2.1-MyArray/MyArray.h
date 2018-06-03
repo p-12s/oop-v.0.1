@@ -1,35 +1,37 @@
 #pragma once
-#include "stdafx.h"
+#include <new>
+#include <algorithm>
 #include "MyIterator.h"
+
 
 template <typename T>
 class CMyArray
 {
-private:
-	T *m_begin = nullptr;
-	T *m_end = nullptr;
-	T *m_endOfCapacity = nullptr;
-
-	/* лучше перенести отсюда или нет?
-	 * 
+	
 	typedef CMyIterator<T> iterator;
 	typedef CMyIterator<const T> const_iterator;
 
 	typedef std::reverse_iterator<iterator> reverse_iterator;
 	typedef std::reverse_iterator<const_iterator> reverse_const_iterator;
-	*/
+	 
 
 public:
-	//friend iterator;
-	//friend const_iterator;
-	CMyArray() = default; // зачем нужен дефолтный конструктор? спросить у Ильи
-	
-	CMyArray(const CMyArray& arr)//копирующий конструктор
+	/*typedef CMyIterator<T> iterator; // в статье это в публичной части
+	typedef CMyIterator<const T> const_iterator;
+
+	typedef std::reverse_iterator<iterator> reverse_iterator;
+	typedef std::reverse_iterator<const_iterator> reverse_const_iterator;*/
+
+	friend iterator;
+	friend const_iterator;
+	CMyArray() = default;// зачем нужен дефолтный конструктор? спросить у Ильи
+
+	CMyArray(const CMyArray& arr) // конструктор, принимающий константное значение (копирующий)
 	{
-		const auto size = arr.GetSize();
+		const auto size = arr.GetSize();//вернет указатель на начало выделенной "сырой" памяти
 		if (size != 0)
 		{
-			m_begin = RawAlloc(size);//вернет указатель на начало выделенной "сырой" памяти
+			m_begin = RawAlloc(size);
 			try
 			{
 				CopyItems(arr.m_begin, arr.m_end, m_begin, m_end);
@@ -43,50 +45,29 @@ public:
 		}
 	}
 
-	CMyArray(CMyArray&& arr)//создает объект с уничтожением исходного - перемещающий конструктор
+	CMyArray(CMyArray && arr) // конструктор, принимающий временное значение (перемещающий)
 		: m_begin(arr.m_begin)
 		, m_end(arr.m_end)
 		, m_endOfCapacity(arr.m_endOfCapacity)
 	{
+		// TODO удалить предыдущий arr. после ок тестов
 		arr.m_begin = nullptr;
 		arr.m_end = nullptr;
 		arr.m_endOfCapacity = nullptr;
 	}
 
-	/*Конструктор и оператор перемещения используются компилятором в разных ситуациях:
-	конструктор перемещения применяется в местах, где объявление совпадает с определением (инициализацией) rvalue-ссылкой 
-	на экземпляр этого же класса, либо посредством direct initialization в конструкторе класса/структуры
-	(если же определение произойдет с помощью lvalue-ссылки, то вызовется конструктор копирования)
-	оператор перемещения применяется в местах, где экземпляр класса уже был ранее определен и к нему применяется operator =, 
-	который в качестве аргумента приминает rvalue-ссылку на экземпляр этого же класса (если же оператор принимает lvalue-ссылку , 
-	то вызовется оператор присваивания)*/
-	/*
-	В C++11 каждый класс, помимо конструктора по умолчанию, имеет следующие 5 дефолтных операций: 
-	Конструктор копирования (copy constructor)
-	Оператор присваивания (copy assignment)
-	Конструктор перемещения (move constructor)
-	Оператор перемещения (move assignment)
-	Деструктор (destructor)
-	При определении одной из этих 5-ти операций рекомендуется явно указать (либо определить, либо объявить с помощью default или delete) все остальные, 
-	т.к. все эти 5 операций тесно связаны. Это будет способствовать лучшему пониманию семантики класса при чтении кода. 
-	Если явно определена одна из упомянутых 5-ти операций (в том числе с использованием default или delete), то: 
-	недостающие операции копирования будут определены автоматически с поведением по умолчанию
-	недостающие операции перемещения определены не будут.
-	Это следует учитывать при написании классов.
-	 */
-
- 	void Append(const T& value)
+	void Append(const T& value)
 	{
 		if (m_end == m_endOfCapacity) // no free space
 		{
-			size_t newCapacity = GetCapacity() > 0 ? GetCapacity() * 2 : size_t(1);
+			size_t newCapacity = std::max(size_t(1), GetCapacity() * 2);
 
-			auto newBegin = RawAlloc(newCapacity);// получим ссылку на новый блок памяти
+			auto newBegin = RawAlloc(newCapacity);
 			T *newEnd = newBegin;
 			try
 			{
-				CopyItems(m_begin, m_end, newBegin, newEnd);// копируем элементы в новое место (если они есть)
-				// Конструируем копию value в конце нового блока
+				CopyItems(m_begin, m_end, newBegin, newEnd);
+				// Конструируем копию value по адресу newItemLocation
 				new (newEnd)T(value);
 				++newEnd;
 			}
@@ -109,27 +90,26 @@ public:
 		}
 	}
 
-	void Resize(size_t size)
+	void Resize(int value)
 	{
+		if (value < 0)
+			throw std::runtime_error("Error! The size can not be less than 0");
+
+		auto size = size_t(value);
 		if (size != GetSize())
 		{
-			CMyArray copy; // создадим копию
-			size_t min = std::min(size, GetSize());// что за н?
+			CMyArray copy;
+			size_t min = std::min(size, GetSize());
 
-			//TODO можно уменьшить накладные расходы на создание нового объекта, 
-			// если массив ресайзится в меньшую сторону. тогда просто обрубаем конец
-			
-			copy.m_begin = copy.RawAlloc(size); // присвоим начало выделенной памяти нашему началу копии
-			copy.m_end = copy.m_begin; // присвоим начало концу
-			copy.m_endOfCapacity = copy.m_begin + size;// размер капасити будет целевым
+			copy.m_begin = copy.RawAlloc(size);
+			copy.m_end = copy.m_begin;
+			copy.m_endOfCapacity = copy.m_begin + size;
 
 			copy.CopyItems(m_begin, m_begin + min, copy.m_begin, copy.m_end);
 
-			// если в большую сторону - довставим пустые элементы в конец
-			for (size_t i = min; i < size ; ++i)
-			{
+			for (size_t i = min; i < size; ++i)
 				copy.Append(T());
-			}
+
 			*this = std::move(copy);
 		}
 	}
@@ -141,8 +121,8 @@ public:
 		m_end = nullptr;
 		m_endOfCapacity = nullptr;
 	}
-	/*
-	T & GetBack()
+
+	/*T & GetBack()
 	{
 		assert(GetSize() != 0u);
 		return m_end[-1];
@@ -152,8 +132,8 @@ public:
 	{
 		assert(GetSize() != 0u);
 		return m_end[-1];
-	}
-	*/
+	}*/
+
 	//TODO может заменить одной перегрузкой?
 	const T& operator[](size_t index) const // возвр. константную ссылку (нельзя изменить объект)
 	{
@@ -165,37 +145,33 @@ public:
 
 	T& operator[](size_t index) // возвр. константную ссылку ЗАЧЕМ НУЖНО 2 ПЕРЕГРУЗКИ [] ??? спросить
 	{
-		if (m_begin + index >= m_end || m_begin + index < m_begin)// если не использовать GetBack() - можно упростить
+		if (m_begin + index >= m_end || m_begin + index < m_begin)
 			throw std::out_of_range("Error! Out of range");
 
 		return *(m_begin + index);
 	}
 
-
-
-	//TODO зачем нужны 2 версии, удаляющая исходный массив, и не удаляющая?
-	CMyArray& operator=(CMyArray const& arr)//перегрузка оператора перемещения (arr не изменится)
+	CMyArray& operator=(CMyArray const& arr)//перегрузка оператора перемещения
 	{
-		if (std::addressof(arr) != this)
+		if (std::addressof(arr) != this)//Получает фактический адрес объекта или функции arg, даже в случае перегрузкиoperator&
 		{
-			CMyArray copyArr(arr);
-			std::swap(m_begin, copyArr.m_begin);
-			std::swap(m_end, copyArr.m_end);
-			std::swap(m_endOfCapacity, copyArr.m_endOfCapacity);
+			CMyArray copy(arr);
+			std::swap(m_begin, copy.m_begin);
+			std::swap(m_end, copy.m_end);
+			std::swap(m_endOfCapacity, copy.m_endOfCapacity);
 		}
 		return *this;
 	}
-	// а если присваивать разноразмерные массивы?
-	CMyArray& operator=(CMyArray && arr)// перегрузка оператора перемещения (arr обнулится)
+
+	CMyArray& operator=(CMyArray && arr)// перегрузка оператора перемещения, используется для временного объекта
 	{
 		if (&arr != this)
 		{
-			//Clear();
-			DeleteItems(m_begin, m_end); // а если после удаления возникла проблема? мб не удалять, а перекинуть в темп?
+			Clear();
 			m_begin = arr.m_begin;
 			m_end = arr.m_end;
 			m_endOfCapacity = arr.m_endOfCapacity;
-			
+
 			arr.m_begin = nullptr;
 			arr.m_end = nullptr;
 			arr.m_endOfCapacity = nullptr;
@@ -203,19 +179,25 @@ public:
 		return *this;
 	}
 
-
-
-
-	size_t GetSize() const
+	size_t GetSize()const
 	{
 		return m_end - m_begin;
 	}
 
-	size_t GetCapacity() const
+	size_t GetCapacity()const
 	{
 		return m_endOfCapacity - m_begin;
 	}
+
 	/*
+	iterator begin();
+	iterator end();
+
+	const_iterator begin() const;
+	const_iterator end() const;
+	*/
+
+
 	iterator begin()
 	{
 		return iterator(m_begin);
@@ -239,6 +221,9 @@ public:
 		return const_iterator(m_end);
 	}
 
+
+
+
 	reverse_iterator rbegin()
 	{
 		return reverse_iterator(m_end);
@@ -256,7 +241,7 @@ public:
 	{
 		return reverse_const_iterator(m_begin);
 	}
-	*/
+
 	~CMyArray()
 	{
 		DeleteItems(m_begin, m_end);
@@ -269,15 +254,14 @@ private:
 		// Освобождаем область памяти для их хранения
 		RawDealloc(begin);
 	}
-	
+
 	// Копирует элементы из текущего вектора в to, возвращает newEnd
-	static void CopyItems(const T *srcBegin, T *srcEnd, T *const dstBegin, T *&dstEnd)// и снова, зачем тут статик
+	static void CopyItems(const T *srcBegin, T *srcEnd, T * const dstBegin, T * & dstEnd)
 	{
-		for (dstEnd = dstBegin; srcBegin != srcEnd; ++srcBegin, ++dstEnd)//
+		for (dstEnd = dstBegin; srcBegin != srcEnd; ++srcBegin, ++dstEnd)
 		{
 			// Construct "T" at "dstEnd" as a copy of "*begin"
-			// Построить «T» на «dstEnd» как копию «* begin»
-			new (dstEnd)T(*srcBegin); //TODO похоже тут конструктор копирования, и источник не уничтожается.  можно ли проще скопировать?
+			new (dstEnd)T(*srcBegin);
 		}
 	}
 
@@ -285,56 +269,33 @@ private:
 	{
 		// dst - адрес объект, при конструирование которого было выброшено исключение
 		// to - первый скорнструированный объект
-		while (to != from) // почему освобождаем от начала к концу?
+		while (to != from)
 		{
 			--to;
 			// явно вызываем деструктор для шаблонного типа T
 			to->~T();
 		}
 	}
-	
 
-	/*
-	Статический метод может работать со статическими переменными класса и с объектами класса. 
-	Он может выполнять какие-то действия общие для всех объектов данного класса или для указываемой группы объектов, 
-	изменение общих параметров, что-то вроде сборки мусора и т.д.
-
-	Переменные внутри метода не обязательно будут static.
-	Создание и уничтожение экземпляров класса никак не затронет статический метод, его можно вызывать независимо от существования объектов класса. 
-	Это аналог обычной функции, только имя у неё необычное и область видимости.
-	Существование статического метода никак не отражается на том, как будет храниться объект класса.
-	 */
-	static T *RawAlloc(size_t n)//выделить память
+	static T *RawAlloc(size_t n)
 	{
-		size_t memSize = n * sizeof(T);//нужный размер
-		T *p = static_cast<T*>(malloc(memSize));// malloc выделяет блок памяти, размером sizemem байт, и возвращает указатель на начало блока
-		// Instantiate CMyArray < string >: The 'malloc' function is used to allocate 
-		// memory for an array of objects which are classes containing constructors and destructors.
-		// char * buffer = (char*) malloc(len + 1); 
+		size_t memSize = n * sizeof(T);
+		T *p = static_cast<T*>(malloc(memSize));
 		if (!p)
+		{
 			throw std::bad_alloc();
+		}
 		return p;
 	}
-	
+
 	static void RawDealloc(T *p)
 	{
 		free(p);
 	}
+
+private:
+	T *m_begin = nullptr;
+	T *m_end = nullptr;
+	T *m_endOfCapacity = nullptr;
 };
 
-/*
- // Объявляем массив размера 5 и инициализируем.
-int marks[5] = { 19, 10, 8, 17, 9 };
-
-// Объявляем массив без указания размера,
-//  размер будет определён из списка инициализациии.
-int marks[] = { 19, 10, 8, 17, 9 };
-
-// Объявляем массив размера 10 и заполняем нулями.
-int ages[10] = { 0 };
- */
-/*
- Новая область находится уже другом месте, потому что менеджер динамической памяти не мог просто взять и расширить старую область
-(ведь сразу за ней находилась чужая память). 
-Поэтому все итераторы, ссылки и указатели на элементы могут стать некорректными после любого изменения массива!
- */
