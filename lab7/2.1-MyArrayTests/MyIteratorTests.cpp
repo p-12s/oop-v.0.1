@@ -147,18 +147,120 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture) //, has_iterators_ MyIte
 		BOOST_AUTO_TEST_CASE(stl_compatible)
 		{
 			stringstream stream;
-			for (auto &el : floatArr)
-			{
-				stream << el << " ";
-			}
+			for_each(floatArr.begin(), floatArr.end(), [&](auto &it) {
+				stream << it << " ";
+			});
 			BOOST_CHECK_EQUAL(stream.str(), "0 1 2 3 4 5 ");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
-
-	BOOST_AUTO_TEST_SUITE(reverse)
-		BOOST_AUTO_TEST_CASE(test)
+	
+	struct reverse_ : MyIteratorFixture
+	{
+		reverse_iterator<CMyIterator<float>> iterator;
+		reverse_()
 		{
-			BOOST_CHECK(true);
+			iterator = floatArr.rbegin();
+		}
+	};
+
+	BOOST_FIXTURE_TEST_SUITE(reverse, reverse_)
+		BOOST_AUTO_TEST_CASE(can_refer_to_the_rbegin)
+		{
+			BOOST_CHECK(*iterator == 5);
+		}
+		BOOST_AUTO_TEST_CASE(can_refer_to_the_rend)
+		{
+			iterator = floatArr.rend();
+			BOOST_CHECK(iterator != floatArr.rbegin());
+		}		
+		BOOST_AUTO_TEST_CASE(which_can_be_incremented_with_prefix_form)
+		{
+			++iterator;
+			BOOST_CHECK_EQUAL(*iterator, 4);
+
+			++iterator;
+			BOOST_CHECK_EQUAL(*iterator, 3);
+		}		
+		BOOST_AUTO_TEST_CASE(which_can_be_incremented_with_postfix_form)
+		{
+			BOOST_CHECK_EQUAL(*iterator++, 5);
+			BOOST_CHECK_EQUAL(*iterator, 4);
+		}		
+		BOOST_AUTO_TEST_CASE(can_be_decremented_with_prefix_form)
+		{
+			++iterator;
+			BOOST_CHECK_EQUAL(*iterator, 4);
+
+			--iterator;
+			BOOST_CHECK_EQUAL(*iterator, 5);
+
+			*iterator = 10;
+			BOOST_CHECK_EQUAL(floatArr[5], 10);
+		}		
+		BOOST_AUTO_TEST_CASE(can_be_decremented_with_postfix_form)
+		{
+			iterator++;
+			BOOST_CHECK_EQUAL(*iterator, 4);
+
+			iterator--;
+			BOOST_CHECK_EQUAL(*iterator, 5);
+		}		
+		BOOST_AUTO_TEST_CASE(can_be_addicted_with_number)
+		{
+			auto it = iterator + 3;
+			BOOST_CHECK_EQUAL(*it, floatArr[2]);
+
+			it = 3 + iterator;
+			BOOST_CHECK_EQUAL(*it, floatArr[2]);
+		}		
+		BOOST_AUTO_TEST_CASE(can_be_substracted_with_number)
+		{
+			auto it = floatArr.rend() - 3;
+			BOOST_CHECK_EQUAL(*it, 2);
+		}		
+		BOOST_AUTO_TEST_CASE(can_be_substracted_from_another_iterator)
+		{
+			auto it = floatArr.rend();
+			BOOST_CHECK_EQUAL(it - iterator, 6);
+		}		
+		BOOST_AUTO_TEST_CASE(elements_can_be_accessed_with_offset)
+		{
+			BOOST_CHECK_EQUAL(iterator[2], 3);
+			iterator[2] = 0;
+			BOOST_CHECK_EQUAL(iterator[2], 0);
+		}		
+		BOOST_AUTO_TEST_CASE(can_be_checked_for_equality)
+		{
+			BOOST_CHECK(iterator == floatArr.rbegin());
+			BOOST_CHECK(iterator != floatArr.rend());
+		}
+		BOOST_AUTO_TEST_CASE(has_less_operator)
+		{
+			auto it = floatArr.rbegin() + 2;
+			BOOST_CHECK(iterator < it);
+		}		
+		BOOST_AUTO_TEST_CASE(has_greater_operator)
+		{
+			auto it = floatArr.rbegin() + 2;
+			BOOST_CHECK(it > iterator);
+		}
+		BOOST_AUTO_TEST_CASE(has_less_or_equal_operator)
+		{
+			auto it = floatArr.rbegin() + 2;
+			BOOST_CHECK(iterator <= it);
+		}
+		BOOST_AUTO_TEST_CASE(has_greater_or_equal_operator)
+		{
+			auto it = floatArr.rbegin() + 2;
+			BOOST_CHECK(it >= iterator);
+		}
+		BOOST_AUTO_TEST_CASE(stl_compatible)
+		{
+			stringstream stream;
+			for_each(floatArr.rbegin(), floatArr.rend(), [&](auto &it) {
+				stream << it << " ";
+			});
+			BOOST_CHECK_EQUAL(stream.str(), "5 4 3 2 1 0 ");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 

@@ -54,7 +54,7 @@ public:
 
 	CMyIterator const operator+(ptrdiff_t n) const;
 
-	CMyIterator const operator-(ptrdiff_t n) const; // it - 3
+	CMyIterator const operator-(ptrdiff_t n) const;
 
 	ptrdiff_t const operator-(CMyIterator const& other) const;
 
@@ -67,16 +67,15 @@ private:
 	T* m_pointer;
 };
 
+template<typename T>// ??????/ в статье нет 
+CMyIterator<T>::CMyIterator()
+	: m_pointer(nullptr)
+{
+}
 
 template<typename T> // ОК
 CMyIterator<T>::CMyIterator(T *p)
 	: m_pointer(p)
-{
-}
-
-template<typename T>// ??????/ в статье нет 
-inline CMyIterator<T>::CMyIterator()
-	: m_pointer(nullptr)
 {
 }
 
@@ -118,7 +117,6 @@ T* CMyIterator<T>::operator->() const
 {
 	return std::addressof(operator*());
 }
-
 
 template<typename T>
 T& CMyIterator<T>::operator[](ptrdiff_t index) const
@@ -188,7 +186,6 @@ CMyIterator<T> const CMyIterator<T>::operator+(ptrdiff_t n) const
 	return m_pointer + n;
 }
 
-// It is the signed integer type of the result of subtracting two pointers
 template<typename T>
 ptrdiff_t const CMyIterator<T>::operator-(CMyIterator<T> const & other) const
 {
@@ -202,9 +199,9 @@ CMyIterator<T> const CMyIterator<T>::operator-(ptrdiff_t n) const
 }
 
 template<typename T>
-CMyIterator<T> const operator+(ptrdiff_t n, CMyIterator<T> const& iter)
+CMyIterator<T> const operator+(ptrdiff_t n, CMyIterator<T> const& it)
 {
-	return iter + n;
+	return it + n;
 }
 
 template<typename T>
