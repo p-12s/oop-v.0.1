@@ -38,6 +38,7 @@ void CheckArrayItems(CMyArray<T> const& arr1, const vector<T>& expectedItems, co
 	for (size_t i = 0; i < arr1.GetSize(); ++i )
 	{
 		BOOST_CHECK(arr1[i] == expectedItems[i]);
+		BOOST_CHECK_NO_THROW((arr1[i] == expectedItems[i]));
 	}
 	BOOST_CHECK(arr1.GetSize() == expectedItems.size() && arr1.GetCapacity() == capacity);
 }
@@ -53,6 +54,7 @@ BOOST_FIXTURE_TEST_SUITE(MyArray, MyArrayFixture)
 		}
 		BOOST_AUTO_TEST_CASE(has_not_access_by_index)
 		{			
+			BOOST_CHECK_THROW((floatArr[-1] == -1), out_of_range);
 			BOOST_CHECK_THROW(floatArr[-1], out_of_range);
 			BOOST_CHECK_THROW(stringArr[0], out_of_range);
 			BOOST_CHECK_THROW(stringArr[1], out_of_range);
@@ -81,17 +83,6 @@ BOOST_FIXTURE_TEST_SUITE(MyArray, MyArrayFixture)
 			CheckArrayItems(floatArr, {}, 0);
 		}
 	BOOST_AUTO_TEST_SUITE_END()
-/*
-* +Возможность изменения длины массива при помощи метода Resize(). 
-* +В случае, если новая длина массива больше прежней, вставляемые в конец массива элементы 
-* +должны инициализироваться значением по умолчанию для типа T.
-* +Возможность опустошения массива (удаления всех его элементов) при помощи метода Clear.
-* +Конструктор копирования и оператор присваивания
-* +Конструктор перемещения и перемещающий оператор присваивания
-* Методы begin() и end(), а также rbegin() и rend(), возвращающие итераторы для перебора 
-* элементов вектора в прямом и обратном порядке.
-* //работа с итератором в итераторах
-*/
 
 	struct after_appending_items_ : MyArrayFixture
 	{
@@ -176,6 +167,8 @@ BOOST_FIXTURE_TEST_SUITE(MyArray, MyArrayFixture)
 		{
 			auto copyFloatArr(floatArr);
 			floatArr = floatArr;
+			BOOST_CHECK(ArraysAreEqual(copyFloatArr, floatArr));
+			floatArr = copyFloatArr;
 			BOOST_CHECK(ArraysAreEqual(copyFloatArr, floatArr));
 		}
 		BOOST_AUTO_TEST_CASE(has_copy_operator)

@@ -1,40 +1,29 @@
-========================================================================
-    CONSOLE APPLICATION : 2.1-MyArrayTests Project Overview
-========================================================================
+Разработайте шаблонный класс CMyArray, 
+представляющий собой массив элементов некоторого типа T.
 
-AppWizard has created this 2.1-MyArrayTests application for you.
+Массив должен предоставлять следующие возможности:
+    • Возможность добавления элемента в конец массива
+    • Возможность получения количества элементов, содержащихся в массиве
+    • Возможность осуществления индексированного доступа к элементам массива 
+	при помощи оператора «[]». В случае, если индекс элемента выходит 
+	за пределы массива, должно выбрасываться исключение std::out_of_range
+    • Возможность изменения длины массива при помощи метода Resize(). 
+	В случае, если новая длина массива больше прежней, вставляемые в 
+	конец массива элементы должны инициализироваться значением по умолчанию 
+	для типа T.
+    • Возможность опустошения массива (удаления всех его элементов) 
+	при помощи метода Clear.
+    • Конструктор копирования и оператор присваивания
+    • Конструктор перемещения и перемещающий оператор присваивания
+    • Методы begin() и end(), а также rbegin() и rend(), возвращающие 
+	итераторы для перебора элементов вектора в прямом и обратном порядке.
 
-This file contains a summary of what you will find in each of the files that
-make up your 2.1-MyArrayTests application.
+Все методы класса должны CMyArray должны предоставлять строгую гарантию 
+безопасности исключений и семантику «commit-or-rollback», 
+а деструктор – гарантировать отсутствие исключений.
 
+Массив должен быть реализован своими силами без использования класса 
+std::vector и ему подобных.
 
-2.1-MyArrayTests.vcxproj
-    This is the main project file for VC++ projects generated using an Application Wizard.
-    It contains information about the version of Visual C++ that generated the file, and
-    information about the platforms, configurations, and project features selected with the
-    Application Wizard.
-
-2.1-MyArrayTests.vcxproj.filters
-    This is the filters file for VC++ projects generated using an Application Wizard. 
-    It contains information about the association between the files in your project 
-    and the filters. This association is used in the IDE to show grouping of files with
-    similar extensions under a specific node (for e.g. ".cpp" files are associated with the
-    "Source Files" filter).
-
-2.1-MyArrayTests.cpp
-    This is the main application source file.
-
-/////////////////////////////////////////////////////////////////////////////
-Other standard files:
-
-StdAfx.h, StdAfx.cpp
-    These files are used to build a precompiled header (PCH) file
-    named 2.1-MyArrayTests.pch and a precompiled types file named StdAfx.obj.
-
-/////////////////////////////////////////////////////////////////////////////
-Other notes:
-
-AppWizard uses "TODO:" comments to indicate parts of the source code you
-should add to or customize.
-
-/////////////////////////////////////////////////////////////////////////////
+Программа должна демонстрировать работу шаблонного класса CMyArray 
+в качестве массива строк (std::string) и массива чисел с плавающей запятой.

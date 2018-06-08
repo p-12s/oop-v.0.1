@@ -3,40 +3,11 @@
 
 using namespace std;
 
-struct ArrayItem
-{
-	ArrayItem(int value = 0) : value(value)
-	{}
-	int value;
-};
-
-struct EmptyStringArray
-{
-	CMyArray<ArrayItem> arr;
-};
-
-struct has_iterators_ : EmptyStringArray //CMyArray<ArrayItem> arr;
-{
-	CMyIterator<ArrayItem> iterator;
-	has_iterators_()
-	{
-		for (auto i = 0; i < 6; ++i)
-			arr.Append(i);
-
-		iterator = arr.begin();
-
-		auto aa = *iterator;
-		auto b = iterator + 1;
-		++iterator;
-	}
-};
-
-
 struct MyIteratorFixture
 {
 	CMyArray<float> floatArr;
 	CMyIterator<float> iterator;
-	
+
 	MyIteratorFixture()
 		: floatArr()
 		, iterator()
@@ -47,7 +18,7 @@ struct MyIteratorFixture
 	}
 };
 
-BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture) //, has_iterators_ MyIteratorFixture
+BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 	BOOST_AUTO_TEST_SUITE(common)
 		BOOST_AUTO_TEST_CASE(can_refer_to_the_begin)
 		{

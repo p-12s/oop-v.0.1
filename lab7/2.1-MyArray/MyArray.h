@@ -7,7 +7,6 @@
 template <typename T>
 class CMyArray
 {
-	
 	typedef CMyIterator<T> iterator;
 	typedef CMyIterator<const T> const_iterator;
 
@@ -16,19 +15,13 @@ class CMyArray
 	 
 
 public:
-	/*typedef CMyIterator<T> iterator; // в статье это в публичной части
-	typedef CMyIterator<const T> const_iterator;
-
-	typedef std::reverse_iterator<iterator> reverse_iterator;
-	typedef std::reverse_iterator<const_iterator> reverse_const_iterator;*/
-
 	friend iterator;
 	friend const_iterator;
-	CMyArray() = default;// зачем нужен дефолтный конструктор? спросить у Ильи
+	CMyArray() = default;
 
-	CMyArray(const CMyArray& arr) // конструктор, принимающий константное значение (копирующий)
+	CMyArray(const CMyArray& arr)
 	{
-		const auto size = arr.GetSize();//вернет указатель на начало выделенной "сырой" памяти
+		const auto size = arr.GetSize();
 		if (size != 0)
 		{
 			m_begin = RawAlloc(size);
@@ -45,12 +38,11 @@ public:
 		}
 	}
 
-	CMyArray(CMyArray && arr) // конструктор, принимающий временное значение (перемещающий)
+	CMyArray(CMyArray && arr)
 		: m_begin(arr.m_begin)
 		, m_end(arr.m_end)
 		, m_endOfCapacity(arr.m_endOfCapacity)
 	{
-		// TODO удалить предыдущий arr. после ок тестов
 		arr.m_begin = nullptr;
 		arr.m_end = nullptr;
 		arr.m_endOfCapacity = nullptr;
@@ -67,7 +59,6 @@ public:
 			try
 			{
 				CopyItems(m_begin, m_end, newBegin, newEnd);
-				// Конструируем копию value по адресу newItemLocation
 				new (newEnd)T(value);
 				++newEnd;
 			}
@@ -78,12 +69,11 @@ public:
 			}
 			DeleteItems(m_begin, m_end);
 
-			// Переключаемся на использование нового хранилища элементов
 			m_begin = newBegin;
 			m_end = newEnd;
 			m_endOfCapacity = m_begin + newCapacity;
 		}
-		else // has free space
+		else
 		{
 			new (m_end) T(value);
 			++m_end;
@@ -122,28 +112,15 @@ public:
 		m_endOfCapacity = nullptr;
 	}
 
-	/*T & GetBack()
+	const T& operator[](size_t index) const // arr1[i] == arr2[i]
 	{
-		assert(GetSize() != 0u);
-		return m_end[-1];
-	}
-
-	const T & GetBack()const
-	{
-		assert(GetSize() != 0u);
-		return m_end[-1];
-	}*/
-
-	//TODO может заменить одной перегрузкой?
-	const T& operator[](size_t index) const // возвр. константную ссылку (нельзя изменить объект)
-	{
-		if (m_begin + index >= m_end || m_begin + index < m_begin)// если не использовать GetBack() - можно упростить
-			throw std::out_of_range("Error! Out of range");
+		if (m_begin + index >= m_end || m_begin + index < m_begin)
+			throw std::out_of_range("Error! Out of range"); // не покрыт тестом
 
 		return *(m_begin + index);
 	}
 
-	T& operator[](size_t index) // возвр. константную ссылку ЗАЧЕМ НУЖНО 2 ПЕРЕГРУЗКИ [] ??? спросить
+	T& operator[](size_t index) // auto a = arr1[i]
 	{
 		if (m_begin + index >= m_end || m_begin + index < m_begin)
 			throw std::out_of_range("Error! Out of range");
@@ -151,9 +128,9 @@ public:
 		return *(m_begin + index);
 	}
 
-	CMyArray& operator=(CMyArray const& arr)//перегрузка оператора перемещения
+	CMyArray& operator=(CMyArray const& arr) // floatArr = floatArr
 	{
-		if (std::addressof(arr) != this)//Получает фактический адрес объекта или функции arg, даже в случае перегрузкиoperator&
+		if (std::addressof(arr) != this)
 		{
 			CMyArray copy(arr);
 			std::swap(m_begin, copy.m_begin);
@@ -163,7 +140,7 @@ public:
 		return *this;
 	}
 
-	CMyArray& operator=(CMyArray && arr)// перегрузка оператора перемещения, используется для временного объекта
+	CMyArray& operator=(CMyArray && arr) // = arr1 + arr2
 	{
 		if (&arr != this)
 		{
@@ -179,32 +156,29 @@ public:
 		return *this;
 	}
 
-	size_t GetSize()const
+	size_t GetSize() const
 	{
 		return m_end - m_begin;
 	}
 
-	size_t GetCapacity()const
+	size_t GetCapacity() const
 	{
 		return m_endOfCapacity - m_begin;
 	}
 
-	/*
-	iterator begin();
-	iterator end();
-
-	const_iterator begin() const;
-	const_iterator end() const;
-	*/
-
-
 	iterator begin()
 	{
+#if _DEBUG
+		return iterator(m_begin, this);
+#endif
 		return iterator(m_begin);
 	}
 
 	iterator end()
 	{
+#if _DEBUG
+		return iterator(m_end, this);
+#endif
 		return iterator(m_end);
 	}
 
@@ -213,33 +187,50 @@ public:
 #if _DEBUG
 		return const_iterator(m_begin, this);
 #endif
-		return const_iterator(m_begin);
+		return const_iterator(m_begin);//не покрыт тестом
 	}
 
 	const_iterator end() const
 	{
-		return const_iterator(m_end);
+#if _DEBUG
+		return const_iterator(m_end, this);
+#endif
+		return const_iterator(m_end);//не покрыт тестом
 	}
 
 
 
 
 	reverse_iterator rbegin()
-	{
+	{/*
+#if _DEBUG
+		return reverse_iterator(m_end, this);
+#endif*/
 		return reverse_iterator(m_end);
 	}
+
 	reverse_iterator rend()
-	{
+	{/*
+#if _DEBUG
+		return reverse_iterator(m_begin, this);
+#endif*/
 		return reverse_iterator(m_begin);
 	}
 
 	reverse_const_iterator rbegin() const
 	{
-		return reverse_const_iterator(m_end);
+#if _DEBUG
+		return reverse_const_iterator(m_end, this);
+#endif
+		return reverse_const_iterator(m_end);//не покрыт тестом
 	}
+
 	reverse_const_iterator rend() const
 	{
-		return reverse_const_iterator(m_begin);
+#if _DEBUG
+		return reverse_const_iterator(m_begin, this);
+#endif
+		return reverse_const_iterator(m_begin);//не покрыт тестом
 	}
 
 	~CMyArray()
@@ -249,30 +240,23 @@ public:
 private:
 	static void DeleteItems(T *begin, T *end)
 	{
-		// Разрушаем старые элементы
 		DestroyItems(begin, end);
-		// Освобождаем область памяти для их хранения
 		RawDealloc(begin);
 	}
 
-	// Копирует элементы из текущего вектора в to, возвращает newEnd
 	static void CopyItems(const T *srcBegin, T *srcEnd, T * const dstBegin, T * & dstEnd)
 	{
 		for (dstEnd = dstBegin; srcBegin != srcEnd; ++srcBegin, ++dstEnd)
 		{
-			// Construct "T" at "dstEnd" as a copy of "*begin"
 			new (dstEnd)T(*srcBegin);
 		}
 	}
 
 	static void DestroyItems(T *from, T *to)
 	{
-		// dst - адрес объект, при конструирование которого было выброшено исключение
-		// to - первый скорнструированный объект
 		while (to != from)
 		{
 			--to;
-			// явно вызываем деструктор для шаблонного типа T
 			to->~T();
 		}
 	}
@@ -298,4 +282,3 @@ private:
 	T *m_end = nullptr;
 	T *m_endOfCapacity = nullptr;
 };
-

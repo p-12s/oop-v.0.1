@@ -7,22 +7,20 @@
 template<typename T>
 class CMyIterator : public std::iterator<std::bidirectional_iterator_tag, T>
 {
-	//friend class CMyArray;
 private:
 	template <typename> friend class CMyArray;
 	CMyIterator(T* p);
 
-public:
-	CMyIterator();//  = delete по сергею
-	CMyIterator(const CMyIterator &it);//копирующий конструктор //  = default по сергею
-
-/*#if _DEBUG
+#if _DEBUG
 	CMyIterator(T* p, CMyArray<T> *array)
 		: m_pointer(p)
 		, m_array(array)
 	{
 	}
-#endif*/
+#endif
+
+public:
+	CMyIterator();
 
 	CMyIterator& operator=(const CMyIterator &it);
 
@@ -34,7 +32,7 @@ public:
 
 	T& operator[](ptrdiff_t index) const;
 
-	T& operator*() const; // typename OwnIterator::reference operator*() const;
+	T& operator*() const;
 
 	CMyIterator& operator++();
 
@@ -59,54 +57,41 @@ public:
 	ptrdiff_t const operator-(CMyIterator const& other) const;
 
 private:
-	/*
-#if _DEBUG
-	CMyArray<T> * m_array;//TODO для проверки
-#endif*/
-
 	T* m_pointer;
+#if _DEBUG
+	CMyArray<T> * m_array;
+#endif
 };
 
-template<typename T>// ??????/ в статье нет 
+template<typename T>
 CMyIterator<T>::CMyIterator()
 	: m_pointer(nullptr)
 {
 }
 
-template<typename T> // ОК
+template<typename T>
 CMyIterator<T>::CMyIterator(T *p)
 	: m_pointer(p)
 {
 }
 
-template<typename T>//ОК
-CMyIterator<T>::CMyIterator(const CMyIterator& it)
-	: m_pointer(it.m_pointer)
-{
-}
-/*
-#if _DEBUG
-template<typename T>                мб в конуструкторе нзначить?
-void CMyIterator<T>::SetArray(CMyArray<T> const* array)
-{
-	m_array = array;
-}
-#endif*/
-
 template<typename T>
-CMyIterator<T> & CMyIterator<T>::operator=(const CMyIterator & it)
+CMyIterator<T>& CMyIterator<T>::operator=(const CMyIterator& other)
 {
-	m_pointer = it.m_pointer;
+	m_pointer = other.m_pointer;
+#if _DEBUG
+	m_array = other.m_array;
+#endif
 	return *this;
 }
 
-template<typename T>//ОК
+template<typename T>
 bool CMyIterator<T>::operator!=(CMyIterator const& other) const
 {
 	return m_pointer != other.m_pointer;
 }
 
-template<typename T>//ОК
+template<typename T>
 bool CMyIterator<T>::operator==(CMyIterator const& other) const
 {
 	return m_pointer == other.m_pointer;
@@ -120,13 +105,13 @@ T* CMyIterator<T>::operator->() const
 
 template<typename T>
 T& CMyIterator<T>::operator[](ptrdiff_t index) const
-{/*
+{
 #if _DEBUG
 	if (m_array)
 	{
 		assert(m_pointer + index <= m_array->m_end);
 	}
-#endif*/
+#endif
 	return *(m_pointer + index);
 }
 
@@ -135,30 +120,23 @@ T & CMyIterator<T>::operator*() const
 {
 	return *m_pointer;
 }
-/*
- template<typename ValueType>
-typename OwnIterator<ValueType>::reference OwnIterator<ValueType>::operator*() const
-{
-    return *p;
-}
- */
 
 template<typename T>
-CMyIterator<T> &CMyIterator<T>::operator++()//префиксный
-{/*
+CMyIterator<T> &CMyIterator<T>::operator++()
+{
 #if _DEBUG
-	assert(m_pointer + 1 <= m_array->m_end);//m_array не должен быть нулл
-#endif*/
+	assert(m_pointer + 1 <= m_array->m_end);
+#endif
 	++m_pointer;
 	return *this;
 }
 
 template<typename T>
-CMyIterator<T> const CMyIterator<T>::operator++(int)//постфксный
-{/*
+CMyIterator<T> const CMyIterator<T>::operator++(int)
+{
 #if _DEBUG
 	assert(m_pointer + 1 <= m_array->m_end);
-#endif*/
+#endif
 	CMyIterator<T> tmpCopy(*this);
 
 	++*this;
@@ -180,19 +158,20 @@ CMyIterator<T> const CMyIterator<T>::operator--(int)
 	return tmpCopy;
 }
 
-template<typename T>
+// странно - вычитать из указателья число
+template<typename T>//TODO нужно ли реализоавывать?
 CMyIterator<T> const CMyIterator<T>::operator+(ptrdiff_t n) const
 {
 	return m_pointer + n;
 }
 
 template<typename T>
-ptrdiff_t const CMyIterator<T>::operator-(CMyIterator<T> const & other) const
+ptrdiff_t const CMyIterator<T>::operator-(CMyIterator<T> const& other) const
 {
 	return m_pointer - other.m_pointer;
 }
 
-template<typename T>
+template<typename T>//TODO нужно ли реализоавывать? кому понадобится вычитать из итератора целое число?
 CMyIterator<T> const CMyIterator<T>::operator-(ptrdiff_t n) const
 {
 	return m_pointer - n;
