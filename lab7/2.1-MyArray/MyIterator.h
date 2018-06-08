@@ -1,7 +1,4 @@
 #pragma once
-#include <iterator>
-#include <initializer_list>
-#include "MyArray.h"
 #include <assert.h>
 
 template<typename T>
@@ -55,6 +52,7 @@ public:
 	CMyIterator const operator-(ptrdiff_t n) const;
 
 	ptrdiff_t const operator-(CMyIterator const& other) const;
+
 
 private:
 	T* m_pointer;
@@ -146,6 +144,9 @@ CMyIterator<T> const CMyIterator<T>::operator++(int)
 template<typename T>
 CMyIterator<T> &CMyIterator<T>::operator--()
 {
+#if _DEBUG
+	assert(m_pointer - 1 >= m_array->m_begin);
+#endif
 	--m_pointer;
 	return *this;
 }
@@ -158,8 +159,7 @@ CMyIterator<T> const CMyIterator<T>::operator--(int)
 	return tmpCopy;
 }
 
-// странно - вычитать из указателья число
-template<typename T>//TODO нужно ли реализоавывать?
+template<typename T>
 CMyIterator<T> const CMyIterator<T>::operator+(ptrdiff_t n) const
 {
 	return m_pointer + n;
@@ -171,7 +171,7 @@ ptrdiff_t const CMyIterator<T>::operator-(CMyIterator<T> const& other) const
 	return m_pointer - other.m_pointer;
 }
 
-template<typename T>//TODO нужно ли реализоавывать? кому понадобится вычитать из итератора целое число?
+template<typename T>
 CMyIterator<T> const CMyIterator<T>::operator-(ptrdiff_t n) const
 {
 	return m_pointer - n;
@@ -206,4 +206,3 @@ bool CMyIterator<T>::operator>=(CMyIterator const& other)
 {
 	return m_pointer >= other.m_pointer;
 }
-

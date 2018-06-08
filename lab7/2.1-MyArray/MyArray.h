@@ -181,7 +181,7 @@ public:
 #endif
 		return iterator(m_end);
 	}
-
+	
 	const_iterator begin() const
 	{
 #if _DEBUG
@@ -189,7 +189,7 @@ public:
 #endif
 		return const_iterator(m_begin);//не покрыт тестом
 	}
-
+	
 	const_iterator end() const
 	{
 #if _DEBUG
@@ -197,9 +197,6 @@ public:
 #endif
 		return const_iterator(m_end);//не покрыт тестом
 	}
-
-
-
 
 	reverse_iterator rbegin()
 	{/*
@@ -237,6 +234,8 @@ public:
 	{
 		DeleteItems(m_begin, m_end);
 	}
+
+
 private:
 	static void DeleteItems(T *begin, T *end)
 	{
