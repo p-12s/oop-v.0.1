@@ -7,16 +7,18 @@
 template <typename T>
 class CMyArray
 {
+public:
+
 	typedef CMyIterator<T> iterator;
 	typedef CMyIterator<const T> const_iterator;
-
 	typedef std::reverse_iterator<iterator> reverse_iterator;
 	typedef std::reverse_iterator<const_iterator> reverse_const_iterator;
-	 
 
-public:
 	friend iterator;
 	friend const_iterator;
+	friend reverse_iterator;
+	friend reverse_const_iterator;
+
 	CMyArray() = default;
 
 	CMyArray(const CMyArray& arr)
@@ -166,69 +168,102 @@ public:
 		return m_endOfCapacity - m_begin;
 	}
 
+	
+
+	////////////////////////////////////////////////////////////////////
+	//////    неконстантный обычный итератор
 	iterator begin()
 	{
 #if _DEBUG
 		return iterator(m_begin, this);
-#endif
+#else
 		return iterator(m_begin);
+#endif
 	}
 
 	iterator end()
 	{
 #if _DEBUG
 		return iterator(m_end, this);
-#endif
+#else
 		return iterator(m_end);
+#endif
 	}
-	
+	//////     онстантный обычный итератор
 	const_iterator begin() const
 	{
 #if _DEBUG
 		return const_iterator(m_begin, this);
+#else
+		return const_iterator(m_begin);
 #endif
-		return const_iterator(m_begin);//не покрыт тестом
 	}
 	
 	const_iterator end() const
 	{
 #if _DEBUG
 		return const_iterator(m_end, this);
-#endif
-		return const_iterator(m_end);//не покрыт тестом
+#else
+		return const_iterator(m_end);
+#endif	
 	}
 
-	reverse_iterator rbegin()
+
+
+
+
+
+
+
+
+	reverse_iterator rbegin() // возвращает тип std::reverse_iterator<iterator> - где iterator - это CMyIterator<T>
 	{/*
+#if _DEBUG //  m_end - 1
+		return reverse_iterator(m_end, this);//TODO если массив пуст, вычитать Ќ≈Ћ№«я
+#else
+		return reverse_iterator(m_end); // а если iterator end() ?
+#endif	*/
+
 #if _DEBUG
-		return reverse_iterator(m_end, this);
-#endif*/
-		return reverse_iterator(m_end);
+		return reverse_iterator(iterator(m_begin, this));//TODO если массив пуст, вычитать Ќ≈Ћ№«я
+#else
+		return reverse_iterator(iterator(m_begin)); // а если iterator end() ?
+#endif
 	}
+
 
 	reverse_iterator rend()
-	{/*
+	{
 #if _DEBUG
-		return reverse_iterator(m_begin, this);
-#endif*/
-		return reverse_iterator(m_begin);
+		return reverse_iterator(iterator(m_end, this));//TODO нужно ли тут вычитать как в m_end - 1?
+#else
+		return reverse_iterator(iterator(m_end));
+#endif	
 	}
 
+	//////    реверсивный константный итератор
 	reverse_const_iterator rbegin() const
 	{
 #if _DEBUG
-		return reverse_const_iterator(m_end, this);
+		return reverse_const_iterator(const_iterator(m_begin, this));
+#else
+		return reverse_const_iterator(const_iterator(m_begin));
 #endif
-		return reverse_const_iterator(m_end);//не покрыт тестом
 	}
 
 	reverse_const_iterator rend() const
 	{
 #if _DEBUG
-		return reverse_const_iterator(m_begin, this);
+		return reverse_const_iterator(const_iterator(m_end, this));//TODO нужно ли тут вычитать как в m_end - 1?
+#else
+		return reverse_const_iterator(const_iterator(m_end));
 #endif
-		return reverse_const_iterator(m_begin);//не покрыт тестом
 	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+
+
 
 	~CMyArray()
 	{

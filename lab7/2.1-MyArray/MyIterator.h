@@ -1,12 +1,12 @@
 #pragma once
 #include <assert.h>
+#include "MyArray.h"
 
-template<typename T>
+template <typename T>
 class CMyIterator : public std::iterator<std::bidirectional_iterator_tag, T>
 {
 private:
-	template <typename> friend class CMyArray;
-	CMyIterator(T* p);
+	template <typename T> friend class CMyArray;
 
 #if _DEBUG
 	CMyIterator(T* p, CMyArray<T> *array)
@@ -14,12 +14,17 @@ private:
 		, m_array(array)
 	{
 	}
+#else
+	CMyIterator(T* p)
+		: m_pointer(p)
+	{
+	}
 #endif
 
 public:
 	CMyIterator();
 
-	CMyIterator& operator=(const CMyIterator &it);
+	CMyIterator& operator=(const CMyIterator & it);
 
 	bool operator!=(CMyIterator const& other) const;
 
@@ -68,13 +73,7 @@ CMyIterator<T>::CMyIterator()
 }
 
 template<typename T>
-CMyIterator<T>::CMyIterator(T *p)
-	: m_pointer(p)
-{
-}
-
-template<typename T>
-CMyIterator<T>& CMyIterator<T>::operator=(const CMyIterator& other)
+CMyIterator<T>& CMyIterator<T>::operator=(const CMyIterator & other)
 {
 	m_pointer = other.m_pointer;
 #if _DEBUG
@@ -120,10 +119,10 @@ T & CMyIterator<T>::operator*() const
 }
 
 template<typename T>
-CMyIterator<T> &CMyIterator<T>::operator++()
+CMyIterator<T> &CMyIterator<T>::operator++()//TODO тут неработает если оператор --
 {
 #if _DEBUG
-	assert(m_pointer + 1 <= m_array->m_end);
+	assert(m_pointer + 1 <= m_array->m_end);// мб сделать шаг?
 #endif
 	++m_pointer;
 	return *this;
@@ -133,7 +132,7 @@ template<typename T>
 CMyIterator<T> const CMyIterator<T>::operator++(int)
 {
 #if _DEBUG
-	assert(m_pointer + 1 <= m_array->m_end);
+	assert(m_pointer + 1 <= m_array->m_end);// только вот тут использую +-
 #endif
 	CMyIterator<T> tmpCopy(*this);
 
@@ -144,8 +143,8 @@ CMyIterator<T> const CMyIterator<T>::operator++(int)
 template<typename T>
 CMyIterator<T> &CMyIterator<T>::operator--()
 {
-#if _DEBUG
-	assert(m_pointer - 1 >= m_array->m_begin);
+#if _DEBUG // тут в 64 битной фейлится попробовать с темповым объектом?
+	assert(m_pointer - 1 >= m_array->m_begin);// только вот тут использую +-
 #endif
 	--m_pointer;
 	return *this;
@@ -159,22 +158,23 @@ CMyIterator<T> const CMyIterator<T>::operator--(int)
 	return tmpCopy;
 }
 
+
+
+
+
+
+//////////////  нужен ли вообще такой функционал? похоже нужен - operator[] использует +
+
+
 template<typename T>
 CMyIterator<T> const CMyIterator<T>::operator+(ptrdiff_t n) const
 {
-	return m_pointer + n;
-}
-
-template<typename T>
-ptrdiff_t const CMyIterator<T>::operator-(CMyIterator<T> const& other) const
-{
-	return m_pointer - other.m_pointer;
-}
-
-template<typename T>
-CMyIterator<T> const CMyIterator<T>::operator-(ptrdiff_t n) const
-{
-	return m_pointer - n;
+#if _DEBUG
+	assert(m_pointer + n <= m_array->m_end);
+#endif
+	CMyIterator<T> tmpCopy(*this);
+	tmpCopy.m_pointer = m_pointer + n;
+	return tmpCopy;
 }
 
 template<typename T>
@@ -182,6 +182,30 @@ CMyIterator<T> const operator+(ptrdiff_t n, CMyIterator<T> const& it)
 {
 	return it + n;
 }
+
+template<typename T>
+CMyIterator<T> const CMyIterator<T>::operator-(ptrdiff_t n) const
+{
+#if _DEBUG
+	assert(m_pointer - n >= m_array->m_begin);
+#endif
+	CMyIterator<T> tmpCopy(*this);
+	tmpCopy.m_pointer = m_pointer - n;
+	return tmpCopy;
+}
+
+template<typename T>
+ptrdiff_t const CMyIterator<T>::operator-(CMyIterator<T> const& other) const
+{
+	return m_pointer - other.m_pointer;
+}
+//////////////  нужен ли вообще такой функционал?
+
+
+
+
+
+
 
 template<typename T>
 bool CMyIterator<T>::operator<(CMyIterator const& other)

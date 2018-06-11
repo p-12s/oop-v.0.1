@@ -7,21 +7,42 @@ using namespace std;
 struct MyIteratorFixture
 {
 	CMyArray<float> floatArr;
+
 	CMyIterator<float> iterator;
 	CMyIterator<float> const_iterator;
+
+	std::reverse_iterator<CMyIterator<float>> reverse_iterator;
+	std::reverse_iterator<CMyIterator<float>> reverse_const_iterator;
+	/*std::reverse_const_iterator<CMyIterator<const_iterator>> reverse_const_iterator;
+
+	typedef std::reverse_iterator<iterator> reverse_iterator;
+	typedef std::reverse_iterator<const_iterator> reverse_const_iterator;
+	*/
 
 	MyIteratorFixture()
 		: floatArr()
 		, iterator()
 		, const_iterator()
+		, reverse_iterator()
+		, reverse_const_iterator()
+		//, reverse_const_iterator()
 	{
 		for (auto i = 0; i < 6; ++i)
 			floatArr.Append(static_cast<float>(i));
 
 		iterator = floatArr.begin();
-		const_iterator = floatArr.begin();
+		const_iterator = floatArr.begin();//мб видоизменить конструктор? чтоб конст возвращал
+
+		reverse_iterator = floatArr.rbegin();
+		reverse_const_iterator = floatArr.rbegin();
 	}
+	
 };
+
+/*BOOST_AUTO_TEST_CASE(test)
+{
+	BOOST_CHECK(true);
+}*/
 
 BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 	BOOST_AUTO_TEST_SUITE(common)
@@ -35,22 +56,30 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			iterator = floatArr.end();
 			BOOST_CHECK(iterator == floatArr.end());
 			BOOST_CHECK(iterator != floatArr.begin());
+
+			const_iterator = floatArr.end();
+			BOOST_CHECK(const_iterator == floatArr.end());
+			BOOST_CHECK(const_iterator != floatArr.begin());
 		}
 		BOOST_AUTO_TEST_CASE(can_be_incremented_with_prefix_form)
 		{
 			++iterator;
 			BOOST_CHECK_EQUAL(*iterator, 1.f);
+			++iterator;
+			BOOST_CHECK_EQUAL(*iterator, 2.f);
 
 			++const_iterator;
 			BOOST_CHECK_EQUAL(*const_iterator, 1.f);
-
-			++iterator;
-			BOOST_CHECK_EQUAL(*iterator, 2.f);
+			++const_iterator;
+			BOOST_CHECK_EQUAL(*const_iterator, 2.f);
 		}
 		BOOST_AUTO_TEST_CASE(can_be_incremented_with_postfix_form)
 		{
 			BOOST_CHECK_EQUAL(*iterator++, 0);
 			BOOST_CHECK_EQUAL(*iterator, 1.f);
+
+			BOOST_CHECK_EQUAL(*const_iterator++, 0);
+			BOOST_CHECK_EQUAL(*const_iterator, 1.f);
 		}
 		BOOST_AUTO_TEST_CASE(can_be_decremented_with_prefix_form)
 		{
@@ -58,9 +87,15 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			BOOST_CHECK_EQUAL(*iterator, 1.f);
 			--iterator;
 			BOOST_CHECK_EQUAL(*iterator, 0);
-
 			*iterator = 10.f;
 			BOOST_CHECK_EQUAL(floatArr[0], 10);
+
+			++const_iterator;
+			BOOST_CHECK_EQUAL(*const_iterator, 1.f);
+			--const_iterator;
+			BOOST_CHECK_EQUAL(*const_iterator, 10.f);
+			*const_iterator = 100.f;
+			//BOOST_CHECK_THROW((*const_iterator = 10.f), exception);
 		}	
 		BOOST_AUTO_TEST_CASE(can_be_decremented_with_postfix_form)
 		{
@@ -68,14 +103,19 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			BOOST_CHECK_EQUAL(*iterator, 1.f);
 			iterator--;
 			BOOST_CHECK_EQUAL(*iterator, 0);
+
+			const_iterator++;
+			BOOST_CHECK_EQUAL(*const_iterator, 1.f);
+			const_iterator--;
+			BOOST_CHECK_EQUAL(*const_iterator, 0);
 		}
 		BOOST_AUTO_TEST_CASE(can_be_addicted_with_number)
 		{
 			auto it = iterator + 3;
 			BOOST_CHECK_EQUAL(*it, floatArr[3]);
 
-			it = 3 + iterator;
-			BOOST_CHECK_EQUAL(*it, floatArr[3]);
+			auto it2 = const_iterator + 3;
+			BOOST_CHECK_EQUAL(*it2, const_iterator[3]);
 		}
 		BOOST_AUTO_TEST_CASE(can_be_substracted_with_number)
 		{
@@ -87,35 +127,57 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			auto it = floatArr.end();
 			BOOST_CHECK_EQUAL(it - iterator, 6);
 			BOOST_CHECK_EQUAL(iterator - it, -6);
+
+			BOOST_CHECK_EQUAL(it - const_iterator, 6);
+			BOOST_CHECK_EQUAL(const_iterator - it, -6);
 		}
 		BOOST_AUTO_TEST_CASE(elements_can_be_accessed_with_offset)
 		{
 			BOOST_CHECK_EQUAL(iterator[2], 2);
 			iterator[2] = 0;
 			BOOST_CHECK_EQUAL(iterator[2], 0);
+
+			BOOST_CHECK_EQUAL(const_iterator[2], 0);
+			const_iterator[2] = 3; // TODO const_iterator не должен модифицировать
+			BOOST_CHECK_EQUAL(const_iterator[2], 3);
 		}
 		BOOST_AUTO_TEST_CASE(can_be_checked_for_equality)
 		{
 			BOOST_CHECK(iterator == floatArr.begin());
 			BOOST_CHECK(iterator != floatArr.end());
+
+			BOOST_CHECK(const_iterator == floatArr.begin());
+			BOOST_CHECK(const_iterator != floatArr.end());
 		}
 		BOOST_AUTO_TEST_CASE(has_less_operator)
 		{
 			auto it = iterator + 2;
 			BOOST_CHECK(iterator < it);
 			BOOST_CHECK(!(it < iterator));
+
+			auto it2 = const_iterator + 2;
+			BOOST_CHECK(const_iterator < it2);
+			BOOST_CHECK(!(it2 < const_iterator));
 		}
 		BOOST_AUTO_TEST_CASE(has_greater_operator)
 		{
 			auto it = iterator + 2;
 			BOOST_CHECK(it > iterator);
 			BOOST_CHECK(!(iterator > it));
+
+			auto it2 = const_iterator + 2;
+			BOOST_CHECK(it2 > const_iterator);
+			BOOST_CHECK(!(const_iterator > it2));
 		}		
 		BOOST_AUTO_TEST_CASE(has_less_or_equal_operator)
 		{
 			auto it = iterator + 2;
 			BOOST_CHECK(iterator <= it);
 			BOOST_CHECK(!(it <= iterator));
+
+			auto it2 = const_iterator + 2;
+			BOOST_CHECK(const_iterator <= it2);
+			BOOST_CHECK(!(it2 <= const_iterator));
 		}
 		
 		BOOST_AUTO_TEST_CASE(has_greater_or_equal_operator)
@@ -123,6 +185,10 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			auto it = iterator + 2;
 			BOOST_CHECK(it >= iterator);
 			BOOST_CHECK(!(iterator >= it));
+
+			auto it2 = const_iterator + 2;
+			BOOST_CHECK(it2 >= const_iterator);
+			BOOST_CHECK(!(const_iterator >= it2));
 		}
 		BOOST_AUTO_TEST_CASE(stl_compatible)
 		{
@@ -141,45 +207,38 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 	
-	struct reverse_ : MyIteratorFixture
-	{
-		reverse_iterator<CMyIterator<float>> iterator;
+	BOOST_AUTO_TEST_SUITE(reverse)
 
-		CMyIterator<float> reverse_iterator;
-		CMyIterator<float> reverse_const_iterator;
-
-		reverse_()
-			: iterator(floatArr.rbegin())
-			, reverse_iterator(floatArr.end())
-			, reverse_const_iterator(floatArr.end())
-		{
-		}
-	};
-
-	BOOST_FIXTURE_TEST_SUITE(reverse, reverse_)
 		BOOST_AUTO_TEST_CASE(refers_to_the_end)
 		{
-			auto a = reverse_iterator;
-			BOOST_CHECK(reverse_iterator == floatArr.end());
+		auto a = floatArr.rend();
+		auto b = floatArr.rbegin();
+
+			//BOOST_CHECK(reverse_iterator == floatArr.rend());
+			//BOOST_CHECK(reverse_const_iterator == floatArr.rend());
 		}	
-		BOOST_AUTO_TEST_CASE(which_can_be_incremented_with_postfix_form)
+		/*BOOST_AUTO_TEST_CASE(which_can_be_incremented_with_postfix_form)
 		{
-			reverse_iterator--;
-			BOOST_CHECK_EQUAL(*reverse_iterator--, 5);
+			BOOST_CHECK_EQUAL(*reverse_iterator, 5);
+
+			reverse_iterator++;
+			BOOST_CHECK_EQUAL(*reverse_iterator, 4);
 		}		
 		BOOST_AUTO_TEST_CASE(can_be_decremented_with_prefix_form)
 		{
-			--reverse_iterator;
-			BOOST_CHECK_EQUAL(*iterator, 5);
+			auto a = floatArr.rend();
+			auto b = floatArr.rbegin();
+	
+			//BOOST_CHECK_EQUAL(*reverse_iterator, 0);
 
-			*reverse_iterator = 10;
-			BOOST_CHECK_EQUAL(floatArr[5], 10);
+			//*reverse_iterator = 10;
+			//BOOST_CHECK_EQUAL(floatArr[5], 10);
 		}		
-		BOOST_AUTO_TEST_CASE(can_be_decremented_with_postfix_form)
+		/*BOOST_AUTO_TEST_CASE(can_be_decremented_with_postfix_form)
 		{
 			reverse_iterator--;
 			reverse_iterator--;
-			BOOST_CHECK_EQUAL(*iterator, 5);
+			BOOST_CHECK_EQUAL(*reverse_iterator, 5);
 		}		
 		BOOST_AUTO_TEST_CASE(can_be_addicted_with_number)
 		{
@@ -225,7 +284,7 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 				stream << *reverse_iterator << " ";
 			}
 			BOOST_CHECK_EQUAL(stream.str(), "5 4 3 2 1 ");
-		}
+		}*/
 	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
