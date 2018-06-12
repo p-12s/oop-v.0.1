@@ -16,7 +16,7 @@ struct MyArrayFixture
 };
 
 template <typename T>
-bool ArraysAreEqual(CMyArray<T> const& arr1, CMyArray<T> const& arr2)//const
+bool ArraysAreEqual(CMyArray<T> const& arr1, CMyArray<T> const& arr2)
 {
 	for (size_t i = 0; i < arr1.GetSize(); ++i)
 	{

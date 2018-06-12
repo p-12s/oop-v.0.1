@@ -52,7 +52,7 @@ public:
 
 	void Append(const T& value)
 	{
-		if (m_end == m_endOfCapacity) // no free space
+		if (m_end == m_endOfCapacity)
 		{
 			size_t newCapacity = std::max(size_t(1), GetCapacity() * 2);
 
@@ -168,10 +168,6 @@ public:
 		return m_endOfCapacity - m_begin;
 	}
 
-	
-
-	////////////////////////////////////////////////////////////////////
-	//////    неконстантный обычный итератор
 	iterator begin()
 	{
 #if _DEBUG
@@ -189,7 +185,7 @@ public:
 		return iterator(m_end);
 #endif
 	}
-	//////     онстантный обычный итератор
+
 	const_iterator begin() const
 	{
 #if _DEBUG
@@ -208,41 +204,34 @@ public:
 #endif	
 	}
 
-
-
-
-
-
-
-
-
-	reverse_iterator rbegin() // возвращает тип std::reverse_iterator<iterator> - где iterator - это CMyIterator<T>
-	{/*
-#if _DEBUG //  m_end - 1
-		return reverse_iterator(m_end, this);//TODO если массив пуст, вычитать Ќ≈Ћ№«я
-#else
-		return reverse_iterator(m_end); // а если iterator end() ?
-#endif	*/
-
+	reverse_iterator rbegin()
+	{
 #if _DEBUG
-		return reverse_iterator(iterator(m_begin, this));//TODO если массив пуст, вычитать Ќ≈Ћ№«я
+		return reverse_iterator(iterator(m_end, this));
 #else
-		return reverse_iterator(iterator(m_begin)); // а если iterator end() ?
+		return reverse_iterator(iterator(m_end));
 #endif
 	}
-
 
 	reverse_iterator rend()
 	{
 #if _DEBUG
-		return reverse_iterator(iterator(m_end, this));//TODO нужно ли тут вычитать как в m_end - 1?
+		return reverse_iterator(iterator(m_begin, this));
 #else
-		return reverse_iterator(iterator(m_end));
+		return reverse_iterator(iterator(m_begin));
 #endif	
 	}
 
-	//////    реверсивный константный итератор
 	reverse_const_iterator rbegin() const
+	{
+#if _DEBUG
+		return reverse_const_iterator(const_iterator(m_end, this));
+#else
+		return reverse_const_iterator(const_iterator(m_end));
+#endif
+	}
+
+	reverse_const_iterator rend() const
 	{
 #if _DEBUG
 		return reverse_const_iterator(const_iterator(m_begin, this));
@@ -251,25 +240,10 @@ public:
 #endif
 	}
 
-	reverse_const_iterator rend() const
-	{
-#if _DEBUG
-		return reverse_const_iterator(const_iterator(m_end, this));//TODO нужно ли тут вычитать как в m_end - 1?
-#else
-		return reverse_const_iterator(const_iterator(m_end));
-#endif
-	}
-
-
-	//////////////////////////////////////////////////////////////////////////
-
-
-
 	~CMyArray()
 	{
 		DeleteItems(m_begin, m_end);
 	}
-
 
 private:
 	static void DeleteItems(T *begin, T *end)

@@ -13,11 +13,6 @@ struct MyIteratorFixture
 
 	std::reverse_iterator<CMyIterator<float>> reverse_iterator;
 	std::reverse_iterator<CMyIterator<float>> reverse_const_iterator;
-	/*std::reverse_const_iterator<CMyIterator<const_iterator>> reverse_const_iterator;
-
-	typedef std::reverse_iterator<iterator> reverse_iterator;
-	typedef std::reverse_iterator<const_iterator> reverse_const_iterator;
-	*/
 
 	MyIteratorFixture()
 		: floatArr()
@@ -25,24 +20,18 @@ struct MyIteratorFixture
 		, const_iterator()
 		, reverse_iterator()
 		, reverse_const_iterator()
-		//, reverse_const_iterator()
 	{
 		for (auto i = 0; i < 6; ++i)
 			floatArr.Append(static_cast<float>(i));
 
 		iterator = floatArr.begin();
-		const_iterator = floatArr.begin();//мб видоизменить конструктор? чтоб конст возвращал
+		const_iterator = floatArr.begin();
 
 		reverse_iterator = floatArr.rbegin();
 		reverse_const_iterator = floatArr.rbegin();
 	}
 	
 };
-
-/*BOOST_AUTO_TEST_CASE(test)
-{
-	BOOST_CHECK(true);
-}*/
 
 BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 	BOOST_AUTO_TEST_SUITE(common)
@@ -149,47 +138,30 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			BOOST_CHECK(const_iterator == floatArr.begin());
 			BOOST_CHECK(const_iterator != floatArr.end());
 		}
-		BOOST_AUTO_TEST_CASE(has_less_operator)
+		BOOST_AUTO_TEST_CASE(has_less_and_less_or_equal_operator)
 		{
 			auto it = iterator + 2;
 			BOOST_CHECK(iterator < it);
 			BOOST_CHECK(!(it < iterator));
+			BOOST_CHECK(!(it <= iterator));
 
 			auto it2 = const_iterator + 2;
 			BOOST_CHECK(const_iterator < it2);
 			BOOST_CHECK(!(it2 < const_iterator));
+			BOOST_CHECK(!(it2 < const_iterator));
 		}
-		BOOST_AUTO_TEST_CASE(has_greater_operator)
+		BOOST_AUTO_TEST_CASE(has_greater_and_greater_or_equal_operator)
 		{
 			auto it = iterator + 2;
 			BOOST_CHECK(it > iterator);
 			BOOST_CHECK(!(iterator > it));
+			BOOST_CHECK(!(iterator >= it));
 
 			auto it2 = const_iterator + 2;
 			BOOST_CHECK(it2 > const_iterator);
 			BOOST_CHECK(!(const_iterator > it2));
-		}		
-		BOOST_AUTO_TEST_CASE(has_less_or_equal_operator)
-		{
-			auto it = iterator + 2;
-			BOOST_CHECK(iterator <= it);
-			BOOST_CHECK(!(it <= iterator));
-
-			auto it2 = const_iterator + 2;
-			BOOST_CHECK(const_iterator <= it2);
-			BOOST_CHECK(!(it2 <= const_iterator));
-		}
-		
-		BOOST_AUTO_TEST_CASE(has_greater_or_equal_operator)
-		{
-			auto it = iterator + 2;
-			BOOST_CHECK(it >= iterator);
-			BOOST_CHECK(!(iterator >= it));
-
-			auto it2 = const_iterator + 2;
-			BOOST_CHECK(it2 >= const_iterator);
 			BOOST_CHECK(!(const_iterator >= it2));
-		}
+		}		
 		BOOST_AUTO_TEST_CASE(stl_compatible)
 		{
 			stringstream stream;
@@ -211,80 +183,96 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 
 		BOOST_AUTO_TEST_CASE(refers_to_the_end)
 		{
-		auto a = floatArr.rend();
-		auto b = floatArr.rbegin();
-
-			//BOOST_CHECK(reverse_iterator == floatArr.rend());
-			//BOOST_CHECK(reverse_const_iterator == floatArr.rend());
+			BOOST_CHECK(*reverse_iterator == 5);
+			BOOST_CHECK(*reverse_const_iterator == 5);
 		}	
-		/*BOOST_AUTO_TEST_CASE(which_can_be_incremented_with_postfix_form)
+		BOOST_AUTO_TEST_CASE(which_can_be_incremented_with_postfix_form)
 		{
-			BOOST_CHECK_EQUAL(*reverse_iterator, 5);
-
 			reverse_iterator++;
 			BOOST_CHECK_EQUAL(*reverse_iterator, 4);
+			reverse_iterator++;
+			BOOST_CHECK_EQUAL(*reverse_iterator, 3);
+
+			reverse_const_iterator++;
+			BOOST_CHECK_EQUAL(*reverse_const_iterator, 4);
+			reverse_const_iterator++;
+			BOOST_CHECK_EQUAL(*reverse_const_iterator, 3);
 		}		
 		BOOST_AUTO_TEST_CASE(can_be_decremented_with_prefix_form)
 		{
-			auto a = floatArr.rend();
-			auto b = floatArr.rbegin();
+			++reverse_iterator;
+			BOOST_CHECK_EQUAL(*reverse_iterator, 4);
+			++reverse_iterator;
+			BOOST_CHECK_EQUAL(*reverse_iterator, 3);
 	
-			//BOOST_CHECK_EQUAL(*reverse_iterator, 0);
-
-			//*reverse_iterator = 10;
-			//BOOST_CHECK_EQUAL(floatArr[5], 10);
+			*reverse_iterator = 10;
+			BOOST_CHECK_EQUAL(floatArr[3], 10);
 		}		
-		/*BOOST_AUTO_TEST_CASE(can_be_decremented_with_postfix_form)
+		BOOST_AUTO_TEST_CASE(can_be_decremented_with_postfix_form)
 		{
+			reverse_iterator = floatArr.rend();
 			reverse_iterator--;
+			BOOST_CHECK_EQUAL(*reverse_iterator, 0);
 			reverse_iterator--;
-			BOOST_CHECK_EQUAL(*reverse_iterator, 5);
+			BOOST_CHECK_EQUAL(*reverse_iterator, 1);
+
+			reverse_const_iterator = floatArr.rend();
+			reverse_const_iterator--;
+			BOOST_CHECK_EQUAL(*reverse_const_iterator, 0);
+			reverse_const_iterator--;
+			BOOST_CHECK_EQUAL(*reverse_const_iterator, 1);
 		}		
 		BOOST_AUTO_TEST_CASE(can_be_addicted_with_number)
 		{
-			auto it = reverse_iterator - 2;
-			BOOST_CHECK_EQUAL(*it, floatArr[4]);
+			auto it = reverse_iterator + 2;
+			BOOST_CHECK_EQUAL(*it, floatArr[3]);
+
+			it = reverse_const_iterator + 2;
+			BOOST_CHECK_EQUAL(*it, floatArr[3]);
 		}
 		BOOST_AUTO_TEST_CASE(can_be_substracted_from_another_iterator)
 		{
-			auto it = floatArr.begin();
-			BOOST_CHECK_EQUAL(reverse_iterator - it, 6);
+			auto it = floatArr.rend();
+			BOOST_CHECK_EQUAL(reverse_iterator - it, -6);
+
+			BOOST_CHECK_EQUAL(reverse_const_iterator - it, -6);
 		}	
 		BOOST_AUTO_TEST_CASE(can_be_checked_for_equality)
 		{
-			BOOST_CHECK(reverse_iterator == floatArr.end());
-			BOOST_CHECK(reverse_iterator != floatArr.begin());
+			BOOST_CHECK(reverse_iterator == floatArr.rbegin());
+			BOOST_CHECK(reverse_iterator != floatArr.rend());
+
+			BOOST_CHECK(reverse_const_iterator == floatArr.rbegin());
+			BOOST_CHECK(reverse_const_iterator != floatArr.rend());
 		}
-		BOOST_AUTO_TEST_CASE(has_less_operator)
+		BOOST_AUTO_TEST_CASE(has_greater_and_greater_or_equal_operator)
 		{
-			auto it = reverse_iterator - 2;
-			BOOST_CHECK(reverse_iterator > it);
+			auto it = reverse_iterator + 2;
+			BOOST_CHECK(it > reverse_iterator);
+			BOOST_CHECK(it >= reverse_iterator);
+
+			it = reverse_const_iterator + 2;
+			BOOST_CHECK(it > reverse_const_iterator);
+			BOOST_CHECK(it >= reverse_const_iterator);
 		}		
-		BOOST_AUTO_TEST_CASE(has_greater_operator)
+		BOOST_AUTO_TEST_CASE(has_less_and_less_or_equal_operator)
 		{
-			auto it = reverse_iterator - 2;
-			BOOST_CHECK(it < reverse_iterator);
-		}
-		BOOST_AUTO_TEST_CASE(has_less_or_equal_operator)
-		{
-			auto it = reverse_iterator - 2;
-			BOOST_CHECK(reverse_iterator >= it);
-		}
-		BOOST_AUTO_TEST_CASE(has_greater_or_equal_operator)
-		{
-			auto it = reverse_iterator - 2;
-			BOOST_CHECK(it <= reverse_iterator);
-		}
+			auto it = reverse_iterator + 2;
+			BOOST_CHECK(reverse_iterator < it);
+			BOOST_CHECK(reverse_iterator <= it);
+
+			it = reverse_const_iterator + 2;
+			BOOST_CHECK(reverse_const_iterator < it);
+			BOOST_CHECK(reverse_const_iterator <= it);
+		}		
 		BOOST_AUTO_TEST_CASE(stl_compatible)
 		{
 			stringstream stream;
-			--reverse_iterator;
-			for (reverse_iterator; reverse_iterator != floatArr.begin(); --reverse_iterator)
-			{
-				stream << *reverse_iterator << " ";
-			}
-			BOOST_CHECK_EQUAL(stream.str(), "5 4 3 2 1 ");
-		}*/
+			for_each(floatArr.rbegin(), floatArr.rend(), [&](auto &it) {
+				stream << it << " ";
+			});
+			BOOST_CHECK_EQUAL(stream.str(), "5 4 3 2 1 0 ");
+		}
 	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

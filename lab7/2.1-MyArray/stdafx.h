@@ -6,3 +6,4 @@
 #include <new>
 #include <iterator>
 #include <initializer_list>
+#include <sstream>
