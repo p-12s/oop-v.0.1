@@ -13,13 +13,13 @@ int MultiplyWithOverflowCheck(unsigned const int mult1, unsigned const int mult2
 
 int AddWithOverflowCheck(unsigned const int add1, unsigned const int add2);
 
-int StringToInt(std::string input, const int radix, bool& wasError);
+int StringToInt(std::string& input, const int radix, bool& wasError);
 
-bool IsNotationInAllowableRange(const unsigned a);
+bool IsNotationInAllowableRange(const unsigned notation);
 
 bool IsCharsInAllowableRange(const char ch, const unsigned radix, const char majorSymbol);
 
-void CheckStringForValidateWithRadix(std::string valueStr, const unsigned radix);
+void CheckStringForValidateWithRadix(const std::string& valueStr, const unsigned radix);
 
 int ReadNumberFromString(const std::string& notation);
 

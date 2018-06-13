@@ -19,7 +19,7 @@ int AddWithOverflowCheck(unsigned const int add1, unsigned const int add2)
 	return add1 + add2;
 }
 
-int StringToInt(string input, const int radix, bool& wasError)
+int StringToInt(string& input, const int radix, bool& wasError)
 {
 	const int DECIMAL_RADIX = 10;
 	int result = 0;
@@ -48,9 +48,9 @@ int StringToInt(string input, const int radix, bool& wasError)
 	return result;
 }
 
-bool IsNotationInAllowableRange(const unsigned a)
+bool IsNotationInAllowableRange(const unsigned notation)
 {
-	return (a >= constants::MIN_RADIX && a <= constants::MAX_RADIX);
+	return (notation >= constants::MIN_RADIX && notation <= constants::MAX_RADIX);
 };
 
 bool IsCharsInAllowableRange(const char ch, const unsigned radix, const char majorSymbol)
@@ -61,14 +61,15 @@ bool IsCharsInAllowableRange(const char ch, const unsigned radix, const char maj
 		return ((ch >= '0' && ch <= '9') || (toupper(ch) >= 'A' && toupper(ch) <= toupper(majorSymbol)));
 };
 
-void CheckStringForValidateWithRadix(string valueStr, const unsigned radix)
+void CheckStringForValidateWithRadix(const string& valueStr, const unsigned radix)
 {
-	if (valueStr[0] == '-' || valueStr[0] == '+')
-		valueStr = valueStr.substr(1);
+	string checkedStr = valueStr;
+	if (checkedStr[0] == '-' || checkedStr[0] == '+')
+		checkedStr = checkedStr.substr(1);
 
 	char majorValidSymbol = constants::PERMISSIBLE_CHARS[radix - 1];
 
-	for (auto& ch : valueStr)
+	for (auto& ch : checkedStr)
 	{
 		if (!IsCharsInAllowableRange(ch, radix, majorValidSymbol))
 		{
