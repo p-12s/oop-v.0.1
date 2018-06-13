@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <iomanip>
 
 using namespace std;
 
@@ -158,18 +157,20 @@ void DivideMatrix3x3ByDeterminant(matrix& invertedMatrix, const double& determin
 	}
 }
 
-void TryInvertMatrix(const matrix& sourceMatrix, matrix& invertedMatrix)
+bool TryInvertMatrix(const matrix& sourceMatrix, matrix& invertedMatrix, string& invertResult)
 {
 	double determinant = Get3x3MatrixDetermanant(sourceMatrix);
 	if (determinant == 0)
-		throw runtime_error("The inverse matrix does not exist, because the determinant = 0");
-
+	{
+		invertResult = "The inverse matrix does not exist, because the determinant = 0";
+		return false;
+	}
+		
 	matrix transposeMatrix;
 	TransposeMatrix3x3(sourceMatrix, transposeMatrix);
-
 	GetAdjointMatrix3x3(transposeMatrix, invertedMatrix); // matrix of algebraic complements (adjoint matrix)
-
 	DivideMatrix3x3ByDeterminant(invertedMatrix, determinant);
+	return true;
 }
 
 int main(int argc, char* argv[])
@@ -186,8 +187,13 @@ int main(int argc, char* argv[])
 		matrix sourceMatrix;
 		TryReadMatrix(argv[1], sourceMatrix);
 
+		string result;
 		matrix invertedMatrix;
-		TryInvertMatrix(sourceMatrix, invertedMatrix);
+		if (!TryInvertMatrix(sourceMatrix, invertedMatrix, result))
+		{
+			cout << result << endl;
+			return 1;
+		}
 
 		PrintMatrix3x3(invertedMatrix);
 	}
