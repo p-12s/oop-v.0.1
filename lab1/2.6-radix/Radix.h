@@ -9,6 +9,10 @@ namespace constants
 	const unsigned START_NUMBER_SYSTEM_WITH_LETTERS = 11;
 }
 
+int MultiplyWithOverflowCheck(unsigned const int mult1, unsigned const int mult2);
+
+int AddWithOverflowCheck(unsigned const int add1, unsigned const int add2);
+
 int StringToInt(std::string input, const int radix, bool& wasError);
 
 bool IsNotationInAllowableRange(const unsigned a);
@@ -21,10 +25,8 @@ int ReadNumberFromString(const std::string& notation);
 
 void CastCharsToUpperCase(std::string& valueStr);
 
-void DivisionOfNumberWithRemainder(const long long n, const int radix, std::string& result, bool& wasError);
+std::string IntToString(const int decimalValue, const unsigned radix);
 
-std::string IntToString(long long n, int radix, bool& wasError);
-
-void CheckValidityOfParameters(char* argv[], int& sourceNotation, int& destinationNotation, std::string& valueStr);
+void ParametersInitialization(char* argv[], int& sourceNotation, int& destinationNotation, std::string& valueStr);
 
 std::string TryChangingRadix(const int sourceNotation, const int destinationNotation, std::string& valueStr);

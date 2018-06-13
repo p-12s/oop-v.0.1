@@ -7,15 +7,15 @@ set PROGRAM="%~1"
 rem При запуске без параметров ожидается ненулевой код возврата 
 %PROGRAM% >nul 
 if NOT ERRORLEVEL 1 goto err 
- 
+
 rem При запуске с правильным количеством параметров ожидается нулевой код возврата 
 %PROGRAM% "16" "10" "1F" >nul 
 if ERRORLEVEL 1 goto err 
- 
+
 rem При пустом параметре вместо одного из чисел ожидается ненулевой код возврата 
 %PROGRAM% "16" "10" "" >nul 
-if NOT ERRORLEVEL 1 goto err 
- 
+if NOT ERRORLEVEL 1 goto err
+
 rem Корректно обрабатывается ввод "неправильных" оснований: меньше 2 или больше 36 
 %PROGRAM% "1" "10" "1010" >nul 
 if NOT ERRORLEVEL 1 goto err 
@@ -39,7 +39,7 @@ if NOT ERRORLEVEL 1 goto err
 if ERRORLEVEL 1 goto err 
 
 %PROGRAM% "1f" "36" "1010" >nul 
-if NOT ERRORLEVEL 1 goto err 
+if NOT ERRORLEVEL 1 goto err
 
 rem Корректно обрабатывается случай, когда символ в конвертируемой строке 
 rem не может принадлежать числу с исходным основанием 
@@ -102,8 +102,6 @@ if ERRORLEVEL 1 goto err
 
 %PROGRAM% "10" "10" "2147483648" >"%TEMP%\overflow-error.txt" 
 if NOT ERRORLEVEL 1 goto err
-fc.exe  "%TEMP%\overflow-error.txt" "overflow-error.txt" >nul 
-if ERRORLEVEL 1 goto err
 
 rem Переполнения при переводе из строки в число корректно обрабатывается 
 %PROGRAM% "10" "10" "-2147483648" >"%TEMP%\-2147483648-10th-to-10th-2147483648.txt" 
@@ -113,8 +111,6 @@ if ERRORLEVEL 1 goto err
 
 %PROGRAM% "10" "10" "-2147483649" >"%TEMP%\overflow-error.txt" 
 if NOT ERRORLEVEL 1 goto err
-fc.exe  "%TEMP%\overflow-error.txt" "overflow-error.txt" >nul 
-if ERRORLEVEL 1 goto err
 
 rem Корректно осуществляется перевод 
 %PROGRAM% "36" "16" "+Zz" >"%TEMP%\+Zz-36th-to-16th+50F.txt" 

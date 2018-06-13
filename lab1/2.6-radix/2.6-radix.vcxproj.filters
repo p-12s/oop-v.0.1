@@ -66,6 +66,9 @@
     <Text Include="-zZ-36th-to-16th-50F.txt">
       <Filter>test-data</Filter>
     </Text>
+    <Text Include="stoi-argument-out-of-range.txt">
+      <Filter>test-data</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -74,7 +77,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RadixProcessing.h">
+    <ClInclude Include="Radix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -85,7 +88,7 @@
     <ClCompile Include="2.6-radix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RadixProcessing.cpp">
+    <ClCompile Include="Radix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

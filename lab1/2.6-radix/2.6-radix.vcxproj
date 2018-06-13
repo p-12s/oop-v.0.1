@@ -162,16 +162,17 @@
     <Text Include="1F-16th-to-the-same.txt" />
     <Text Include="2147483647-10th-to-10th-2147483647.txt" />
     <Text Include="overflow-error.txt" />
+    <Text Include="stoi-argument-out-of-range.txt" />
     <Text Include="zero.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RadixProcessing.h" />
+    <ClInclude Include="Radix.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2.6-radix.cpp" />
-    <ClCompile Include="RadixProcessing.cpp" />
+    <ClCompile Include="Radix.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

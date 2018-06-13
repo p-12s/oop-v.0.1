@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "RadixProcessing.h"
+#include "Radix.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 		int sourceNotation;
 		int destinationNotation;
 		string valueStr;
-		CheckValidityOfParameters(argv, sourceNotation, destinationNotation, valueStr);
+		ParametersInitialization(argv, sourceNotation, destinationNotation, valueStr);
 
 		string result = TryChangingRadix(sourceNotation, destinationNotation, valueStr);
 		cout << result << endl;
