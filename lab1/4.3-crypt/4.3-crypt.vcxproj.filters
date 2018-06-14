@@ -24,7 +24,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CryptProcessing.h">
+    <ClInclude Include="Crypt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClCompile Include="4.3-crypt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CryptProcessing.cpp">
+    <ClCompile Include="Crypt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

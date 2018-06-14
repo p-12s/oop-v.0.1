@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CryptProcessing.h"
+#include "Crypt.h"
 
 using namespace std;
 
