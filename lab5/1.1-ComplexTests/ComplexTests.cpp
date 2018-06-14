@@ -175,7 +175,28 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 			result -= complex2;
 			CheckArgumentsOfComplexNumber(result, -4, 7);
 		}
+		// оставшиеся операторы
+		BOOST_AUTO_TEST_CASE(multiply_assignment_operator)
+		{
+			CComplex result = complex1;
+			result *= complex2;
+			CheckArgumentsOfComplexNumber(result, -13, -19);
+		}
 
+		BOOST_AUTO_TEST_CASE(division_assignment_operator)
+		{
+			CComplex result = complex2;
+			result /= complex1;
+			CheckArgumentsOfComplexNumber(result, 4.6, 0.2);
+		}
+
+		BOOST_AUTO_TEST_CASE(comparison_operators_operator)
+		{
+			CComplex copyComplex1 = complex1;
+			AreComplexNumbersEqual(copyComplex1, complex1);
+			BOOST_CHECK(copyComplex1 == complex1);
+			BOOST_CHECK(complex2 != complex1);
+		}
 
 	BOOST_AUTO_TEST_SUITE_END()
 

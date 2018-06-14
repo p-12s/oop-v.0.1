@@ -112,3 +112,70 @@ CComplex& CComplex::operator-=(const CComplex& complex)
 	m_real -= complex.m_real;
 	return *this;
 }
+
+// оставшиеся операторы
+CComplex& CComplex::operator*=(const CComplex& complex)
+{
+	return *this = *this * complex;
+}
+
+CComplex& CComplex::operator/=(const CComplex& complex)
+{
+	return *this = *this / complex;
+}
+
+
+
+
+bool CComplex::operator==(const CComplex & complex) const
+{
+	return fabs(complex.m_imaginary - m_imaginary) < DBL_EPSILON &&
+		fabs(complex.m_real - m_real) < DBL_EPSILON;
+}
+
+bool CComplex::operator!=(const CComplex & complex) const
+{
+	return !(complex == *this);
+}
+
+
+bool operator==(double real, const CComplex & complex)//TODO форматирование
+{
+	return CComplex(real) == complex;
+}
+
+bool operator!=(double real, const CComplex & complex)
+{
+	return !(CComplex(real) == complex);
+}
+
+istream & operator >> (istream& stream, CComplex& complex)
+{
+	double real = 0;
+	double imaginary = 0;
+	if (
+		(stream >> real) &&
+		(stream >> imaginary) &&
+		(stream.get() == 'i')
+		)
+	{
+		complex = CComplex(real, imaginary);
+	}
+	else
+	{
+		stream.setstate(ios_base::failbit | stream.rdstate());
+	}
+
+	return stream;
+
+}
+
+ostream & operator<<(ostream& stream, const CComplex& complex)
+{
+	stream << complex.Re();
+	stream.setf(ios_base::showpos);
+	stream << complex.Im() << 'i';
+	stream.unsetf(ios_base::showpos);
+	return stream;
+
+}
