@@ -68,12 +68,14 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 	struct Complex2Fixture : ComplexFixture
 	{
 		double real = -10;
-		double expectedRe = 5.0; // 1
-		double expectedIm = -9.0; // -2
+		double expectedRe = 5.0;
+		double expectedIm = -9.0;
 		CComplex complex2;
+		CComplex complex3;
 
 		Complex2Fixture()
 			: complex2(expectedRe, expectedIm)
+			, complex3(real)
 		{
 		}
 	};
@@ -190,13 +192,34 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 			CheckArgumentsOfComplexNumber(result, 4.6, 0.2);
 		}
 
-		BOOST_AUTO_TEST_CASE(comparison_operators_operator)
+		BOOST_AUTO_TEST_CASE(comparison_operators)
 		{
 			CComplex copyComplex1 = complex1;
 			AreComplexNumbersEqual(copyComplex1, complex1);
 			BOOST_CHECK(copyComplex1 == complex1);
 			BOOST_CHECK(complex2 != complex1);
+			BOOST_CHECK(complex2 != complex1);
+			BOOST_CHECK(complex3 == real);
+			BOOST_CHECK(real == complex3);
+			BOOST_CHECK((real + 1) != complex3);
 		}
+
+		BOOST_AUTO_TEST_CASE(input_operator_in_input_stream)
+		{
+			stringstream stream;
+			stream << "5";
+			stream << "-9i";
+			stream >> complex1;
+			BOOST_CHECK(complex1 == complex2);
+
+		}
+		BOOST_AUTO_TEST_CASE(output_operator_in_output_stream)
+		{
+			stringstream stream;
+			stream << complex1;
+			BOOST_CHECK_EQUAL(stream.str(), "1-2i");
+		}
+		
 
 	BOOST_AUTO_TEST_SUITE_END()
 
