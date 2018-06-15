@@ -26,6 +26,8 @@ public:
 
 	CMyIterator& operator=(const CMyIterator & it);
 
+	//CMyIterator<const T>& operator=(const CMyIterator & other);
+
 	bool operator!=(CMyIterator const& other) const;
 
 	bool operator==(CMyIterator const& other) const;
@@ -81,6 +83,16 @@ CMyIterator<T>& CMyIterator<T>::operator=(const CMyIterator & other)
 #endif
 	return *this;
 }
+
+/*template<typename T>
+CMyIterator<T>& CMyIterator<const T>::operator=(const CMyIterator & other)
+{
+	m_pointer = other.m_pointer;
+#if _DEBUG
+	m_array = other.m_array;
+#endif
+	return *this;
+}*/
 
 template<typename T>
 bool CMyIterator<T>::operator!=(CMyIterator const& other) const

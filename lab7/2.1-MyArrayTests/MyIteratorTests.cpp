@@ -7,6 +7,7 @@ using namespace std;
 struct MyIteratorFixture
 {
 	CMyArray<float> floatArr;
+	const CMyArray<float> constFloatArray{ 1.f, 2.f, 3.f };
 
 	CMyIterator<float> iterator;
 	CMyIterator<float> const_iterator;
@@ -30,7 +31,6 @@ struct MyIteratorFixture
 		reverse_iterator = floatArr.rbegin();
 		reverse_const_iterator = floatArr.rbegin();
 	}
-	
 };
 
 BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
@@ -56,7 +56,7 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			BOOST_CHECK_EQUAL(*iterator, 1.f);
 			++iterator;
 			BOOST_CHECK_EQUAL(*iterator, 2.f);
-
+			
 			++const_iterator;
 			BOOST_CHECK_EQUAL(*const_iterator, 1.f);
 			++const_iterator;
@@ -66,7 +66,7 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 		{
 			BOOST_CHECK_EQUAL(*iterator++, 0);
 			BOOST_CHECK_EQUAL(*iterator, 1.f);
-
+			
 			BOOST_CHECK_EQUAL(*const_iterator++, 0);
 			BOOST_CHECK_EQUAL(*const_iterator, 1.f);
 		}
@@ -83,8 +83,6 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			BOOST_CHECK_EQUAL(*const_iterator, 1.f);
 			--const_iterator;
 			BOOST_CHECK_EQUAL(*const_iterator, 10.f);
-			*const_iterator = 100.f;
-			//BOOST_CHECK_THROW((*const_iterator = 10.f), exception);
 		}	
 		BOOST_AUTO_TEST_CASE(can_be_decremented_with_postfix_form)
 		{
@@ -169,13 +167,16 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 				stream << it << " ";
 			});
 			BOOST_CHECK_EQUAL(stream.str(), "0 1 2 3 4 5 ");
-
 			stream.str("");
-			for (auto const val : floatArr)
+
+			//auto it = constFloatArray.rbegin();
+
+			/*int i = 1;
+			for (auto it = constFloatArray.begin(); it != constFloatArray.end(); ++it)
 			{
-				stream << val << " ";
-			}
-			BOOST_CHECK_EQUAL(stream.str(), "0 1 2 3 4 5 ");
+				BOOST_CHECK_EQUAL(*it, i++);
+			}*/
+
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 	

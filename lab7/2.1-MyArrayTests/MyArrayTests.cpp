@@ -23,7 +23,7 @@ bool ArraysAreEqual(CMyArray<T> const& arr1, CMyArray<T> const& arr2)
 		if (arr1[i] != arr2[i])
 			return false;
 	}
-	return arr1.GetSize() == arr2.GetSize() && arr1.GetCapacity() == arr2.GetCapacity();
+	return arr1.GetSize() == arr2.GetSize();
 }
 
 template <typename T>
@@ -40,7 +40,7 @@ void CheckArrayItems(CMyArray<T> const& arr1, const vector<T>& expectedItems, co
 		BOOST_CHECK(arr1[i] == expectedItems[i]);
 		BOOST_CHECK_NO_THROW((arr1[i] == expectedItems[i]));
 	}
-	BOOST_CHECK(arr1.GetSize() == expectedItems.size() && arr1.GetCapacity() == capacity);
+	BOOST_CHECK(arr1.GetSize() == expectedItems.size());
 }
 
 
@@ -141,10 +141,10 @@ BOOST_FIXTURE_TEST_SUITE(MyArray, MyArrayFixture)
 	BOOST_AUTO_TEST_SUITE_END()	
 
 	BOOST_FIXTURE_TEST_SUITE(copy_constructor, after_appending_items_)
-		BOOST_AUTO_TEST_CASE(does_not_change_the_value_of_the_capacity_of_the_source_array)
+		BOOST_AUTO_TEST_CASE(does_not_change_the_value_of_items_of_the_source_array)
 		{
 			auto copyFloatArr(floatArr);
-			CheckArrayItems(copyFloatArr, { 1.f, 2.f, 3.f }, 4);
+			CheckArrayItems(copyFloatArr, { 1.f, 2.f, 3.f }, 3);
 			CheckArrayItems(floatArr, { 1.f, 2.f, 3.f }, 4);
 
 			auto copyStringArr(stringArr);
@@ -155,12 +155,12 @@ BOOST_FIXTURE_TEST_SUITE(MyArray, MyArrayFixture)
 		{
 			auto copyFloatArr(floatArr);
 			floatArr[0] = 10;
-			CheckArrayItems(copyFloatArr, { 1.f, 2.f, 3.f }, 4);
+			CheckArrayItems(copyFloatArr, { 1.f, 2.f, 3.f }, 3);
 			CheckArrayItems(floatArr, { 10.f, 2.f, 3.f }, 4);
 
 			auto copyStringArr(stringArr);
 			copyStringArr[0] = "NEW";
-			CheckArrayItems(copyStringArr, { "NEW", "b", "c" }, 4);
+			CheckArrayItems(copyStringArr, { "NEW", "b", "c" }, 3);
 			CheckArrayItems(stringArr, { "a", "b", "c" }, 4);
 		}
 		BOOST_AUTO_TEST_CASE(can_assign_an_object_to_itself)

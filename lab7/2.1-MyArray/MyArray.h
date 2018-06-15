@@ -23,21 +23,7 @@ public:
 
 	CMyArray(const CMyArray& arr)
 	{
-		const auto size = arr.GetSize();
-		if (size != 0)
-		{
-			m_begin = RawAlloc(size);
-			try
-			{
-				CopyItems(arr.m_begin, arr.m_end, m_begin, m_end);
-				m_endOfCapacity = m_begin + arr.GetCapacity();
-			}
-			catch (...)
-			{
-				DeleteItems(m_begin, m_end);
-				throw;
-			}
-		}
+		CopyArray(arr.m_begin, arr.m_end, arr.GetSize());
 	}
 
 	CMyArray(CMyArray && arr)
@@ -48,6 +34,11 @@ public:
 		arr.m_begin = nullptr;
 		arr.m_end = nullptr;
 		arr.m_endOfCapacity = nullptr;
+	}
+
+	CMyArray(std::initializer_list<T>const& initList)
+	{
+		CopyArray(initList.begin(), initList.end(), initList.size());
 	}
 
 	void Append(const T& value)
@@ -252,11 +243,29 @@ private:
 		RawDealloc(begin);
 	}
 
-	static void CopyItems(const T *srcBegin, T *srcEnd, T * const dstBegin, T * & dstEnd)
+	static void CopyItems(const T *srcBegin, const T *srcEnd, T * const dstBegin, T * & dstEnd)
 	{
 		for (dstEnd = dstBegin; srcBegin != srcEnd; ++srcBegin, ++dstEnd)
 		{
 			new (dstEnd)T(*srcBegin);
+		}
+	}
+
+	void CopyArray(const T* from, const T* to, size_t size)
+	{
+		if (size != 0)
+		{
+			m_begin = RawAlloc(size);
+			try
+			{
+				CopyItems(from, to, m_begin, m_end);
+				m_endOfCapacity = m_end;
+			}
+			catch (...)
+			{
+				DeleteItems(m_begin, m_end);
+				throw;
+			}
 		}
 	}
 
