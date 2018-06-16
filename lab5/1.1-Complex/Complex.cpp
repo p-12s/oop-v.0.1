@@ -156,7 +156,7 @@ istream& operator>>(istream& stream, CComplex& complex)
 	}
 	else
 	{
-		stream.setstate(ios_base::failbit | stream.rdstate());
+		stream.setstate(ios_base::failbit);
 	}
 	return stream;
 }

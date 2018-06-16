@@ -207,17 +207,27 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 		BOOST_AUTO_TEST_CASE(input_operator_in_input_stream)
 		{
 			stringstream stream;
+			BOOST_CHECK(!stream.fail());
 			stream << "5";
 			stream << "-9i";
 			stream >> complex1;
+			BOOST_CHECK(!stream.fail());
 			BOOST_CHECK(complex1 == complex2);
 
+			CComplex complexFail;
+			CComplex complexFailResult(0, 0);
+			stream.str("");
+			BOOST_CHECK(!stream.fail());
+			stream << "!@#$%^&*()_+";
+			stream >> complexFail;
+			BOOST_CHECK(stream.fail());
+			BOOST_CHECK(complexFail == complexFailResult);
 		}
 		BOOST_AUTO_TEST_CASE(output_operator_in_output_stream)
 		{
 			stringstream stream;
 			stream << complex1;
-			BOOST_CHECK_EQUAL(stream.str(), "1-2i");
+			BOOST_CHECK_EQUAL(stream.str(), "1-2i");			
 		}
 		
 
