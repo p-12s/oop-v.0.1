@@ -26,7 +26,7 @@ BOOST_FIXTURE_TEST_SUITE(Point, PointFixture)
 		BOOST_CHECK(point.GetDistanceTo(newPoint) == 10);
 
 		auto newPoint2 = CPoint(-4, -4);
-		BOOST_CHECK_CLOSE(point.GetDistanceTo(newPoint2), 5.66, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(point.GetDistanceTo(newPoint2), sqrt(4 * 4 + 4 * 4), DBL_EPSILON);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()

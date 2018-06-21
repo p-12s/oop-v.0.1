@@ -18,8 +18,7 @@ double CPoint::GetDistanceTo(const CPoint& point) const
 {
 	try
 	{
-		double distance = sqrt(pow((point.m_x - m_x), 2) + pow((point.m_y - m_y), 2));
-		return round(distance * 100) / 100;
+		return sqrt(pow((point.m_x - m_x), 2) + pow((point.m_y - m_y), 2));
 	}
 	catch (exception const&)
 	{

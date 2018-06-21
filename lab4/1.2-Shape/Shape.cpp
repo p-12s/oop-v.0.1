@@ -12,7 +12,7 @@ CShape::CShape(const string& type, const string& color)
 string CShape::ToString() const
 {
 	ostringstream output;
-	output << m_type << "\nArea: " << GetArea() <<
+	output << m_type << "\nArea: " << (round(GetArea() * 100) / 100) <<
 		"\nPerimeter: " << (round(GetPerimeter() * 100) / 100) <<
 		"\nOutline color: " << GetOutlineColor() << "\n";
 	

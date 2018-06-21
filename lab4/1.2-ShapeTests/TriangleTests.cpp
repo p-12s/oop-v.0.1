@@ -34,7 +34,7 @@ BOOST_FIXTURE_TEST_SUITE(Triangle, TriangleFixture)
 	}
 	BOOST_AUTO_TEST_CASE(has_a_perimeter)
 	{
-		BOOST_CHECK_CLOSE(triangle.GetPerimeter(), 6.83, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(triangle.GetPerimeter(), (2 + 2 + sqrt(2 * 2 + 2 * 2)), DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_outline_color)
 	{

@@ -4,7 +4,6 @@ class CPoint
 {
 public:
 	CPoint(const double x, const double y);
-	~CPoint() = default;
 	std::pair<double, double> GetCoordinates() const;
 	double GetDistanceTo(const CPoint& point) const;
 

@@ -9,7 +9,7 @@ shared_ptr<IShape> CalculateLargestArea(const vector<shared_ptr<IShape>>& shapes
 		return nullptr;
 
 	auto shape = max_element(shapes.begin(), shapes.end(),
-		[](const shared_ptr<IShape>& a, const shared_ptr<IShape>& b)
+		[](auto&& a, auto&& b)
 	{
 		return a->GetArea() < b->GetArea();
 	});

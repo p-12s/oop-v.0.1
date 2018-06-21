@@ -5,16 +5,19 @@
 
 using namespace std;
 
-void ReadShapes(const string& inputName, vector<shared_ptr<IShape>>& shapes)
+vector<shared_ptr<IShape>> ReadShapes(const string& inputName)
 {
 	ifstream inputFile(inputName);
 	if (!inputFile.is_open())
 		throw runtime_error("Failed to open file for reading");
 
+	vector<shared_ptr<IShape>> shapes;
 	string shapeString;
 	CShapesCreator shapesCreator;
 	while (getline(inputFile, shapeString))
 		shapes.push_back(shapesCreator.CreateShapesFromString(shapeString));
+	
+	return shapes;
 }
 
 void PrintShapes(const vector<shared_ptr<IShape>>& shapes)
@@ -51,9 +54,10 @@ int main(int argc, char* argv[])
 	
 	try
 	{
-		vector<shared_ptr<IShape>> shapes;
-
-		ReadShapes(argv[1], shapes);
+		/*
+		Пусть лучше функция возвращает массив фигур. Тогда не придётся передавать ранее созданный массив
+		 */
+		vector<shared_ptr<IShape>> shapes = ReadShapes(argv[1]);
 		if (shapes.empty())
 		{
 			cout << "There is no figure\n";

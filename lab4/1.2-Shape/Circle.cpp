@@ -24,7 +24,7 @@ double CCircle::GetRadius() const
 
 double CCircle::GetArea() const
 {
-	return round(M_PI * pow(m_radius, 2) * 100) / 100;
+	return M_PI * pow(m_radius, 2);
 }
 
 double CCircle::GetPerimeter() const

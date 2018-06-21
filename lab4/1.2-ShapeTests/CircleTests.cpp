@@ -27,11 +27,11 @@ BOOST_FIXTURE_TEST_SUITE(Circle, CircleFixture)
 	}
 	BOOST_AUTO_TEST_CASE(has_a_radius)
 	{
-		BOOST_CHECK_CLOSE(circle.GetRadius(), 3, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(circle.GetRadius(), radius, DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_an_area)
 	{
-		BOOST_CHECK_CLOSE(circle.GetArea(), 28.27, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(circle.GetArea(), (M_PI * radius * radius), DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_a_perimeter)
 	{
@@ -47,7 +47,12 @@ BOOST_FIXTURE_TEST_SUITE(Circle, CircleFixture)
 	}
 	BOOST_AUTO_TEST_CASE(has_a_method_of_obtaining_information)
 	{
-		BOOST_CHECK(IsInformationEqual(circle, "Circle", 28.27, 18.85, "000000", "ffff00"));
+		auto area = M_PI * radius * radius;
+		area = round(area * 100) / 100;
+		auto perimeter = 2 * M_PI * 3;
+		perimeter = round(perimeter * 100) / 100;
+
+		BOOST_CHECK(IsInformationEqual(circle, "Circle", area, perimeter, "000000", "ffff00"));
 	}
 
 BOOST_AUTO_TEST_SUITE_END()

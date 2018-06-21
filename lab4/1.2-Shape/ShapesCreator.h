@@ -5,7 +5,6 @@ class CShapesCreator
 {
 public:
 	CShapesCreator();
-	~CShapesCreator() = default;
 	std::shared_ptr<IShape> CreateShapesFromString(const std::string& commandLine) const;
 
 private:	

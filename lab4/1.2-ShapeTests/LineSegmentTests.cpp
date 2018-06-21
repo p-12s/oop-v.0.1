@@ -37,10 +37,10 @@ BOOST_FIXTURE_TEST_SUITE(LineSegment, LineSegmentFixture)
 	BOOST_AUTO_TEST_CASE(can_find_its_length_which_is_equal_to_the_perimeter)
 	{
 		double length = lineSegment.GetStartPoint().GetDistanceTo(lineSegment.GetEndPoint());
-		BOOST_CHECK_CLOSE(length, 14.14, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(length, sqrt(10 * 10 + 10 * 10), DBL_EPSILON);
 
 		double perimeter = lineSegment.GetPerimeter();		
-		BOOST_CHECK_CLOSE(perimeter, 14.14, DBL_EPSILON);
+		BOOST_CHECK_CLOSE(perimeter, sqrt(10 * 10 + 10 * 10), DBL_EPSILON);
 	}
 	BOOST_AUTO_TEST_CASE(has_a_method_of_obtaining_information)
 	{
