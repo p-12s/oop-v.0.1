@@ -192,27 +192,66 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 			CheckArgumentsOfComplexNumber(result, 4.6, 0.2);
 		}
 
-		BOOST_AUTO_TEST_CASE(comparison_operators)
+		BOOST_AUTO_TEST_CASE(has_equality_operator)
 		{
-			CComplex copyComplex1 = complex1;
+			CComplex copyComplex1 = complex1;//complex1 = 1-2i, complex2 = 5-9i
 			AreComplexNumbersEqual(copyComplex1, complex1);
 			BOOST_CHECK(copyComplex1 == complex1);
-			BOOST_CHECK(complex2 != complex1);
-			BOOST_CHECK(complex2 != complex1);
-			BOOST_CHECK(complex3 == real);
-			BOOST_CHECK(real == complex3);
-			BOOST_CHECK((real + 1) != complex3);
+			BOOST_CHECK(!(complex2 == complex1));
+
+			BOOST_CHECK(complex3 == -10); // real = -10, complex3 = -10+0i 
 		}
 
+		BOOST_AUTO_TEST_CASE(has_inequality_operator)
+		{
+			CComplex copyComplex1 = complex1;//complex1 = 1-2i, complex2 = 5-9i
+			AreComplexNumbersEqual(copyComplex1, complex1);
+			BOOST_CHECK(complex2 != complex1);
+			BOOST_CHECK(!(copyComplex1 != complex1));
+
+			BOOST_CHECK(!(complex3 != -10));
+		}
+		
 		BOOST_AUTO_TEST_CASE(input_operator_in_input_stream)
 		{
 			stringstream stream;
 			BOOST_CHECK(!stream.fail());
-			stream << "5";
-			stream << "-9i";
+			stream << "-5-9i";
 			stream >> complex1;
 			BOOST_CHECK(!stream.fail());
-			BOOST_CHECK(complex1 == complex2);
+			auto a = CComplex(-5, -9);
+			BOOST_CHECK(complex1 == CComplex(-5, -9));
+			stream.str();
+
+			stream << "5-9i";
+			stream >> complex1;
+			BOOST_CHECK(!stream.fail());
+			BOOST_CHECK(complex1 == CComplex(5, -9));
+			stream.str();
+
+			stream << "+5-9i";
+			stream >> complex1;
+			BOOST_CHECK(!stream.fail());
+			BOOST_CHECK(complex1 == CComplex(5, -9));
+			stream.str();
+
+			stream << "-5+9i";
+			stream >> complex1;
+			BOOST_CHECK(!stream.fail());
+			BOOST_CHECK(complex1 == CComplex(-5, 9));
+			stream.str();
+
+			stream << "5+9i";
+			stream >> complex1;
+			BOOST_CHECK(!stream.fail());
+			BOOST_CHECK(complex1 == CComplex(5, 9));
+			stream.str("");
+
+			BOOST_CHECK(!stream.fail());
+			stream << "+5+9i";
+			stream >> complex1;
+			BOOST_CHECK(!stream.fail());
+			BOOST_CHECK(complex1 == CComplex(5, 9));
 
 			CComplex complexFail;
 			CComplex complexFailResult(0, 0);
@@ -226,8 +265,21 @@ BOOST_FIXTURE_TEST_SUITE(Complex, ComplexFixture)
 		BOOST_AUTO_TEST_CASE(output_operator_in_output_stream)
 		{
 			stringstream stream;
-			stream << complex1;
-			BOOST_CHECK_EQUAL(stream.str(), "1-2i");			
+			stream << CComplex(1, -2);
+			BOOST_CHECK_EQUAL(stream.str(), "1-2i");
+			stream.str("");
+		
+			stream << CComplex(1, 2);
+			BOOST_CHECK_EQUAL(stream.str(), "1+2i");
+			stream.str("");
+
+			stream << CComplex(-1, 2);
+			BOOST_CHECK_EQUAL(stream.str(), "-1+2i");
+			stream.str("");
+
+			stream << CComplex(-1, -2);
+			BOOST_CHECK_EQUAL(stream.str(), "-1-2i");
+			stream.str("");
 		}
 		
 

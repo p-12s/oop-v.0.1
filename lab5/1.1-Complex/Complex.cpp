@@ -32,21 +32,7 @@ double CComplex::GetArgument() const
 	if (m_real == 0 && m_imaginary != 0)
 		return DBL_MAX;
 
-	double argument;
-	if (m_real > 0)
-	{
-		argument = atan(m_imaginary / m_real);
-	} 
-	else if(m_real < 0 && m_imaginary >= 0)
-	{
-		argument = atan(m_imaginary / m_real) + M_PI;
-	} 
-	else
-	{
-		argument = atan(m_imaginary / m_real) - M_PI;
-	}
-
-	return argument;
+	return atan2(m_imaginary, m_real);
 }
 
 CComplex const operator+(const CComplex& complex1, const CComplex& complex2)
@@ -54,39 +40,24 @@ CComplex const operator+(const CComplex& complex1, const CComplex& complex2)
 	return CComplex(complex1.Re() + complex2.Re(), complex1.Im() + complex2.Im());
 }
 
-CComplex const CComplex::operator-(const CComplex& complex) const
+CComplex const operator-(const CComplex& complex1, const CComplex& complex2)
 {
-	return CComplex(m_real - complex.m_real, m_imaginary - complex.m_imaginary);
+	return CComplex(complex1.Re() - complex2.Re(), complex1.Im() - complex2.Im());
 }
 
-CComplex const operator-(double real, const CComplex& complex)
+CComplex const operator*(const CComplex& complex1, const CComplex& complex2)
 {
-	return CComplex(real) - complex;
+	return CComplex(complex1.Re() * complex2.Re() - complex1.Im() * complex2.Im(),
+		complex1.Im() * complex2.Re() + complex1.Re() * complex2.Im());
 }
 
-CComplex const CComplex::operator*(const CComplex& complex) const
+CComplex const operator/(const CComplex& complex1, const CComplex& complex2)
 {
-	return CComplex(m_real * complex.m_real - m_imaginary * complex.m_imaginary,
-		m_imaginary * complex.m_real + m_real * complex.m_imaginary);
-}
-
-CComplex const operator*(double real, const CComplex& complex)
-{
-	return CComplex(real) * complex;
-}
-
-CComplex const CComplex::operator/(const CComplex& complex) const
-{
-	double denominator = pow(complex.m_real, 2) + pow(complex.m_imaginary, 2);
-	double real = (m_real * complex.m_real + m_imaginary * complex.m_imaginary) / denominator;
-	double imaginary = (complex.m_real * m_imaginary - m_real * complex.m_imaginary) / denominator;
+	double denominator = pow(complex2.Re(), 2) + pow(complex2.Im(), 2);
+	double real = (complex1.Re() * complex2.Re() + complex1.Im() * complex2.Im()) / denominator;
+	double imaginary = (complex2.Re() * complex1.Im() - complex1.Re() * complex2.Im()) / denominator;
 
 	return CComplex(real, imaginary);
-}
-
-CComplex const operator/(double real, const CComplex& complex)
-{
-	return CComplex(real) / complex;
 }
 
 CComplex const CComplex::operator+() const
@@ -113,7 +84,6 @@ CComplex& CComplex::operator-=(const CComplex& complex)
 	return *this;
 }
 
-
 CComplex& CComplex::operator*=(const CComplex& complex)
 {
 	return *this = *this * complex;
@@ -126,8 +96,11 @@ CComplex& CComplex::operator/=(const CComplex& complex)
 
 bool CComplex::operator==(const CComplex& complex) const
 {
-	return fabs(complex.m_imaginary - m_imaginary) < DBL_EPSILON &&
+	//return true;
+	/**/
+	 return fabs(complex.m_imaginary - m_imaginary) < DBL_EPSILON &&
 		fabs(complex.m_real - m_real) < DBL_EPSILON;
+	/**/
 }
 
 bool CComplex::operator!=(const CComplex& complex) const
@@ -143,6 +116,7 @@ bool operator==(double real, const CComplex& complex)
 
 bool operator!=(double real, const CComplex& complex)
 {
+	//return true;
 	return !(CComplex(real) == complex);
 }
 
@@ -168,5 +142,4 @@ ostream& operator<<(ostream& stream, const CComplex& complex)
 	stream << complex.Im() << 'i';
 	stream.unsetf(ios_base::showpos);
 	return stream;
-
 }
