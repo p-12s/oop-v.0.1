@@ -1,44 +1,46 @@
 #pragma once
 #include <assert.h>
-#include "MyArray.h"
 
 template <typename T>
-class CMyIterator : public std::iterator<std::bidirectional_iterator_tag, T>
+class CMyIterator
 {
 private:
 	template <typename T> friend class CMyArray;
 
 #if _DEBUG
-	CMyIterator(T* p, CMyArray<T> *array)
+	CMyIterator(T* p, CMyArray<T> *array) noexcept
 		: m_pointer(p)
 		, m_array(array)
 	{
 	}
 #else
-	CMyIterator(T* p)
+	CMyIterator(T* p) noexcept
 		: m_pointer(p)
 	{
 	}
 #endif
 
 public:
-	CMyIterator();
+	using self_type = CMyIterator;
+	using value_type = T;
+	using reference = T&;
+	using pointer = T*;
+	using iterator_category = std::random_access_iterator_tag;
+	using difference_type = ptrdiff_t;
 
-	CMyIterator& operator=(const CMyIterator & it);
+	CMyIterator() noexcept;
 
-	//CMyIterator<const T>& operator=(const CMyIterator & other);
+	bool operator!=(CMyIterator const& other) const noexcept;
 
-	bool operator!=(CMyIterator const& other) const;
+	bool operator==(CMyIterator const& other) const noexcept;
 
-	bool operator==(CMyIterator const& other) const;
+	T* operator->() const noexcept;
 
-	T* operator->() const;
+	T& operator[](size_t index) const noexcept;
 
-	T& operator[](ptrdiff_t index) const;
+	T& operator*() const noexcept;
 
-	T& operator*() const;
-
-	CMyIterator& operator++();
+	CMyIterator& operator++() noexcept;
 
 	CMyIterator const operator++(int);
 
@@ -46,19 +48,19 @@ public:
 
 	CMyIterator const operator--(int);
 
-	bool operator<(CMyIterator const& other);
+	bool operator<(CMyIterator const& other) noexcept;
 
-	bool operator>(CMyIterator const& other);
+	bool operator>(CMyIterator const& other) noexcept;
 
-	bool operator<=(CMyIterator const& other);
+	bool operator<=(CMyIterator const& other) noexcept;
 
-	bool operator>=(CMyIterator const& other);
+	bool operator>=(CMyIterator const& other) noexcept;
 
-	CMyIterator const operator+(ptrdiff_t n) const;
+	CMyIterator const operator+(size_t n) const;
 
-	CMyIterator const operator-(ptrdiff_t n) const;
+	CMyIterator const operator-(size_t n) const;
 
-	ptrdiff_t const operator-(CMyIterator const& other) const;
+	size_t const operator-(CMyIterator const& other) const noexcept;
 
 
 private:
@@ -69,72 +71,52 @@ private:
 };
 
 template<typename T>
-CMyIterator<T>::CMyIterator()
+CMyIterator<T>::CMyIterator() noexcept
 	: m_pointer(nullptr)
 {
 }
 
 template<typename T>
-CMyIterator<T>& CMyIterator<T>::operator=(const CMyIterator & other)
-{
-	m_pointer = other.m_pointer;
-#if _DEBUG
-	m_array = other.m_array;
-#endif
-	return *this;
-}
-
-/*template<typename T>
-CMyIterator<T>& CMyIterator<const T>::operator=(const CMyIterator & other)
-{
-	m_pointer = other.m_pointer;
-#if _DEBUG
-	m_array = other.m_array;
-#endif
-	return *this;
-}*/
-
-template<typename T>
-bool CMyIterator<T>::operator!=(CMyIterator const& other) const
+bool CMyIterator<T>::operator!=(CMyIterator const& other) const noexcept
 {
 	return m_pointer != other.m_pointer;
 }
 
 template<typename T>
-bool CMyIterator<T>::operator==(CMyIterator const& other) const
+bool CMyIterator<T>::operator==(CMyIterator const& other) const noexcept
 {
 	return m_pointer == other.m_pointer;
 }
 
 template<typename T>
-T* CMyIterator<T>::operator->() const
+T* CMyIterator<T>::operator->() const noexcept
 {
 	return std::addressof(operator*());
 }
 
 template<typename T>
-T& CMyIterator<T>::operator[](ptrdiff_t index) const
+T& CMyIterator<T>::operator[](size_t index) const noexcept
 {
 #if _DEBUG
 	if (m_array)
 	{
-		assert(m_pointer + index <= m_array->m_end);
+		assert(index < static_cast<size_t>(m_array->m_end - m_pointer));
 	}
 #endif
 	return *(m_pointer + index);
 }
 
 template<typename T>
-T & CMyIterator<T>::operator*() const
+T& CMyIterator<T>::operator*() const noexcept
 {
 	return *m_pointer;
 }
 
 template<typename T>
-CMyIterator<T> &CMyIterator<T>::operator++()
+CMyIterator<T> &CMyIterator<T>::operator++() noexcept
 {
 #if _DEBUG
-	assert(m_pointer + 1 <= m_array->m_end);
+	assert(m_pointer != m_array->m_end);
 #endif
 	++m_pointer;
 	return *this;
@@ -144,7 +126,7 @@ template<typename T>
 CMyIterator<T> const CMyIterator<T>::operator++(int)
 {
 #if _DEBUG
-	assert(m_pointer + 1 <= m_array->m_end);
+	assert(m_pointer != m_array->m_end);
 #endif
 	CMyIterator<T> tmpCopy(*this);
 
@@ -156,14 +138,14 @@ template<typename T>
 CMyIterator<T> &CMyIterator<T>::operator--()
 {
 #if _DEBUG
-	assert(m_pointer - 1 >= m_array->m_begin);
+	assert(m_pointer != m_array->m_begin);
 #endif
 	--m_pointer;
 	return *this;
 }
 
 template<typename T>
-CMyIterator<T> const CMyIterator<T>::operator--(int)
+CMyIterator<T> const CMyIterator<T>::operator--(int) 
 {
 	CMyIterator<T> tmpCopy(*this);
 	--*this;
@@ -171,10 +153,10 @@ CMyIterator<T> const CMyIterator<T>::operator--(int)
 }
 
 template<typename T>
-CMyIterator<T> const CMyIterator<T>::operator+(ptrdiff_t n) const
+CMyIterator<T> const CMyIterator<T>::operator+(size_t n) const
 {
 #if _DEBUG
-	assert(m_pointer + n <= m_array->m_end);
+	assert(n < static_cast<size_t>(m_array->m_end - m_pointer));
 #endif
 	CMyIterator<T> tmpCopy(*this);
 	tmpCopy.m_pointer = m_pointer + n;
@@ -182,16 +164,16 @@ CMyIterator<T> const CMyIterator<T>::operator+(ptrdiff_t n) const
 }
 
 template<typename T>
-CMyIterator<T> const operator+(ptrdiff_t n, CMyIterator<T> const& it)
+CMyIterator<T> const operator+(size_t n, CMyIterator<T> const& it) noexcept
 {
 	return it + n;
 }
 
 template<typename T>
-CMyIterator<T> const CMyIterator<T>::operator-(ptrdiff_t n) const
+CMyIterator<T> const CMyIterator<T>::operator-(size_t n) const
 {
 #if _DEBUG
-	assert(m_pointer - n >= m_array->m_begin);
+	assert(n < static_cast<size_t>(m_pointer - m_array->m_begin));
 #endif
 	CMyIterator<T> tmpCopy(*this);
 	tmpCopy.m_pointer = m_pointer - n;
@@ -199,31 +181,46 @@ CMyIterator<T> const CMyIterator<T>::operator-(ptrdiff_t n) const
 }
 
 template<typename T>
-ptrdiff_t const CMyIterator<T>::operator-(CMyIterator<T> const& other) const
+size_t const CMyIterator<T>::operator-(CMyIterator<T> const& other) const noexcept
 {
+#if _DEBUG
+	assert(m_array->m_begin == other.m_array->m_begin);
+#endif
 	return m_pointer - other.m_pointer;
 }
 
 template<typename T>
-bool CMyIterator<T>::operator<(CMyIterator const& other)
+bool CMyIterator<T>::operator<(CMyIterator const& other) noexcept
 {
+#if _DEBUG
+	assert(m_array->m_begin == other.m_array->m_begin);
+#endif
 	return m_pointer < other.m_pointer;
 }
 
 template<typename T>
-bool CMyIterator<T>::operator>(CMyIterator const& other)
+bool CMyIterator<T>::operator>(CMyIterator const& other) noexcept
 {
+#if _DEBUG
+	assert(m_array->m_begin == other.m_array->m_begin);
+#endif
 	return m_pointer > other.m_pointer;
 }
 
 template<typename T>
-bool CMyIterator<T>::operator<=(CMyIterator const& other)
+bool CMyIterator<T>::operator<=(CMyIterator const& other) noexcept
 {
+#if _DEBUG
+	assert(m_array->m_begin == other.m_array->m_begin);
+#endif
 	return m_pointer <= other.m_pointer;
 }
 
 template<typename T>
-bool CMyIterator<T>::operator>=(CMyIterator const& other)
+bool CMyIterator<T>::operator>=(CMyIterator const& other) noexcept
 {
+#if _DEBUG
+	assert(m_array->m_begin == other.m_array->m_begin);
+#endif
 	return m_pointer >= other.m_pointer;
 }

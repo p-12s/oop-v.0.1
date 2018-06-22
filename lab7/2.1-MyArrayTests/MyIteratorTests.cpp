@@ -15,21 +15,31 @@ struct MyIteratorFixture
 	std::reverse_iterator<CMyIterator<float>> reverse_iterator;
 	std::reverse_iterator<CMyIterator<float>> reverse_const_iterator;
 
+	CMyArray<string> stringArr;
+	CMyIterator<string> strIterator;
+
 	MyIteratorFixture()
 		: floatArr()
+		, stringArr()
 		, iterator()
 		, const_iterator()
 		, reverse_iterator()
 		, reverse_const_iterator()
+		, strIterator()
 	{
 		for (auto i = 0; i < 6; ++i)
+		{
 			floatArr.Append(static_cast<float>(i));
+			stringArr.Append(to_string(i));
+		}
 
 		iterator = floatArr.begin();
 		const_iterator = floatArr.begin();
 
 		reverse_iterator = floatArr.rbegin();
 		reverse_const_iterator = floatArr.rbegin();
+
+		strIterator = stringArr.begin();
 	}
 };
 
@@ -98,7 +108,7 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 		}
 		BOOST_AUTO_TEST_CASE(can_be_addicted_with_number)
 		{
-			auto it = iterator + 3;
+			auto it = 3 + iterator;
 			BOOST_CHECK_EQUAL(*it, floatArr[3]);
 
 			auto it2 = const_iterator + 3;
@@ -159,7 +169,12 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			BOOST_CHECK(it2 > const_iterator);
 			BOOST_CHECK(!(const_iterator > it2));
 			BOOST_CHECK(!(const_iterator >= it2));
-		}		
+		}
+		BOOST_AUTO_TEST_CASE(has_arrow_operator)
+		{
+			auto firstItem = strIterator->append("-hello");
+			BOOST_CHECK_EQUAL(*strIterator, "0-hello");
+		}
 		BOOST_AUTO_TEST_CASE(stl_compatible)
 		{
 			stringstream stream;
@@ -176,7 +191,6 @@ BOOST_FIXTURE_TEST_SUITE(MyIterator, MyIteratorFixture)
 			{
 				BOOST_CHECK_EQUAL(*it, i++);
 			}*/
-
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 	

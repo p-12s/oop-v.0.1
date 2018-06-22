@@ -6,7 +6,7 @@
 
 template <typename T>
 class CMyArray
-{
+{	
 public:
 
 	typedef CMyIterator<T> iterator;
@@ -26,7 +26,7 @@ public:
 		CopyArray(arr.m_begin, arr.m_end, arr.GetSize());
 	}
 
-	CMyArray(CMyArray && arr)
+	CMyArray(CMyArray && arr) noexcept
 		: m_begin(arr.m_begin)
 		, m_end(arr.m_end)
 		, m_endOfCapacity(arr.m_endOfCapacity)
@@ -73,31 +73,37 @@ public:
 		}
 	}
 
-	void Resize(int value)
+	void Resize(size_t size)
 	{
-		if (value < 0)
-			throw std::runtime_error("Error! The size can not be less than 0");
-
-		auto size = size_t(value);
 		if (size != GetSize())
 		{
-			CMyArray copy;
-			size_t min = std::min(size, GetSize());
+			if (size > GetCapacity())
+			{
+				CMyArray copy;
+				copy.m_begin = RawAlloc(size);
+				copy.m_end = copy.m_begin;
+				copy.m_endOfCapacity = copy.m_begin + size;
+				CopyItems(m_begin, m_end, copy.m_begin, copy.m_end);
 
-			copy.m_begin = copy.RawAlloc(size);
-			copy.m_end = copy.m_begin;
-			copy.m_endOfCapacity = copy.m_begin + size;
+				for (size_t i = GetSize(); i < size; ++i)
+					copy.Append(T());
 
-			copy.CopyItems(m_begin, m_begin + min, copy.m_begin, copy.m_end);
-
-			for (size_t i = min; i < size; ++i)
-				copy.Append(T());
-
-			*this = std::move(copy);
+				*this = std::move(copy);
+			}
+			else if (size > GetSize())
+			{
+				for (size_t i = GetSize(); i < size; ++i)
+					this->Append(T());
+			}
+			else
+			{
+				DestroyItems(m_begin + size, m_end);
+				m_end = m_begin + size;
+			}
 		}
 	}
 
-	void Clear()
+	void Clear() noexcept
 	{
 		DeleteItems(m_begin, m_end);
 		m_begin = nullptr;
@@ -107,15 +113,15 @@ public:
 
 	const T& operator[](size_t index) const // arr1[i] == arr2[i]
 	{
-		if (m_begin + index >= m_end || m_begin + index < m_begin)
-			throw std::out_of_range("Error! Out of range"); // не покрыт тестом
+		if (static_cast<size_t>(m_end - m_begin) < index || GetSize() == index)
+			throw std::out_of_range("Error! Out of range");
 
 		return *(m_begin + index);
 	}
 
 	T& operator[](size_t index) // auto a = arr1[i]
 	{
-		if (m_begin + index >= m_end || m_begin + index < m_begin)
+		if (static_cast<size_t>(m_end - m_begin) < index || GetSize() == index)
 			throw std::out_of_range("Error! Out of range");
 
 		return *(m_begin + index);
@@ -133,7 +139,7 @@ public:
 		return *this;
 	}
 
-	CMyArray& operator=(CMyArray && arr) // = arr1 + arr2
+	CMyArray& operator=(CMyArray && arr) noexcept // = arr1 + arr2
 	{
 		if (&arr != this)
 		{
@@ -149,12 +155,12 @@ public:
 		return *this;
 	}
 
-	size_t GetSize() const
+	size_t GetSize() const noexcept
 	{
 		return m_end - m_begin;
 	}
 
-	size_t GetCapacity() const
+	size_t GetCapacity() const noexcept
 	{
 		return m_endOfCapacity - m_begin;
 	}
@@ -237,7 +243,7 @@ public:
 	}
 
 private:
-	static void DeleteItems(T *begin, T *end)
+	static void DeleteItems(T *begin, T *end) noexcept
 	{
 		DestroyItems(begin, end);
 		RawDealloc(begin);
@@ -253,25 +259,38 @@ private:
 
 	void CopyArray(const T* from, const T* to, size_t size)
 	{
+		/*
+		Метод CopyArray сейчас нельзя вызывать у уже 
+		сконструированного объекта, т.к. он просто затирает поля класса.
+		Сделать его вызов более безопасным (он должен скопировать
+		данные не меняя полей класса (хранить адреса в локальных 
+		переменных), а потом удалить старое содержимое массива и
+		сохранить адреса новых). Не забыть про безопасность исключений
+		 */
 		if (size != 0)
 		{
-			m_begin = RawAlloc(size);
+			auto newBegin = RawAlloc(size);
+			T *newEnd = newBegin;
+
 			try
 			{
-				CopyItems(from, to, m_begin, m_end);
+				CopyItems(from, to, newBegin, newEnd);
+				DeleteItems(m_begin, m_end);
+				m_begin = newBegin;
+				m_end = newEnd;
 				m_endOfCapacity = m_end;
 			}
 			catch (...)
 			{
-				DeleteItems(m_begin, m_end);
+				DeleteItems(newBegin, newEnd);
 				throw;
 			}
 		}
 	}
 
-	static void DestroyItems(T *from, T *to)
+	static void DestroyItems(T *from, T *to) noexcept
 	{
-		while (to != from)
+		while (to != from)// to - 3, from - 0
 		{
 			--to;
 			to->~T();
@@ -289,7 +308,7 @@ private:
 		return p;
 	}
 
-	static void RawDealloc(T *p)
+	static void RawDealloc(T *p) noexcept
 	{
 		free(p);
 	}
