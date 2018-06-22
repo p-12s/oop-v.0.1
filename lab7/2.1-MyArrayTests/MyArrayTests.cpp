@@ -64,11 +64,10 @@ BOOST_FIXTURE_TEST_SUITE(MyArray, MyArrayFixture)
 	BOOST_AUTO_TEST_SUITE(until_it_is_just_created_and_empty_it)
 		BOOST_AUTO_TEST_CASE(can_be_increased)
 		{
-			BOOST_CHECK(true);
-			/*floatArr.Resize(2);
+			floatArr.Resize(2);
 			BOOST_CHECK_THROW(floatArr[-1], std::out_of_range);
 			CheckArrayItems(floatArr, { 0.f, 0.f }, 2);
-			BOOST_CHECK_THROW(floatArr[2], std::out_of_range);*/
+			BOOST_CHECK_THROW(floatArr[2], std::out_of_range);
 		}
 		BOOST_AUTO_TEST_CASE(can_be_cleaned)
 		{
