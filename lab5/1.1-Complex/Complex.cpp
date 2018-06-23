@@ -96,28 +96,13 @@ CComplex& CComplex::operator/=(const CComplex& complex)
 
 bool CComplex::operator==(const CComplex& complex) const
 {
-	//return true;
-	/**/
 	 return fabs(complex.m_imaginary - m_imaginary) < DBL_EPSILON &&
 		fabs(complex.m_real - m_real) < DBL_EPSILON;
-	/**/
 }
 
 bool CComplex::operator!=(const CComplex& complex) const
 {
 	return !(complex == *this);
-}
-
-
-bool operator==(double real, const CComplex& complex)
-{
-	return CComplex(real) == complex;
-}
-
-bool operator!=(double real, const CComplex& complex)
-{
-	//return true;
-	return !(CComplex(real) == complex);
 }
 
 istream& operator>>(istream& stream, CComplex& complex)
